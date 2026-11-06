@@ -1,0 +1,51 @@
+mode: dynamic
+target_fps: 7.5
+max_frames: null
+seed: 42
+models:
+  florence_id: microsoft/Florence-2-large-ft
+  florence_revision: 4a12a2b54b7016a48a22037fbd62da90cd566f2a
+  encoder_id: facebook/dinov3-vitb16-pretrain-lvd1689m
+  encoder_revision: 5931719e67bbdb9737e363e781fb0c67687896bc
+  eloftr_repo: null
+  eloftr_checkpoint: null
+  eloftr_commit: 07e9c1401e71e9c556b1fda9d86d060af36ba176
+  device: auto
+  precision: fp32
+  batch_size: 16
+  max_new_tokens: 1024
+  loftr_max_side: 640
+proposals:
+  max_proposals: 30
+  nms_iou: 0.85
+  crop_padding: 0.1
+  min_box_side: 12
+  tiling: false
+retrieval:
+  top_k_candidates: 5
+  max_geometry_pairs: 3
+  detect_min_cosine: 0.7
+geometry:
+  min_matches: 12
+  min_inliers: 8
+  min_inlier_ratio: 0.25
+  ransac_reprojection_threshold_px: 3.0
+  min_spatial_coverage: 0.08
+  min_scale: 0.05
+  max_scale: 20.0
+  max_median_reprojection_error_px: 3.0
+memory:
+  capacity: 8
+  memory_min_cosine: 0.8
+  memory_min_inliers: 12
+  memory_min_inlier_ratio: 0.4
+  duplicate_cosine: 0.96
+  cooldown_frames: 8
+  confirmation_frames: 2
+  anchor_min_cosine: 0.75
+  confirmation_cosine: 0.85
+  min_crop_side: 24
+  min_laplacian_variance: 10.0
+  max_pending: 1
+verified_cfr_fps: null
+warmup: true
