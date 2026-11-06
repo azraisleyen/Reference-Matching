@@ -10,7 +10,7 @@ models:
   eloftr_repo: null
   eloftr_checkpoint: null
   eloftr_commit: 07e9c1401e71e9c556b1fda9d86d060af36ba176
-  device: auto
+  device: mps
   precision: fp32
   batch_size: 16
   max_new_tokens: 1024

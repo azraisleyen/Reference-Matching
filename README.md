@@ -205,3 +205,18 @@ EfficientLoFTR için YAML/env belirtilmezse standart `~/.cache/uav-refmatch/Effi
 Kısmi (`max_frames` ile sınırlı), iptal edilmiş veya başarısız run'ların sonuç videosu son işlenmiş kaynak karede biter; işlenmeyen video kuyruğu sonuç gibi sunulmaz. Tamamlanmış ve sınırsız run tüm kaynak süreyi korur. Bu seçim `render_manifest.json` içinde açıkça yazılır.
 
 `retrieval_candidates`, her adayın en iyi referansını ve gerçek cosine skorunu eşik altında kalsa da saklar. `dino_cosine`, FOUND için kazanan skordur; NOT_FOUND ve aday varsa en güçlü adayın skorudur. Eşik altındaki skorlar geometri bütçesini veya kabul kapısını atlamaz. Geometri çalıştırılmadığında JSON ve CSV geometrik alanları null/boştur.
+
+
+## Son deney analizi
+
+6 Kasım 2026 tarihli 331 karelik UAV deneyinde hedef bulunamadı; bütün adaylar görsel benzerlik kapısında elendi. Bu baseline'ın gerçek UAV doğruluğu henüz doğrulanmış değildir.
+
+- [Ayrıntılı performans ve iyileştirme araştırması](docs/PIPELINE_AUDIT_2026-11-06.md)
+- [Beş çalışmanın ölçüm özeti](docs/RUN_AUDIT_2026-11-06.json)
+- [Model çalıştırmadan kayıt analizi](scripts/audit_runs.py)
+
+```bash
+python scripts/audit_runs.py runs audit.json
+```
+
+`configs/default.yaml` şu anda Apple Silicon için açıkça `mps` seçer; bu yol henüz gerçek model testiyle doğrulanmamıştır. CPU doğrulamaları run manifest'lerinde kayıtlıdır. Yapılandırmayı kullanmak için arayüzü açıkça `uav-refmatch ui --config configs/default.yaml` ile başlatın; `--config` verilmezse Python varsayılanları kullanılır ve `auto`, CUDA yoksa CPU seçer. MPS'siz sistemlerde YAML içindeki cihazı `cpu` veya uygun donanımda `cuda` olarak ayarlayın.
