@@ -34,6 +34,9 @@ class AffineRansacVerifier:
                 or np.any(points[:, 1] >= shape[0])
             ):
                 return GeometryEvidence(num_matches=n, reason="out_of_bounds_matches")
+        selected_confidence = np.asarray(matches.confidence) >= c.min_match_confidence
+        src, dst = src[selected_confidence], dst[selected_confidence]
+        n = len(src)
         if n < c.min_matches:
             return GeometryEvidence(num_matches=n)
         if (
@@ -42,7 +45,10 @@ class AffineRansacVerifier:
         ):
             return GeometryEvidence(num_matches=n, reason="degenerate_points")
         cv2.setRNGSeed(self.seed)
-        transform, mask = cv2.estimateAffinePartial2D(
+        estimate = (
+            cv2.estimateAffinePartial2D if c.model == "partial_affine" else cv2.estimateAffine2D
+        )
+        transform, mask = estimate(
             src,
             dst,
             method=cv2.RANSAC,
@@ -55,8 +61,13 @@ class AffineRansacVerifier:
             return GeometryEvidence(num_matches=n, reason="invalid_transform")
         selected = mask.ravel().astype(bool)
         count = int(selected.sum())
-        scale = float(np.linalg.norm(transform[:, 0]))
-        valid = bool(c.min_scale <= scale <= c.max_scale and np.linalg.det(transform[:, :2]) > 0)
+        scales = np.linalg.svd(transform[:, :2], compute_uv=False)
+        valid = bool(
+            scales.min() >= c.min_scale
+            and scales.max() <= c.max_scale
+            and scales.max() / max(scales.min(), 1e-12) <= c.max_anisotropy
+            and np.linalg.det(transform[:, :2]) > 0
+        )
         # Explicit two-coordinate arithmetic avoids unnecessary BLAS dispatch for Nx2.
         projected = np.column_stack(
             (

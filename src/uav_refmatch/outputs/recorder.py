@@ -82,7 +82,15 @@ class Recorder:
         row = {
             k: v
             for k, v in data.items()
-            if k not in ("bbox_xyxy", "geometry", "verified_pairs", "retrieval_candidates")
+            if k
+            not in (
+                "bbox_xyxy",
+                "geometry",
+                "verified_pairs",
+                "retrieval_candidates",
+                "proposals",
+                "proposal_diagnostics",
+            )
         }
         row.update(
             dict(zip(("x_min", "y_min", "x_max", "y_max"), prediction.bbox_xyxy or [None] * 4))

@@ -33,13 +33,13 @@ PyAV / gerçek PTS → 7.5 FPS örnekleme → Florence-2 REGION_PROPOSAL
 | Alternatif encoder | `facebook/dinov3-vitl16-pretrain-sat493m` | [Meta SAT](https://huggingface.co/facebook/dinov3-vitl16-pretrain-sat493m) |
 | EfficientLoFTR | resmî `full`, outdoor checkpoint | [ZJU resmî depo](https://github.com/zju3dv/EfficientLoFTR) |
 
-Florence için yalnız allowlist'teki Microsoft depolarında, değişmez commit ile `trust_remote_code=True` kullanılır. Model kimliği ve commit birlikte değiştirilmelidir; base-ft alternatifinin commit'i `f6c1a25888ffc1d945ee8a1a77ac833c7303d46e`'dir. Remote kod gerekçesi: orijinal Microsoft checkpoint'inin özel mimarisi; başka checkpoint'e sessiz geçiş yoktur. `use_cache=False`, eski Florence decoder cache API'sine bağımlılığı kaldırır; hız bedeli vardır.
+Florence için yalnız allowlist'teki Microsoft depolarında, değişmez commit ile `trust_remote_code=True` kullanılır. Model kimliği ve commit birlikte değiştirilmelidir; base-ft alternatifinin commit'i `f6c1a25888ffc1d945ee8a1a77ac833c7303d46e`'dir. Remote kod gerekçesi: orijinal Microsoft checkpoint'inin özel mimarisi; başka checkpoint'e sessiz geçiş yoktur. Florence KV cache varsayılan olarak açıktır. Sabitlenmiş Transformers 4.57.6 için instance-local legacy-cache uyumluluk adaptörü kullanılır; eski davranış `florence_use_cache: false` ile tekrar üretilebilir.
 
 DINOv3 her checkpoint'in **kendi resmî processor'ını** kullanır. LVD/SAT normalizasyonları karıştırılmaz; boyut model config'inden alınır, 768 sabitlenmez. Erişim reddinde rastgele model yüklenmez. EfficientLoFTR resmî kaynağındaki `reparameter()` uygulanır; dış tensor adları yalnız adaptörde kullanılır. Lisans ve erişim ayrıntıları: [docs/MODELS.md](docs/MODELS.md).
 
 ## Ortam ve donanım
 
-Python 3.11 veya 3.12, FFmpeg/ffprobe gerekir. Yerel doğrulama ortamı Apple M4, 16 GB birleşik bellek ve Python 3.11'dir. NVIDIA/CUDA yoktur. `auto`, CUDA varsa CUDA, yoksa CPU seçer. MPS açıkça seçilebilir ancak gerçek model uyumluluğu ayrıca test edilmelidir. CUDA fp16 isteğe bağlıdır; CPU/MPS için fp32 kullanılır. Üç modelin birlikte yüklenmesi ve batch/crop boyutları bellek tüketimini etkiler; ölçülmüş bir VRAM alt sınırı veya gerçek zamanlı hız iddiası yoktur.
+Python 3.11 veya 3.12, FFmpeg/ffprobe gerekir. Yerel doğrulama ortamı Apple M4, 16 GB birleşik bellek ve Python 3.11'dir. NVIDIA/CUDA yoktur. `auto`, CUDA varsa CUDA, yoksa CPU seçer. MPS açıkça seçilebilir ancak gerçek model uyumluluğu ayrıca test edilmelidir. CUDA fp16 isteğe bağlıdır. Deneysel MPS profilinde yalnız Florence fp16, DINOv3 ve EfficientLoFTR fp32 çalışır; tüm modelleri MPS fp16 yapmak doğrulanmamıştır. Üç modelin birlikte yüklenmesi ve batch/crop boyutları bellek tüketimini etkiler; ölçülmüş bir VRAM alt sınırı veya gerçek zamanlı hız iddiası yoktur.
 
 **7.5 FPS, giriş örnekleme sıklığıdır; saniyede 7.5 inference tamamlanacağı garantisi değildir.**
 
@@ -220,3 +220,20 @@ python scripts/audit_runs.py runs audit.json
 ```
 
 `configs/default.yaml` şu anda Apple Silicon için açıkça `mps` seçer; bu yol henüz gerçek model testiyle doğrulanmamıştır. CPU doğrulamaları run manifest'lerinde kayıtlıdır. Yapılandırmayı kullanmak için arayüzü açıkça `uav-refmatch ui --config configs/default.yaml` ile başlatın; `--config` verilmezse Python varsayılanları kullanılır ve `auto`, CUDA yoksa CPU seçer. MPS'siz sistemlerde YAML içindeki cihazı `cpu` veya uygun donanımda `cuda` olarak ayarlayın.
+
+## Ölçülmüş optimizasyon ve teşhis
+
+[6 Kasım deney raporu](docs/OPTIMIZATION_2026-11-06.md), aynı karelerdeki CPU/MPS karşılaştırmasını, aday kutularını, bellek ölçümlerini ve kalan kaçırmaları içerir. Genel model hattı korunmuştur. Deney profilleri evrensel eşik veya gerçek zaman garantisi değildir.
+
+```bash
+# Ölçülmüş, deneysel büyük-model profili; arayüz açılır, deney otomatik başlamaz.
+uav-refmatch ui --config configs/experiments/mps-calibrated.yaml
+
+# Sınırlı, bağımsız statik kare deneyleri; ham kare/crop kaydedilmez.
+python scripts/benchmark_baseline.py --video /veri/input_video.mp4 \
+  --reference /veri/ref_01.jpg --config configs/experiments/mps-calibrated.yaml \
+  --timestamps 16 24 40 264 267 --repeats 2 --max-seconds 180 \
+  --output /tmp/benchmark-new.json
+```
+
+Arayüzde cihazı ve kare sınırını açıkça seçebilirsiniz. Sonuçlarda **adayları göster** seçeneği, reddedilen Florence kutularını ve cosine skorlarını incelemeyi sağlar. JSONL kayıtları tüm temizlenmiş adayları, crop sınırlarını, ham aday sayısını, üretim token sayısını ve token sınırına ulaşılmasını saklar. Rapor; aşama maliyetleri, medyan/p95/maksimum süre, bir saniyeyi aşan kareler ve karar nedenlerini içerir.

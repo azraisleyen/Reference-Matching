@@ -17,7 +17,12 @@ def retrieve(
 ) -> RetrievalResult:
     if not len(embeddings):
         return RetrievalResult([], [])
-    scores = normalize(embeddings) @ normalize(np.stack([r.embedding for r in references])).T
+    scores = np.einsum(
+        "id,jd->ij",
+        normalize(embeddings),
+        normalize(np.stack([r.embedding for r in references])),
+        optimize=False,
+    )
     # Keep below-threshold scores for diagnosis/calibration; they never bypass the gate.
     best = []
     for i in range(len(scores)):
@@ -31,7 +36,12 @@ def retrieve(
         Pair(i, ref.memory_id, float(np.clip(scores[i, j], -1, 1)))
         for i in candidates
         for j, ref in enumerate(references)
-        if scores[i, j] >= config.detect_min_cosine
+        if scores[i, j]
+        >= (
+            config.geometry_min_cosine
+            if config.geometry_min_cosine is not None
+            else config.detect_min_cosine
+        )
     ]
     pairs.sort(key=lambda pair: (-pair.cosine, pair.candidate_index, pair.memory_id))
     return RetrievalResult(pairs[: config.max_geometry_pairs], best)

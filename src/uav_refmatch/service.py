@@ -71,6 +71,7 @@ def build_pipeline(config):
         eloftr_checkpoint_sha256=matcher.checkpoint_sha256,
         device=device,
         precision=config.models.precision,
+        florence_precision=config.models.florence_precision or config.models.precision,
     )
     return pipeline, provenance
 
@@ -147,6 +148,7 @@ def run_experiment(
                 recorder.manifest.update(
                     models=provenance, model_load_ms=(perf_counter() - start) * 1000
                 )
+                progress(dict(device=pipeline.device))
                 with Image.open(reference) as image:
                     reference_image = np.array(image.convert("RGB"))
                 recorder.manifest["warmup_ms"] = 0.0

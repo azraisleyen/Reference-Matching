@@ -84,10 +84,18 @@ class Pipeline:
                 try:
                     with profiler.measure("proposal_ms"):
                         proposals = self.proposals.propose(frame.image)
-                        crops = [
-                            crop(frame.image, p.bbox_xyxy, self.config.proposals.crop_padding)[0]
+                        prepared = [
+                            crop(frame.image, p.bbox_xyxy, self.config.proposals.crop_padding)
                             for p in proposals
                         ]
+                        crops = [item[0] for item in prepared]
+                        prediction.proposals = [
+                            dict(candidate_index=i, **asdict(p), crop_bounds=prepared[i][1])
+                            for i, p in enumerate(proposals)
+                        ]
+                        prediction.proposal_diagnostics = dict(
+                            getattr(self.proposals, "last_diagnostics", {})
+                        )
                     prediction.candidate_count = len(proposals)
                     verified = []
                     if crops:
@@ -124,6 +132,8 @@ class Pipeline:
                             strongest = verified[0]
                             prediction.dino_cosine = strongest.pair.cosine
                             prediction.geometry = strongest.geometry
+                        if not winner and any(v.geometry.accepted for v in verified):
+                            prediction.decision_reason = "geometry_passed_below_visual_threshold"
                         if winner:
                             pair = winner.pair
                             index = pair.candidate_index
@@ -180,6 +190,9 @@ class Pipeline:
                         counts=counts.copy(),
                         active_references=len(memory.entries),
                         last_frame_ms=profiler.values["total_frame_ms"],
+                        device=self.device,
+                        stage_timings_ms=profiler.values.copy(),
+                        candidate_count=prediction.candidate_count,
                     )
                 )
                 if prediction.status == "ERROR":

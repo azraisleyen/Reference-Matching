@@ -40,9 +40,11 @@ def build_app(output_root="runs", config=None):
         except Exception as exc:
             return {"error": str(exc)}
 
-    def config_for(mode, encoder):
+    def config_for(mode, encoder, device, limit):
         data = base_config.model_dump()
         data["mode"] = mode
+        data["models"]["device"] = device
+        data["max_frames"] = int(limit) if limit else None
         data["models"]["encoder_id"] = LVD if encoder == "ViT-B/16 LVD" else SAT
         # A revision belongs to exactly one repository.
         if data["models"]["encoder_id"] != base_config.models.encoder_id:
@@ -53,9 +55,11 @@ def build_app(output_root="runs", config=None):
             )
         return Config.model_validate(data)
 
-    def start(v, vp, r, rp, mode, encoder, name):
+    def start(v, vp, r, rp, mode, encoder, device, limit, name):
         try:
-            return worker.start(selected(v, vp), selected(r, rp), config_for(mode, encoder), name)
+            return worker.start(
+                selected(v, vp), selected(r, rp), config_for(mode, encoder, device, limit), name
+            )
         except Exception as exc:
             raise gr.Error(str(exc)) from exc
 
@@ -77,9 +81,11 @@ def build_app(output_root="runs", config=None):
             raise gr.Error("Kayıtlı bir deney seçin")
         return root / name
 
-    def review(name, index, source):
+    def review(name, index, source, show_proposals):
         try:
-            return inspect_frame(run_path(name), index, source or None)
+            return inspect_frame(
+                run_path(name), index, source or None, show_proposals=show_proposals
+            )
         except Exception as exc:
             raise gr.Error(str(exc)) from exc
 
@@ -119,6 +125,21 @@ def build_app(output_root="runs", config=None):
                         label="DINOv3 Encoder",
                     )
                     name = gr.Textbox(label="Deney adı (isteğe bağlı)")
+                    device = gr.Dropdown(
+                        ["auto", "cpu", "mps", "cuda"],
+                        value=base_config.models.device,
+                        label="İşlem cihazı",
+                    )
+                    limit = gr.Number(
+                        value=base_config.max_frames or 0,
+                        minimum=0,
+                        precision=0,
+                        label="Kare sınırı (0: tüm video)",
+                    )
+                    gr.Markdown(
+                        "Mac GPU için **mps** seçin. **auto**, CUDA yoksa CPU kullanır. "
+                        "Önce kısa deney yapın; 7,5 FPS örnekleme, işlem hızı değildir."
+                    )
                     info = gr.JSON(label="Video metadata")
             with gr.Accordion("Çalıştırma parametreleri", open=False):
                 params = gr.JSON(
@@ -133,15 +154,19 @@ def build_app(output_root="runs", config=None):
             status = gr.JSON(label="İlerleme / sayaçlar / süreler")
             cancel_message = gr.Textbox(label="İptal durumu", interactive=False)
             start_button.click(
-                start, [video, video_path, ref, ref_path, mode, encoder, name], status
+                start,
+                [video, video_path, ref, ref_path, mode, encoder, device, limit, name],
+                status,
             )
             cancel_button.click(worker.cancel, outputs=cancel_message, queue=False)
             video.change(metadata, [video, video_path], info)
             video_path.blur(metadata, [video, video_path], info)
             video_path.submit(metadata, [video, video_path], info)
-            for component in (mode, encoder):
+            for component in (mode, encoder, device, limit):
                 component.change(
-                    lambda m, e: config_for(m, e).model_dump(), [mode, encoder], params
+                    lambda m, e, d, n: config_for(m, e, d, n).model_dump(),
+                    [mode, encoder, device, limit],
+                    params,
                 )
             gr.Timer(1).tick(poll_status, outputs=[status, progress_bar], queue=False)
         with gr.Tab("Sonuç inceleme"):
@@ -155,7 +180,12 @@ def build_app(output_root="runs", config=None):
             index = gr.Number(value=0, minimum=0, precision=0, label="İşlenmiş kare indeksi")
             preview = gr.Image(label="Kaynak kare ve kayıtlı bbox", format="png")
             details = gr.JSON(label="Tahmin / geometri / bellek olayları")
-            gr.Button("Kareyi incele").click(review, [choice, index, source], [preview, details])
+            show_proposals = gr.Checkbox(
+                label="Aday kutularını ve benzerlik skorlarını göster", value=True
+            )
+            gr.Button("Kareyi incele").click(
+                review, [choice, index, source, show_proposals], [preview, details]
+            )
             output = gr.File(label="Üretilen sonuç videosu")
             gr.Button("Video Oluştur").click(render, [choice, source], output)
             summary = gr.JSON(value=initial_summary, label="Deney özeti")

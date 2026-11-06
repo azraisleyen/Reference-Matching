@@ -1,0 +1,25 @@
+# EXPERIMENTAL: calibrated on one video's development frames, not universal thresholds.
+# No memory admission relaxation. Evaluate independent videos before deployment.
+mode: static
+models:
+  device: mps
+  precision: fp32
+  florence_precision: fp16
+  florence_num_beams: 1
+  florence_use_cache: true
+  max_new_tokens: 256
+retrieval:
+  top_k_candidates: 5
+  max_geometry_pairs: 3
+  geometry_min_cosine: 0.30
+  detect_min_cosine: 0.30
+geometry:
+  model: affine
+  min_match_confidence: 0.40
+  min_matches: 12
+  min_inliers: 12
+  min_inlier_ratio: 0.20
+  ransac_reprojection_threshold_px: 5.0
+  min_spatial_coverage: 0.03
+  max_median_reprojection_error_px: 3.0
+  max_anisotropy: 4.0

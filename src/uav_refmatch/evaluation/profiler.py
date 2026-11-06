@@ -38,11 +38,20 @@ class Profiler:
             self.values[key] = self.values.get(key, 0) + (perf_counter() - start) * 1000
 
     def resources(self, memory):
+        # Optional OS telemetry must not turn valid inference into a failed run.
+        try:
+            swap_used = psutil.swap_memory().used
+        except (OSError, psutil.Error):
+            swap_used = None
         result = dict(
             cpu_ram_bytes=psutil.Process().memory_info().rss,
-            cuda_allocated_bytes=0,
-            cuda_reserved_bytes=0,
-            peak_gpu_bytes=0,
+            cuda_allocated_bytes=None,
+            cuda_reserved_bytes=None,
+            peak_gpu_bytes=None,
+            mps_allocated_bytes=None,
+            mps_driver_bytes=None,
+            system_available_ram_bytes=psutil.virtual_memory().available,
+            system_swap_used_bytes=swap_used,
             **memory.usage(),
         )
         if self.device == "cuda":
@@ -50,5 +59,10 @@ class Profiler:
                 cuda_allocated_bytes=torch.cuda.memory_allocated(),
                 cuda_reserved_bytes=torch.cuda.memory_reserved(),
                 peak_gpu_bytes=torch.cuda.max_memory_allocated(),
+            )
+        elif self.device == "mps":
+            result.update(
+                mps_allocated_bytes=torch.mps.current_allocated_memory(),
+                mps_driver_bytes=torch.mps.driver_allocated_memory(),
             )
         return result

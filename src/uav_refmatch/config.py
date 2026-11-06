@@ -27,6 +27,9 @@ class Models(StrictModel):
     precision: Literal["fp32", "fp16"] = "fp32"
     batch_size: int = Field(16, ge=1)
     max_new_tokens: int = Field(1024, ge=64)
+    florence_num_beams: int = Field(3, ge=1, le=8)
+    florence_use_cache: bool = True
+    florence_precision: Literal["fp32", "fp16"] | None = None
     loftr_max_side: int = Field(640, ge=32)
 
     @model_validator(mode="after")
@@ -56,9 +59,13 @@ class Retrieval(StrictModel):
     top_k_candidates: int = Field(5, ge=1)
     max_geometry_pairs: int = Field(3, ge=1)
     detect_min_cosine: float = Field(0.70, ge=-1, le=1)
+    geometry_min_cosine: float | None = Field(None, ge=-1, le=1)
 
 
 class Geometry(StrictModel):
+    model: Literal["partial_affine", "affine"] = "partial_affine"
+    min_match_confidence: float = Field(0.0, ge=0, le=1)
+    max_anisotropy: float = Field(10.0, ge=1)
     min_matches: int = Field(12, ge=3)
     min_inliers: int = Field(8, ge=3)
     min_inlier_ratio: float = Field(0.25, ge=0, le=1)
@@ -99,12 +106,19 @@ class Config(StrictModel):
 
     @model_validator(mode="after")
     def thresholds(self):
+        if (
+            self.retrieval.geometry_min_cosine is not None
+            and self.retrieval.geometry_min_cosine > self.retrieval.detect_min_cosine
+        ):
+            raise ValueError("Geometry screening threshold must not exceed detection threshold")
         if self.memory.memory_min_cosine < self.retrieval.detect_min_cosine:
             raise ValueError("Memory threshold must be at least the detection threshold")
         if self.geometry.max_scale <= self.geometry.min_scale:
             raise ValueError("Invalid scale interval")
         if self.models.precision != "fp32" and self.models.device not in ("cuda", "auto"):
             raise ValueError("Mixed/half precision is only supported on CUDA")
+        if self.models.florence_precision == "fp16" and self.models.device == "cpu":
+            raise ValueError("Florence fp16 requires an explicitly available GPU")
         return self
 
 

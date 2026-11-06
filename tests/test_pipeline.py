@@ -55,6 +55,8 @@ def test_end_to_end_records_and_memory(tmp_path, texture, mode):
         json.loads(line) for line in (recorder.path / "predictions.jsonl").read_text().splitlines()
     ]
     assert len(rows) == 4 and all(p["status"] == "FOUND" for p in rows)
+    assert rows[0]["proposals"][0]["bbox_xyxy"] == [0, 0, 64, 64]
+    assert rows[0]["proposals"][0]["crop_bounds"] == [0, 0, 64, 64]
     assert encoder.calls == 5  # R0 once, candidates once per frame, never reference re-encoding
     assert matcher.calls <= 4 * 3
     assert [p["active_reference_count"] for p in rows] == (
@@ -73,6 +75,41 @@ def test_not_found_record(tmp_path, texture):
     recorder.finish("completed")
     row = json.loads((recorder.path / "predictions.jsonl").read_text())
     assert row["status"] == "NOT_FOUND" and row["bbox_xyxy"] is None
+
+
+def test_rejected_candidates_are_inspectable(tmp_path, texture):
+    config = Config(retrieval={"detect_min_cosine": 0.9}, memory={"memory_min_cosine": 0.95})
+    recorder = Recorder(tmp_path, config)
+    matcher = Matcher()
+    pipeline = Pipeline(
+        config, Proposals(), Encoder(), matcher, AffineRansacVerifier(config.geometry)
+    )
+    pipeline.run([FrameRecord(0, 0, 0, 64, 64, texture)], texture, "target", recorder)
+    recorder.finish("completed")
+    row = json.loads((recorder.path / "predictions.jsonl").read_text())
+    assert row["status"] == "NOT_FOUND" and row["bbox_xyxy"] is None
+    assert row["proposals"][0]["candidate_index"] == 0
+    assert row["retrieval_candidates"][0]["cosine"] < 0.9
+    assert matcher.calls == 0
+
+
+def test_diagnostic_geometry_never_bypasses_final_gate(tmp_path, texture):
+    config = Config(
+        retrieval={"detect_min_cosine": 0.9, "geometry_min_cosine": 0.3},
+        memory={"memory_min_cosine": 0.95},
+    )
+    recorder = Recorder(tmp_path, config)
+    matcher = Matcher()
+    pipeline = Pipeline(
+        config, Proposals(), Encoder(), matcher, AffineRansacVerifier(config.geometry)
+    )
+    pipeline.run([FrameRecord(0, 0, 0, 64, 64, texture)], texture, "target", recorder)
+    recorder.finish("completed")
+    row = json.loads((recorder.path / "predictions.jsonl").read_text())
+    assert row["status"] == "NOT_FOUND" and row["bbox_xyxy"] is None
+    assert row["geometry"]["accepted"]
+    assert row["decision_reason"] == "geometry_passed_below_visual_threshold"
+    assert matcher.calls == 1
 
 
 def test_error_is_not_not_found(tmp_path, texture):

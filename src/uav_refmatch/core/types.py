@@ -74,6 +74,8 @@ class Prediction:
     processing_ms: float = 0.0
     verified_pairs: list[dict] = field(default_factory=list)
     retrieval_candidates: list[dict] = field(default_factory=list)
+    proposals: list[dict] = field(default_factory=list)
+    proposal_diagnostics: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,623 @@
+{
+  "kind": "independent_static_probes",
+  "source_index_policy": "unknown=-1",
+  "source_sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a",
+  "reference_sha256": "f522271e56d961b477eb45f60c61a97001c26887ad1e79837f6809aa90d75cec",
+  "requested_timestamps": [
+    23.0,
+    24.0,
+    25.0
+  ],
+  "repeats": 1,
+  "max_seconds": 90.0,
+  "accuracy_metrics": null,
+  "variants": [
+    {
+      "config": {
+        "mode": "static",
+        "target_fps": 7.5,
+        "max_frames": null,
+        "seed": 42,
+        "models": {
+          "florence_id": "microsoft/Florence-2-large-ft",
+          "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+          "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+          "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+          "eloftr_repo": null,
+          "eloftr_checkpoint": null,
+          "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+          "device": "mps",
+          "precision": "fp32",
+          "batch_size": 16,
+          "max_new_tokens": 256,
+          "florence_num_beams": 1,
+          "florence_use_cache": true,
+          "florence_precision": "fp16",
+          "loftr_max_side": 640
+        },
+        "proposals": {
+          "max_proposals": 30,
+          "nms_iou": 0.85,
+          "crop_padding": 0.1,
+          "min_box_side": 12,
+          "tiling": false
+        },
+        "retrieval": {
+          "top_k_candidates": 5,
+          "max_geometry_pairs": 3,
+          "detect_min_cosine": 0.3,
+          "geometry_min_cosine": 0.3
+        },
+        "geometry": {
+          "model": "affine",
+          "min_match_confidence": 0.4,
+          "max_anisotropy": 4.0,
+          "min_matches": 12,
+          "min_inliers": 12,
+          "min_inlier_ratio": 0.2,
+          "ransac_reprojection_threshold_px": 5.0,
+          "min_spatial_coverage": 0.03,
+          "min_scale": 0.05,
+          "max_scale": 20.0,
+          "max_median_reprojection_error_px": 3.0
+        },
+        "memory": {
+          "capacity": 8,
+          "memory_min_cosine": 0.8,
+          "memory_min_inliers": 12,
+          "memory_min_inlier_ratio": 0.4,
+          "duplicate_cosine": 0.96,
+          "cooldown_frames": 8,
+          "confirmation_frames": 2,
+          "anchor_min_cosine": 0.75,
+          "confirmation_cosine": 0.85,
+          "min_crop_side": 24,
+          "min_laplacian_variance": 10.0,
+          "max_pending": 1
+        },
+        "verified_cfr_fps": null,
+        "warmup": false
+      },
+      "cases": [
+        {
+          "requested_timestamp": 23.0,
+          "repeat": 0,
+          "seek_decode_ms": 339.12224999949103,
+          "probe_wall_seconds": 1.0768673340025998,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 23.023,
+            "width": 1920,
+            "height": 1080,
+            "status": "NOT_FOUND",
+            "target_reference_id": "ref_01",
+            "bbox_xyxy": null,
+            "matched_memory_id": null,
+            "dino_cosine": 0.14583897590637207,
+            "geometry": null,
+            "candidate_count": 4,
+            "active_reference_count": 1,
+            "decision_reason": "no_visual_match",
+            "processing_ms": 1010.8301670006767,
+            "verified_pairs": [],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.14583897590637207
+              },
+              {
+                "candidate_index": 3,
+                "memory_id": "R0",
+                "cosine": 0.12414949387311935
+              },
+              {
+                "candidate_index": 1,
+                "memory_id": "R0",
+                "cosine": 0.09912367910146713
+              },
+              {
+                "candidate_index": 2,
+                "memory_id": "R0",
+                "cosine": 0.07731206715106964
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  1089.5999755859375,
+                  0.5400000214576721,
+                  1917.1199951171875,
+                  262.9800109863281
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1006,
+                  0,
+                  1920,
+                  290
+                ]
+              },
+              {
+                "candidate_index": 1,
+                "proposal_id": 1,
+                "bbox_xyxy": [
+                  1235.52001953125,
+                  478.9800109863281,
+                  1638.719970703125,
+                  824.5800170898438
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1195,
+                  444,
+                  1680,
+                  860
+                ]
+              },
+              {
+                "candidate_index": 2,
+                "proposal_id": 2,
+                "bbox_xyxy": [
+                  1095.3599853515625,
+                  0.5400000214576721,
+                  1917.1199951171875,
+                  167.94000244140625
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1013,
+                  0,
+                  1920,
+                  185
+                ]
+              },
+              {
+                "candidate_index": 3,
+                "proposal_id": 3,
+                "bbox_xyxy": [
+                  1586.8800048828125,
+                  939.06005859375,
+                  1917.1199951171875,
+                  1078.3800048828125
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1553,
+                  925,
+                  1920,
+                  1080
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "raw_boxes": [
+                [
+                  1089.5999755859375,
+                  0.5400000214576721,
+                  1917.1199951171875,
+                  262.9800109863281
+                ],
+                [
+                  1235.52001953125,
+                  478.9800109863281,
+                  1638.719970703125,
+                  824.5800170898438
+                ],
+                [
+                  1095.3599853515625,
+                  0.5400000214576721,
+                  1917.1199951171875,
+                  167.94000244140625
+                ],
+                [
+                  1586.8800048828125,
+                  939.06005859375,
+                  1917.1199951171875,
+                  1078.3800048828125
+                ]
+              ],
+              "raw_count": 4,
+              "kept_count": 4,
+              "generated_tokens": 20,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ]
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 914.6653750030964,
+            "dinov3_ms": 95.82437500284868,
+            "retrieval_ms": 0.2795830005197786,
+            "efficientloftr_ms": 0.0,
+            "ransac_ms": 0.0,
+            "decision_ms": 0.004749999789055437,
+            "memory_ms": 0.001334003172814846,
+            "total_frame_ms": 1011.3699580033426
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "749535232",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "5299650560",
+            "system_available_ram_bytes": "4239310848",
+            "system_swap_used_bytes": "3823894528",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "19427265",
+            "embedding_bytes": "3072"
+          }
+        },
+        {
+          "requested_timestamp": 24.0,
+          "repeat": 0,
+          "seek_decode_ms": 357.80762499780394,
+          "probe_wall_seconds": 0.9693876250021276,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 24.024,
+            "width": 1920,
+            "height": 1080,
+            "status": "NOT_FOUND",
+            "target_reference_id": "ref_01",
+            "bbox_xyxy": null,
+            "matched_memory_id": null,
+            "dino_cosine": 0.10230861604213715,
+            "geometry": null,
+            "candidate_count": 3,
+            "active_reference_count": 1,
+            "decision_reason": "no_visual_match",
+            "processing_ms": 928.6966250001569,
+            "verified_pairs": [],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 1,
+                "memory_id": "R0",
+                "cosine": 0.10230861604213715
+              },
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.09946450591087341
+              },
+              {
+                "candidate_index": 2,
+                "memory_id": "R0",
+                "cosine": 0.09447035193443298
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  1085.760009765625,
+                  83.70000457763672,
+                  1740.47998046875,
+                  383.94000244140625
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1020,
+                  53,
+                  1806,
+                  414
+                ]
+              },
+              {
+                "candidate_index": 1,
+                "proposal_id": 1,
+                "bbox_xyxy": [
+                  1247.0399169921875,
+                  650.7000122070312,
+                  1659.8399658203125,
+                  1011.4200439453125
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1205,
+                  614,
+                  1702,
+                  1048
+                ]
+              },
+              {
+                "candidate_index": 2,
+                "proposal_id": 2,
+                "bbox_xyxy": [
+                  1035.8399658203125,
+                  0.5400000214576721,
+                  1408.3199462890625,
+                  116.10000610351562
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  998,
+                  0,
+                  1446,
+                  128
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "raw_boxes": [
+                [
+                  1085.760009765625,
+                  83.70000457763672,
+                  1740.47998046875,
+                  383.94000244140625
+                ],
+                [
+                  1247.0399169921875,
+                  650.7000122070312,
+                  1659.8399658203125,
+                  1011.4200439453125
+                ],
+                [
+                  1035.8399658203125,
+                  0.5400000214576721,
+                  1408.3199462890625,
+                  116.10000610351562
+                ]
+              ],
+              "raw_count": 3,
+              "kept_count": 3,
+              "generated_tokens": 16,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ]
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 851.7605419983738,
+            "dinov3_ms": 76.77945899922634,
+            "retrieval_ms": 0.12558300295495428,
+            "efficientloftr_ms": 0.0,
+            "ransac_ms": 0.0,
+            "decision_ms": 0.004124998667975888,
+            "memory_ms": 0.0007500020728912205,
+            "total_frame_ms": 929.135458998644
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "758693888",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "5305958400",
+            "system_available_ram_bytes": "4378214400",
+            "system_swap_used_bytes": "3823894528",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "19427265",
+            "embedding_bytes": "3072"
+          }
+        },
+        {
+          "requested_timestamp": 25.0,
+          "repeat": 0,
+          "seek_decode_ms": 349.71587499967427,
+          "probe_wall_seconds": 0.9655500829976518,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 25.025,
+            "width": 1920,
+            "height": 1080,
+            "status": "NOT_FOUND",
+            "target_reference_id": "ref_01",
+            "bbox_xyxy": null,
+            "matched_memory_id": null,
+            "dino_cosine": 0.11923372745513916,
+            "geometry": null,
+            "candidate_count": 3,
+            "active_reference_count": 1,
+            "decision_reason": "no_visual_match",
+            "processing_ms": 925.6063329994504,
+            "verified_pairs": [],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.11923372745513916
+              },
+              {
+                "candidate_index": 1,
+                "memory_id": "R0",
+                "cosine": 0.1122717410326004
+              },
+              {
+                "candidate_index": 2,
+                "memory_id": "R0",
+                "cosine": 0.08507770299911499
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  1035.8399658203125,
+                  151.74000549316406,
+                  1709.760009765625,
+                  535.1400146484375
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  968,
+                  113,
+                  1778,
+                  574
+                ]
+              },
+              {
+                "candidate_index": 1,
+                "proposal_id": 1,
+                "bbox_xyxy": [
+                  1285.43994140625,
+                  703.6200561523438,
+                  1732.7999267578125,
+                  1078.3800048828125
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1240,
+                  666,
+                  1778,
+                  1080
+                ]
+              },
+              {
+                "candidate_index": 2,
+                "proposal_id": 2,
+                "bbox_xyxy": [
+                  889.9199829101562,
+                  0.5400000214576721,
+                  1335.3599853515625,
+                  280.260009765625
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  845,
+                  0,
+                  1380,
+                  309
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "raw_boxes": [
+                [
+                  1035.8399658203125,
+                  151.74000549316406,
+                  1709.760009765625,
+                  535.1400146484375
+                ],
+                [
+                  1285.43994140625,
+                  703.6200561523438,
+                  1732.7999267578125,
+                  1078.3800048828125
+                ],
+                [
+                  889.9199829101562,
+                  0.5400000214576721,
+                  1335.3599853515625,
+                  280.260009765625
+                ]
+              ],
+              "raw_count": 3,
+              "kept_count": 3,
+              "generated_tokens": 16,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ]
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 859.0372500002559,
+            "dinov3_ms": 66.42758299858542,
+            "retrieval_ms": 0.11079099931521341,
+            "efficientloftr_ms": 0.0,
+            "ransac_ms": 0.0,
+            "decision_ms": 0.0035000011848751456,
+            "memory_ms": 0.0010830008250195533,
+            "total_frame_ms": 926.0426250002638
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "762068992",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "5305958400",
+            "system_available_ram_bytes": "4373954560",
+            "system_swap_used_bytes": "3823894528",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "19427265",
+            "embedding_bytes": "3072"
+          }
+        }
+      ],
+      "status": "completed",
+      "models": {
+        "florence_id": "microsoft/Florence-2-large-ft",
+        "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+        "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+        "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+        "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+        "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+        "device": "mps",
+        "precision": "fp32",
+        "florence_precision": "fp16"
+      },
+      "load_seconds": 2.1843732920024195,
+      "warmup_seconds": 1.5235412500005623
+    }
+  ],
+  "source_hashes": {
+    "src/uav_refmatch/__init__.py": "0f3be64acea451a9cf927bbc6c3ec7d606c243250dcddd738380a8e80295384b",
+    "src/uav_refmatch/cli.py": "1c05019cb0773afa7a5a36db655e1289a1e3208800579135fdca60e247e58346",
+    "src/uav_refmatch/config.py": "2654e5d9e44c7bc02a75c64c8cf598eda757a91baec5589947beb3448804ee79",
+    "src/uav_refmatch/core/errors.py": "d1fe14b5570f96fe2bb5bdfd324b006d528ade65cd5cc64b4e6f14805278a8df",
+    "src/uav_refmatch/core/interfaces.py": "53424903b61e0d5a3219d6fc64c43fd225248726b678e00d4d449d3cdf23e6e5",
+    "src/uav_refmatch/core/runtime.py": "a6d91dc473c6592743fa2c354a5653eae275781d83c7896f53cf1da04259afa7",
+    "src/uav_refmatch/core/types.py": "d7aef4273a8f7b9087f6c9b54437616518afc2491affbdfa993e21233e747351",
+    "src/uav_refmatch/data/frame_sampler.py": "c5dcd70b19d17b05312f2888c9496e206c9aebf8ab3c291b8aa075843850ec1f",
+    "src/uav_refmatch/data/video_reader.py": "9d5163cc498cbab86bc046cb5588fbd30c6b748273a1c81f6f94d956a75412e3",
+    "src/uav_refmatch/decision/engine.py": "972e2657f8c3925dbf703eb7cf2a21cec7888eb8dc92658f90a9def4d4df0e95",
+    "src/uav_refmatch/doctor.py": "0b22a6bb724700e06a963de6c46d06bb54231742966a6ae5f8ec8723979c127c",
+    "src/uav_refmatch/evaluation/profiler.py": "0922611329a996893e7410b5369161abad6e691f168ffbfeef29ba13bef98b44",
+    "src/uav_refmatch/features/dinov3.py": "76fe557d8d8465608fd6c7724b2c91f50ccd209d59a338ee0eb0e353b6d37854",
+    "src/uav_refmatch/features/normalization.py": "8c4709543f52008dc7a2031c81b43c5188a7d7ba29e7fd398c34d7e554222c0a",
+    "src/uav_refmatch/geometry/verifier.py": "6b184d15c1bc3f7f17fffbc3b7dd4c74a251ac7a2ba07585efe84dc347ee0caa",
+    "src/uav_refmatch/matching/efficientloftr.py": "57141394a3ef3ea073ee89125b549ea0340d51f007824a8a5349c83134e158d0",
+    "src/uav_refmatch/matching/retrieval.py": "72f6c2248a20c7e9b967b105a58f8ea84af3737bdbd3a48cb4c33f59bda96b2e",
+    "src/uav_refmatch/memory/base.py": "5af418afe9f1836e127f8cbb53b58f4993da8b0612d076f0d32670339b5f63cf",
+    "src/uav_refmatch/memory/dynamic.py": "909d03e0b670a1df9c20082ab200d0227d0ee41eba4c7b7a7334590e45b52bc7",
+    "src/uav_refmatch/memory/policies.py": "e727f1e23eb5112abf5edeca82564cc8726304a73a5294c6d71dba117945df29",
+    "src/uav_refmatch/memory/static.py": "997182a85961d0896cad12c94f74f23ee5d6f5a226e403b0c3603e18d4910707",
+    "src/uav_refmatch/outputs/recorder.py": "6e9090862c1d85a48b61898d0e6d8f647a830a68bd7c27f3e665d5f17eec782c",
+    "src/uav_refmatch/outputs/reporting.py": "b31b5f11ee8a9a88f64d82ce518ab51f1b6d75754f6588f4afa9016310fb64ad",
+    "src/uav_refmatch/outputs/video_renderer.py": "f1aeceda76465aa5fc97687f5a89c2bf25117b4e69ab4c5c0c7dfe2f37131a3b",
+    "src/uav_refmatch/pipeline.py": "d15ce6f9c8a214483204092472557539bd5d0d94881dd7d05232cec49621b02a",
+    "src/uav_refmatch/proposals/boxes.py": "f322aebaf141a9031dea2ba35302278093577f5f20cee3235b6e5ff09de81e36",
+    "src/uav_refmatch/proposals/cache_compat.py": "762e5a1dd0a25cd0683eded5eda8b6688cebcd4076f3faeaec1913baf977aa8f",
+    "src/uav_refmatch/proposals/florence2.py": "2e2b450eaf5ec2b56670b7863ad4d8c05b8a074fd7836c4dc7cba47ca322becb",
+    "src/uav_refmatch/service.py": "7fd8bfe9fba0806eaed021502aaf9e968c145acd6584edb4592eabcde59c28c4",
+    "src/uav_refmatch/ui.py": "f0bd06a49ad6c9acfcec9d2c0900fb99fe0a173798b15bec632228f82ff02782",
+    "src/uav_refmatch/worker.py": "149c26557c53391ece3e0db0d039ca89fd3a675500bd9bf6251d09f4f0cf410e"
+  },
+  "git_commit": "6a712d2deddfcd31b244001c1b04bae59781bd1c",
+  "git_dirty": true,
+  "timing_scope": "stage_timings_ms exclude model load, R0 encoding, random seek, resource sampling and manifest IO; probe_wall_seconds includes R0 encoding/recording, seek_decode_ms is reported separately",
+  "wall_seconds": 8.23760612499973
+}

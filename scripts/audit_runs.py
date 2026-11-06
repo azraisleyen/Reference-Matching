@@ -81,7 +81,7 @@ def audit(root):
             geometry_pairs=sum(len(row["verified_pairs"]) for row in predictions),
             timings_ms=timing_stats,
             resources={
-                key: describe([float(row[key]) for row in resources])
+                key: describe([float(row[key]) for row in resources if row[key] != ""])
                 for key in resources[0]
                 if key != "frame_index"
             }

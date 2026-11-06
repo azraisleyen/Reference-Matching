@@ -25,7 +25,23 @@ def draw_prediction(image, prediction, overlay=True):
     return output
 
 
-def inspect_frame(run, frame_index, video=None):
+def draw_proposals(image, prediction):
+    """Diagnostic orange proposals; never presented as accepted green detections."""
+    output = image.copy()
+    scores = {p["candidate_index"]: p["cosine"] for p in prediction.get("retrieval_candidates", [])}
+    for p in prediction.get("proposals", []):
+        x1, y1, x2, y2 = map(round, p["bbox_xyxy"])
+        index = p["candidate_index"]
+        score = scores.get(index)
+        label = f"candidate {index}" + (f" cos={score:.3f}" if score is not None else "")
+        cv2.rectangle(output, (x1, y1), (x2, y2), (255, 165, 0), 2)
+        cv2.putText(
+            output, label, (x1, max(16, y1 - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 165, 0), 1
+        )
+    return output
+
+
+def inspect_frame(run, frame_index, video=None, show_proposals=False):
     from ..service import resolve_source
 
     source = resolve_source(run, video)
@@ -56,7 +72,10 @@ def inspect_frame(run, frame_index, video=None):
                             ),
                             None,
                         )
-                return draw_prediction(frame.to_ndarray(format="rgb24"), prediction), details
+                image = frame.to_ndarray(format="rgb24")
+                if show_proposals:
+                    image = draw_proposals(image, prediction)
+                return draw_prediction(image, prediction), details
     raise ValueError("Kaynak kare bulunamadı")
 
 
