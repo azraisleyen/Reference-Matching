@@ -15,3 +15,7 @@ Resmî API kaynakları:
 Yeni native Transformers Florence örnekleri `florence-community` checkpoint'leri kullanır. Kullanıcının istediği `microsoft/Florence-2-large-ft` kimliğini korumak için kendi remote sınıfı kullanılır. `attn_implementation=eager` ve legacy cache kapatma, güncel Transformers ile kontrollü uyumluluk seçimleridir; gerçek test durumu VALIDATION belgesindedir.
 
 Model erişim araçları token değerlerini yazdırmaz. `GatedRepoError` erişim iznini, HTTP/ağ hataları aktarımı, eksik EfficientLoFTR kaynağı/ckpt dosyası kurulum eksikliğini belirtir. Hiçbir hata sahte çıktı veya başka modelle örtülmez.
+
+## Sabitlenen EfficientLoFTR commit'inin lisansı
+
+`07e9c1401e71e9c556b1fda9d86d060af36ba176` commit'indeki LICENSE dosyası **Project Registration License (PRL) v1.0, © 2026 ZJU3DV** olarak okunmuştur; bu kaynak için Apache/MIT varsayılmamalıdır. Metin, yalnız akademik araştırma/eğitim/değerlendirme/kişisel kullanım ile kurumların “Project Use” kapsamını ayırır. İkinci kapsam için kullanımdan önce proje kaydı koşulu tanımlar; yeniden dağıtımda lisansın korunmasını ister. Kapsam ve koşulların tamamı [sabit commit lisansında](https://github.com/zju3dv/EfficientLoFTR/blob/07e9c1401e71e9c556b1fda9d86d060af36ba176/LICENSE) incelenebilir. Bu geliştirmede kullanıcı adına kayıt formu gönderilmemiştir.

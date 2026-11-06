@@ -1,4 +1,7 @@
 import torch
+import numpy as np
+from ..config import Models, Proposals
+from ..core.types import Proposal
 from PIL import Image
 from transformers import AutoModelForCausalLM, AutoProcessor
 from .boxes import clean_proposals
@@ -6,7 +9,7 @@ from ..core.runtime import resolve_revision
 
 
 class Florence2Proposals:
-    def __init__(self, model_config, proposal_config, device):
+    def __init__(self, model_config: Models, proposal_config: Proposals, device: str) -> None:
         self.config = proposal_config
         self.model_config = model_config
         self.device = device
@@ -29,7 +32,7 @@ class Florence2Proposals:
         )
         self.model.requires_grad_(False)
 
-    def propose(self, image):
+    def propose(self, image: np.ndarray) -> list[Proposal]:
         inputs = self.processor(
             text="<REGION_PROPOSAL>", images=Image.fromarray(image), return_tensors="pt"
         )

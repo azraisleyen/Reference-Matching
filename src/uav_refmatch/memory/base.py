@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from dataclasses import replace
 import numpy as np
-from ..core.types import MemoryEvent
+from ..config import Memory
+from ..core.types import MemoryEvent, Prediction, ReferenceEntry
 from ..features.normalization import normalize
 
 
 class ReferenceMemory(ABC):
-    def __init__(self, anchor, config):
+    def __init__(self, anchor: ReferenceEntry, config: Memory) -> None:
         self.config = config
         self.anchor = self.freeze(anchor)
         self.entries = [self.anchor]
@@ -21,10 +22,10 @@ class ReferenceMemory(ABC):
         image.flags.writeable = False
         return replace(entry, embedding=embedding, crop_image=image)
 
-    def active(self, frame_index):
+    def active(self, frame_index: int) -> tuple[ReferenceEntry, ...]:
         return tuple(e for e in self.entries if e.created_at_frame < frame_index)
 
-    def drain_events(self):
+    def drain_events(self) -> list[MemoryEvent]:
         events, self.events = self.events, []
         return events
 
@@ -43,4 +44,9 @@ class ReferenceMemory(ABC):
         )
 
     @abstractmethod
-    def update(self, prediction, entry=None, anchor_cosine=None): ...
+    def update(
+        self,
+        prediction: Prediction,
+        entry: ReferenceEntry | None = None,
+        anchor_cosine: float | None = None,
+    ) -> None: ...

@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import tempfile
 import av
+import cv2
 import numpy as np
 from PIL import Image
 from uav_refmatch.config import Config
@@ -21,6 +22,12 @@ from uav_refmatch.outputs.video_renderer import render_video
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--image", type=Path, required=True)
+    parser.add_argument(
+        "--rotation-deg",
+        type=float,
+        default=0,
+        help="Controlled synthetic view change, not benchmark data",
+    )
     parser.add_argument("--output-root", type=Path, default=Path("runs"))
     args = parser.parse_args()
     config = Config(warmup=False)
@@ -36,13 +43,17 @@ def main():
         image = np.array(Image.open(args.image).convert("RGB").resize((640, 480)))
         reference = root / "reference.png"
         Image.fromarray(image).save(reference)
+        video_image = image
+        if args.rotation_deg:
+            matrix = cv2.getRotationMatrix2D((320, 240), args.rotation_deg, 0.85)
+            video_image = cv2.warpAffine(image, matrix, (640, 480), borderValue=(128, 128, 128))
         video = root / "synthetic_source.mp4"
         with av.open(str(video), "w") as container:
             stream = container.add_stream("libx264", rate=30)
             stream.width, stream.height = 640, 480
             stream.pix_fmt = "yuv420p"
             for index in range(12):
-                frame = av.VideoFrame.from_ndarray(image, format="rgb24")
+                frame = av.VideoFrame.from_ndarray(video_image, format="rgb24")
                 frame.pts, frame.time_base = index, Fraction(1, 30)
                 for packet in stream.encode(frame):
                     container.mux(packet)

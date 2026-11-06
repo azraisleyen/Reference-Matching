@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 import numpy as np
-from ..core.types import Pair
+from collections.abc import Sequence
+from ..config import Retrieval
+from ..core.types import Pair, ReferenceEntry
 from ..features.normalization import normalize
 
 
@@ -10,7 +12,9 @@ class RetrievalResult:
     candidate_best_matches: list[Pair]
 
 
-def retrieve(embeddings, references, config) -> RetrievalResult:
+def retrieve(
+    embeddings: np.ndarray, references: Sequence[ReferenceEntry], config: Retrieval
+) -> RetrievalResult:
     if not len(embeddings):
         return RetrievalResult([], [])
     scores = normalize(embeddings) @ normalize(np.stack([r.embedding for r in references])).T

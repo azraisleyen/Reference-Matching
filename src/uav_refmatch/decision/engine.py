@@ -1,7 +1,10 @@
 import numpy as np
+from ..core.types import VerifiedPair, Proposal
 
 
-def choose(verified_pairs, proposals, threshold):
+def choose(
+    verified_pairs: list[VerifiedPair], proposals: list[Proposal], threshold: float
+) -> VerifiedPair | None:
     accepted = []
     for item in verified_pairs:
         b = proposals[item.pair.candidate_index].bbox_xyxy

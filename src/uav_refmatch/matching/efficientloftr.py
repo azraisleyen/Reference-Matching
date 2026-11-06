@@ -10,11 +10,12 @@ import cv2
 import numpy as np
 import torch
 from ..core.types import LocalMatches
+from ..config import Models
 from ..outputs.recorder import file_hash
 
 
 class EfficientLoFTRMatcher:
-    def __init__(self, config, device):
+    def __init__(self, config: Models, device: str) -> None:
         cache = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "uav-refmatch"
         repo_value = config.eloftr_repo or os.getenv("ELOFTR_REPO") or str(cache / "EfficientLoFTR")
         checkpoint_value = (
@@ -84,7 +85,7 @@ class EfficientLoFTRMatcher:
         tensor = torch.from_numpy(gray.copy())[None, None].to(self.device, dtype=self.dtype) / 255.0
         return tensor, np.array([w / new_w, h / new_h], dtype=np.float32)
 
-    def match(self, reference, candidate):
+    def match(self, reference: np.ndarray, candidate: np.ndarray) -> LocalMatches:
         ref, ref_scale = self.prepare(reference)
         cand, cand_scale = self.prepare(candidate)
         batch = {"image0": ref, "image1": cand}

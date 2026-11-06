@@ -1,10 +1,14 @@
 """One causal inference engine for CLI/UI and static/dynamic experiments."""
 
 from dataclasses import asdict
+from collections.abc import Callable, Iterable
+from .config import Config
+from .core.interfaces import ProposalGenerator, FeatureEncoder, LocalMatcher, GeometricVerifier
+from .outputs.recorder import Recorder
 from time import perf_counter
 import numpy as np
 from .core.errors import safe_error
-from .core.types import Prediction, ReferenceEntry, VerifiedPair
+from .core.types import FrameRecord, Prediction, ReferenceEntry, VerifiedPair
 from .proposals.boxes import crop
 from .matching.retrieval import retrieve
 from .decision.engine import choose
@@ -14,7 +18,15 @@ from .evaluation.profiler import Profiler
 
 
 class Pipeline:
-    def __init__(self, config, proposals, encoder, matcher, verifier, device="cpu"):
+    def __init__(
+        self,
+        config: Config,
+        proposals: ProposalGenerator,
+        encoder: FeatureEncoder,
+        matcher: LocalMatcher,
+        verifier: GeometricVerifier,
+        device: str = "cpu",
+    ) -> None:
         self.config = config
         self.proposals = proposals
         self.encoder = encoder
@@ -24,13 +36,13 @@ class Pipeline:
 
     def run(
         self,
-        frames,
-        reference_image,
-        reference_id,
-        recorder,
-        cancel=lambda: False,
-        progress=lambda p: None,
-    ):
+        frames: Iterable[FrameRecord],
+        reference_image: np.ndarray,
+        reference_id: str,
+        recorder: Recorder,
+        cancel: Callable[[], bool] = lambda: False,
+        progress: Callable[[dict], None] = lambda p: None,
+    ) -> str:
         anchor_timer = perf_counter()
         anchor = ReferenceEntry(
             "R0",

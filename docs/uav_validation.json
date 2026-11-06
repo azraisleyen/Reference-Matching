@@ -1,0 +1,181 @@
+[
+  {
+    "run_id": "20261106_110507_dynamic_dinov3-vitb16-pretrain-lvd1689m_1c628266_validation-final-dynamic",
+    "status": "completed",
+    "mode": "dynamic",
+    "source_video": {
+      "name": "input_video.mp4",
+      "sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a"
+    },
+    "reference_image": {
+      "name": "ref_01.jpg",
+      "sha256": "f522271e56d961b477eb45f60c61a97001c26887ad1e79837f6809aa90d75cec"
+    },
+    "git_commit": "bc16a8ef035316068e3aa8f08301c5a821e1b297",
+    "git_dirty": false,
+    "models": {
+      "florence_id": "microsoft/Florence-2-large-ft",
+      "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+      "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+      "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+      "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+      "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+      "device": "cpu",
+      "precision": "fp32"
+    },
+    "processed_frames": 3,
+    "max_frames": 3,
+    "summary": {
+      "processed_frames": 3,
+      "counts": {
+        "NOT_FOUND": 3
+      },
+      "memory_events": {
+        "INITIALIZED": 1,
+        "REJECTED_LOW_CONFIDENCE": 3,
+        "RESET": 1
+      },
+      "mean_cosine": 0.1141845981280009,
+      "mean_timings_ms": {
+        "decode_ms": 44.0266666670747,
+        "proposal_ms": 3448.605833333204,
+        "dinov3_ms": 47.499208333041075,
+        "retrieval_ms": 0.34076366682711523,
+        "efficientloftr_ms": 0.0,
+        "ransac_ms": 0.0,
+        "decision_ms": 0.0034166669138357975,
+        "memory_ms": 0.008014000134911234,
+        "total_frame_ms": 3540.856833333843
+      },
+      "accuracy_metrics": null,
+      "note": "Ground truth yok; do\u011fruluk metrikleri hesaplanmad\u0131."
+    },
+    "render": {
+      "source_sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a",
+      "timing": "source_pts",
+      "boxes": "sampled_frames_only",
+      "audio": "omitted",
+      "orientation": "coded_unrotated",
+      "overlay": true,
+      "truncated_to_last_processed_frame": true
+    },
+    "predictions": [
+      {
+        "frame_index": 0,
+        "source_frame_index": 0,
+        "timestamp_sec": 0.0,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.1102815791964531,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      },
+      {
+        "frame_index": 1,
+        "source_frame_index": 4,
+        "timestamp_sec": 0.13346666666666668,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.11300071328878403,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      },
+      {
+        "frame_index": 2,
+        "source_frame_index": 8,
+        "timestamp_sec": 0.26693333333333336,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.11927150189876556,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      }
+    ]
+  },
+  {
+    "run_id": "20261106_110531_static_dinov3-vitb16-pretrain-lvd1689m_da43c12d_validation-final-static",
+    "status": "completed",
+    "mode": "static",
+    "source_video": {
+      "name": "input_video.mp4",
+      "sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a"
+    },
+    "reference_image": {
+      "name": "ref_01.jpg",
+      "sha256": "f522271e56d961b477eb45f60c61a97001c26887ad1e79837f6809aa90d75cec"
+    },
+    "git_commit": "bc16a8ef035316068e3aa8f08301c5a821e1b297",
+    "git_dirty": false,
+    "models": {
+      "florence_id": "microsoft/Florence-2-large-ft",
+      "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+      "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+      "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+      "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+      "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+      "device": "cpu",
+      "precision": "fp32"
+    },
+    "processed_frames": 3,
+    "max_frames": 3,
+    "summary": {
+      "processed_frames": 3,
+      "counts": {
+        "NOT_FOUND": 3
+      },
+      "memory_events": {
+        "INITIALIZED": 1,
+        "RESET": 1
+      },
+      "mean_cosine": 0.1141845981280009,
+      "mean_timings_ms": {
+        "decode_ms": 45.57037499974589,
+        "proposal_ms": 3415.278305332928,
+        "dinov3_ms": 47.88602766651214,
+        "retrieval_ms": 0.10215266684099333,
+        "efficientloftr_ms": 0.0,
+        "ransac_ms": 0.0,
+        "decision_ms": 0.0026386666528802985,
+        "memory_ms": 0.0005136668429865191,
+        "total_frame_ms": 3509.4972916661695
+      },
+      "accuracy_metrics": null,
+      "note": "Ground truth yok; do\u011fruluk metrikleri hesaplanmad\u0131."
+    },
+    "render": {
+      "source_sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a",
+      "timing": "source_pts",
+      "boxes": "sampled_frames_only",
+      "audio": "omitted",
+      "orientation": "coded_unrotated",
+      "overlay": true,
+      "truncated_to_last_processed_frame": true
+    },
+    "predictions": [
+      {
+        "frame_index": 0,
+        "source_frame_index": 0,
+        "timestamp_sec": 0.0,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.1102815791964531,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      },
+      {
+        "frame_index": 1,
+        "source_frame_index": 4,
+        "timestamp_sec": 0.13346666666666668,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.11300071328878403,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      },
+      {
+        "frame_index": 2,
+        "source_frame_index": 8,
+        "timestamp_sec": 0.26693333333333336,
+        "status": "NOT_FOUND",
+        "dino_cosine": 0.11927150189876556,
+        "candidate_count": 1,
+        "bbox_xyxy": null
+      }
+    ]
+  }
+]

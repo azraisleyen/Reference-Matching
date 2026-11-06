@@ -1,14 +1,20 @@
 import cv2
 import numpy as np
-from ..core.types import GeometryEvidence
+from ..config import Geometry
+from ..core.types import GeometryEvidence, LocalMatches
 
 
 class AffineRansacVerifier:
-    def __init__(self, config, seed=42):
+    def __init__(self, config: Geometry, seed: int = 42) -> None:
         self.config = config
         self.seed = seed
 
-    def verify(self, matches, reference_shape, candidate_shape):
+    def verify(
+        self,
+        matches: LocalMatches,
+        reference_shape: tuple[int, ...],
+        candidate_shape: tuple[int, ...],
+    ) -> GeometryEvidence:
         c = self.config
         src = np.asarray(matches.reference_points, dtype=np.float32)
         dst = np.asarray(matches.candidate_points, dtype=np.float32)

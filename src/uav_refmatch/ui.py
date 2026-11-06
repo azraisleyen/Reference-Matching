@@ -89,6 +89,11 @@ def build_app(output_root="runs", config=None):
         except Exception as exc:
             raise gr.Error(str(exc)) from exc
 
+    initial_runs = runs()
+    initial_summary = {}
+    if initial_runs and (root / initial_runs[0] / "summary.json").is_file():
+        initial_summary = json.loads((root / initial_runs[0] / "summary.json").read_text())
+
     with gr.Blocks(title="UAV Reference Matching", delete_cache=(3600, 86400)) as app:
         gr.Markdown(
             "# UAV Reference Matching\nFlorence-2 → DINOv3 → EfficientLoFTR → RANSAC · Akademik baseline"
@@ -153,7 +158,7 @@ def build_app(output_root="runs", config=None):
             gr.Button("Kareyi incele").click(review, [choice, index, source], [preview, details])
             output = gr.File(label="Üretilen sonuç videosu")
             gr.Button("Video Oluştur").click(render, [choice, source], output)
-            summary = gr.JSON(label="Deney özeti")
+            summary = gr.JSON(value=initial_summary, label="Deney özeti")
             choice.change(
                 lambda n: json.loads((run_path(n) / "summary.json").read_text())
                 if (run_path(n) / "summary.json").exists()

@@ -3,11 +3,12 @@ import torch
 from PIL import Image
 from transformers import AutoImageProcessor, AutoModel
 from .normalization import normalize
+from ..config import Models
 from ..core.runtime import resolve_revision
 
 
 class DinoV3Encoder:
-    def __init__(self, config, device):
+    def __init__(self, config: Models, device: str) -> None:
         self.config = config
         self.device = device
         self.revision = resolve_revision(config.encoder_id, config.encoder_revision)
@@ -24,7 +25,7 @@ class DinoV3Encoder:
         self.model.requires_grad_(False)
         self.dimension = self.model.config.hidden_size
 
-    def encode(self, images):
+    def encode(self, images: list[np.ndarray]) -> np.ndarray:
         if not images:
             return np.empty((0, self.dimension), dtype=np.float32)
         batches = []
