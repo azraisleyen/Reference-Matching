@@ -80,19 +80,21 @@ class Recorder:
         data = asdict(prediction)
         self.jsonline("predictions.jsonl", data)
         row = {
-            k: v for k, v in data.items() if k not in ("bbox_xyxy", "geometry", "verified_pairs")
+            k: v
+            for k, v in data.items()
+            if k not in ("bbox_xyxy", "geometry", "verified_pairs", "retrieval_candidates")
         }
         row.update(
             dict(zip(("x_min", "y_min", "x_max", "y_max"), prediction.bbox_xyxy or [None] * 4))
         )
         from ..core.types import GeometryEvidence
 
-        row.update(
-            {
-                f"geometry_{k}": v
-                for k, v in asdict(prediction.geometry or GeometryEvidence()).items()
-            }
+        geometry = (
+            asdict(prediction.geometry)
+            if prediction.geometry
+            else dict.fromkeys(asdict(GeometryEvidence()), None)
         )
+        row.update({f"geometry_{key}": value for key, value in geometry.items()})
         self.csv("detections.csv", row)
         self.manifest["processed_frames"] += 1
 

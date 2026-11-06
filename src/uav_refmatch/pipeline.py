@@ -82,7 +82,13 @@ class Pipeline:
                         with profiler.measure("dinov3_ms"):
                             embeddings = self.encoder.encode(crops)
                         with profiler.measure("retrieval_ms"):
-                            pairs = retrieve(embeddings, refs, self.config.retrieval)
+                            retrieval = retrieve(embeddings, refs, self.config.retrieval)
+                            pairs = retrieval.pairs
+                            prediction.retrieval_candidates = [
+                                asdict(pair) for pair in retrieval.candidate_best_matches
+                            ]
+                            if retrieval.candidate_best_matches:
+                                prediction.dino_cosine = retrieval.candidate_best_matches[0].cosine
                         prediction.decision_reason = (
                             "no_visual_match" if not pairs else "geometry_rejected"
                         )

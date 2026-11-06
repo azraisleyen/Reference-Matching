@@ -73,6 +73,7 @@ class Prediction:
     decision_reason: str = "no_candidates"
     processing_ms: float = 0.0
     verified_pairs: list[dict] = field(default_factory=list)
+    retrieval_candidates: list[dict] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
