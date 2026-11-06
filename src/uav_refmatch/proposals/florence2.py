@@ -21,7 +21,7 @@ class Florence2Proposals:
                 model_config.florence_id,
                 revision=self.revision,
                 trust_remote_code=True,
-                torch_dtype=self.dtype,
+                dtype=self.dtype,
                 attn_implementation="eager",
             )
             .eval()
@@ -39,7 +39,10 @@ class Florence2Proposals:
         }
         with torch.inference_mode():
             ids = self.model.generate(
-                **inputs,
+                # Original Microsoft generate() merges image tokens internally.
+                # Its text-only attention mask must not be passed to the merged encoder.
+                input_ids=inputs["input_ids"],
+                pixel_values=inputs["pixel_values"],
                 max_new_tokens=self.model_config.max_new_tokens,
                 do_sample=False,
                 num_beams=3,

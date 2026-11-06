@@ -17,9 +17,7 @@ class DinoV3Encoder:
             config.encoder_id, revision=self.revision
         )
         self.model = (
-            AutoModel.from_pretrained(
-                config.encoder_id, revision=self.revision, torch_dtype=self.dtype
-            )
+            AutoModel.from_pretrained(config.encoder_id, revision=self.revision, dtype=self.dtype)
             .eval()
             .to(device)
         )

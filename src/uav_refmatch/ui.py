@@ -161,6 +161,8 @@ def build_app(output_root="runs", config=None):
                 choice,
                 summary,
             )
+    app.unload(worker.cancel)
+    app._uav_worker = worker
     return app
 
 
@@ -168,8 +170,13 @@ def launch(output_root="runs", config=None, port=7860):
     # Dedicated owned temp directory, never a user-selected source directory.
     temp = tempfile.mkdtemp(prefix="uav-refmatch-gradio-")
     os.environ["GRADIO_TEMP_DIR"] = temp
-    atexit.register(shutil.rmtree, temp, ignore_errors=True)
     app = build_app(output_root, config)
+
+    def cleanup():
+        app._uav_worker.close()
+        shutil.rmtree(temp, ignore_errors=True)
+
+    atexit.register(cleanup)
     app.queue(default_concurrency_limit=1).launch(
         server_name="127.0.0.1",
         server_port=port,

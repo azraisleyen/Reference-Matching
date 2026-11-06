@@ -1,0 +1,13 @@
+{
+  "component": "dinov3",
+  "device": "cpu",
+  "verified": true,
+  "load_sec": 1.012647375000597,
+  "shape": [
+    1,
+    768
+  ],
+  "norm": 1.0,
+  "revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+  "inference_sec": 0.06568387500010431
+}

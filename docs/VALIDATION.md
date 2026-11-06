@@ -31,3 +31,5 @@ Yerel Gradio sunucusu gerçekten başlatıldı ve tarayıcıda incelendi. İlk 5
 ## Bilimsel kapsam
 
 Henüz UAV benchmark sonucu, doğruluk yüzdesi veya dinamik belleğin üstünlüğü iddiası yoktur. Kullanıcının gerçek UAV video/ref verisiyle ölçüm ayrı deney olarak yapılmalıdır. Eşikler deneysel başlangıç değerleridir.
+
+DINOv3 LVD gerçek checkpoint testi geçti (model indirmesi dahil 533,66 saniye). Kullanıcının referans görüntüsündeki ek encoding kontrolü `dinov3_validation.json` içinde yer alır. Bu süre steady-state inference süresi değildir.

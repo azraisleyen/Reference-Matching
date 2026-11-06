@@ -51,3 +51,34 @@ def test_render_without_inference_preserves_pts(tmp_path, monkeypatch, found):
     make_video(other, count=8)
     with pytest.raises(ValueError, match="SHA256"):
         render_video(recorder.path, other)
+
+
+def test_vfr_render_preserves_actual_presentation_times(tmp_path, monkeypatch, found):
+    from fractions import Fraction
+
+    monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path / "cache"))
+    source = tmp_path / "vfr_source.mp4"
+    times = [0, 20, 145, 150, 285, 500, 550, 800]
+    with av.open(str(source), "w") as container:
+        stream = container.add_stream("libx264", rate=30)
+        stream.width = stream.height = 64
+        stream.pix_fmt = "yuv420p"
+        stream.time_base = stream.codec_context.time_base = Fraction(1, 1000)
+        for stamp in times:
+            frame = av.VideoFrame.from_ndarray(np.zeros((64, 64, 3), np.uint8), format="rgb24")
+            frame.pts, frame.time_base = stamp, Fraction(1, 1000)
+            for packet in stream.encode(frame):
+                container.mux(packet)
+        for packet in stream.encode():
+            container.mux(packet)
+    recorder = Recorder(tmp_path / "runs", Config())
+    recorder.manifest["source_video"] = {"name": source.name, "sha256": file_hash(source)}
+    recorder.prediction(found)
+    recorder.finish("completed")
+    output = render_video(recorder.path, source)
+
+    def pts(path):
+        with av.open(str(path)) as container:
+            return [float(f.pts * f.time_base) for f in container.decode(video=0)]
+
+    assert pts(source) == pts(output)

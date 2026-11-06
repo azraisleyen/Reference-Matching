@@ -1,9 +1,12 @@
+import json
 import multiprocessing as mp
 from pathlib import Path
 import queue
 import threading
 from .config import Config
 from .service import run_experiment
+from .outputs.recorder import now, write_json
+from .outputs.reporting import report
 
 
 def _worker(video, reference, config, root, name, cancel, updates):
@@ -62,9 +65,41 @@ class ExperimentWorker:
                 and self.process.exitcode not in (None, 0)
             ):
                 self.state.update(phase="failed", error=f"Worker exited: {self.process.exitcode}")
+                self._finalize_interrupted("failed", self.state["error"])
             return self.state.copy()
 
     def cancel(self):
         if self.cancel_event:
             self.cancel_event.set()
         return "İptal istendi; devam eden model çağrısı bitince kayıtlar kapatılacak."
+
+    def _finalize_interrupted(self, status, reason):
+        value = self.state.get("run_directory")
+        if not value:
+            return
+        path = Path(value).resolve()
+        if path.parent != self.output_root:
+            return
+        manifest_path = path / "run_manifest.json"
+        if not manifest_path.is_file():
+            return
+        manifest = json.loads(manifest_path.read_text())
+        if manifest["status"] != "running":
+            return
+        manifest.update(status=status, ended_at=now(), error=reason)
+        write_json(manifest_path, manifest)
+        with (path / "run.log").open("a") as handle:
+            handle.write(
+                json.dumps(dict(time=now(), event="worker_interrupted", reason=reason)) + "\n"
+            )
+        report(path)
+
+    def close(self):
+        """Stop the owned worker before deleting owned Gradio temporary uploads."""
+        self.cancel()
+        if self.process and self.process.is_alive():
+            self.process.join(timeout=30)
+            if self.process.is_alive():
+                self.process.terminate()
+                self.process.join(timeout=5)
+                self._finalize_interrupted("cancelled", "forced_shutdown_after_cancel_timeout")

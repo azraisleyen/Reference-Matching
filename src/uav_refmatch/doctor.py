@@ -3,6 +3,7 @@ import platform
 import shutil
 import subprocess
 import torch
+import psutil
 
 
 def doctor():
@@ -25,6 +26,7 @@ def doctor():
             packages[name] = None
     result = dict(
         python=platform.python_version(),
+        physical_ram_bytes=psutil.virtual_memory().total,
         os=platform.system(),
         architecture=platform.machine(),
         packages=packages,
@@ -34,6 +36,10 @@ def doctor():
         ffmpeg=bool(shutil.which("ffmpeg")),
         ffprobe=bool(shutil.which("ffprobe")),
     )
+    if result["ffmpeg"]:
+        result["ffmpeg_version"] = subprocess.check_output(
+            ["ffmpeg", "-version"], text=True
+        ).splitlines()[0]
     if torch.cuda.is_available():
         result["gpu"] = torch.cuda.get_device_name(0)
         result["vram_bytes"] = torch.cuda.get_device_properties(0).total_memory

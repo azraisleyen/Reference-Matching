@@ -114,6 +114,12 @@ def run_experiment(
                     ).strip()
                 except (FileNotFoundError, subprocess.CalledProcessError):
                     recorder.manifest["git_commit"] = None
+                if recorder.manifest["git_commit"]:
+                    recorder.manifest["git_dirty"] = bool(
+                        subprocess.check_output(
+                            ["git", "status", "--porcelain", "--untracked-files=no"], text=True
+                        ).strip()
+                    )
                 registry = source_registry(recorder.path)
                 write_json(registry, dict(video=str(video)))
                 registry.chmod(0o600)
