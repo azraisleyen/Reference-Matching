@@ -53,6 +53,7 @@ class Proposals(StrictModel):
     crop_padding: float = Field(0.10, ge=0, le=1)
     min_box_side: int = Field(12, ge=1)
     tiling: Literal[False] = False
+    task: Literal["<REGION_PROPOSAL>", "<OD>", "reference_grounding"] = "<REGION_PROPOSAL>"
 
 
 class Retrieval(StrictModel):
@@ -63,6 +64,7 @@ class Retrieval(StrictModel):
 
 
 class Geometry(StrictModel):
+    candidate_rotation_fallbacks: tuple[Literal[-45, 45], ...] = Field((), max_length=2)
     model: Literal["partial_affine", "affine"] = "partial_affine"
     min_match_confidence: float = Field(0.0, ge=0, le=1)
     max_anisotropy: float = Field(10.0, ge=1)

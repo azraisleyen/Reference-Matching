@@ -1,0 +1,525 @@
+{
+  "caption": "A large yellow tractor",
+  "models": {
+    "florence_id": "microsoft/Florence-2-large-ft",
+    "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+    "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+    "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+    "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+    "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+    "device": "mps",
+    "precision": "fp32",
+    "florence_precision": "fp16"
+  },
+  "rows": [
+    {
+      "sec": 24,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              198.72000122070312,
+              159.3000030517578,
+              465.5999755859375,
+              309.4200134277344
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            198.72000122070312,
+            159.3000030517578,
+            465.5999755859375,
+            309.4200134277344
+          ],
+          "score": 0.42564907670021057
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "rotation": 0,
+          "geometry": {
+            "num_matches": 12,
+            "num_inliers": 4,
+            "inlier_ratio": 0.3333333333333333,
+            "median_reprojection_error_px": 0.27356724066654914,
+            "spatial_coverage": 0.06155368594115551,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 90,
+          "geometry": {
+            "num_matches": 26,
+            "num_inliers": 5,
+            "inlier_ratio": 0.19230769230769232,
+            "median_reprojection_error_px": 1.708997551364696,
+            "spatial_coverage": 0.09992189409137281,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 180,
+          "geometry": {
+            "num_matches": 12,
+            "num_inliers": 4,
+            "inlier_ratio": 0.3333333333333333,
+            "median_reprojection_error_px": 0.7149137648012824,
+            "spatial_coverage": 0.004153747468492717,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 270,
+          "geometry": {
+            "num_matches": 17,
+            "num_inliers": 5,
+            "inlier_ratio": 0.29411764705882354,
+            "median_reprojection_error_px": 1.0488503922211283,
+            "spatial_coverage": 0.06427258542502345,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.844578416999866,
+      "seconds": 1.4366549169999416
+    },
+    {
+      "sec": 25,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              168.0,
+              413.1000061035156,
+              440.6399841308594,
+              568.6199951171875
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            168.0,
+            413.1000061035156,
+            440.6399841308594,
+            568.6199951171875
+          ],
+          "score": 0.4377908706665039
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "rotation": 0,
+          "geometry": {
+            "num_matches": 18,
+            "num_inliers": 5,
+            "inlier_ratio": 0.2777777777777778,
+            "median_reprojection_error_px": 1.6511762003409087,
+            "spatial_coverage": 0.020522088552522307,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 90,
+          "geometry": {
+            "num_matches": 19,
+            "num_inliers": 5,
+            "inlier_ratio": 0.2631578947368421,
+            "median_reprojection_error_px": 1.7770633438661623,
+            "spatial_coverage": 0.07094094981132212,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 180,
+          "geometry": {
+            "num_matches": 20,
+            "num_inliers": 5,
+            "inlier_ratio": 0.25,
+            "median_reprojection_error_px": 2.0162689568653316,
+            "spatial_coverage": 0.02180175244698131,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 270,
+          "geometry": {
+            "num_matches": 21,
+            "num_inliers": 6,
+            "inlier_ratio": 0.2857142857142857,
+            "median_reprojection_error_px": 1.9833488594183613,
+            "spatial_coverage": 0.10309066588989246,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        }
+      ],
+      "proposal_seconds": 0.784347957999671,
+      "seconds": 1.2671109579996482
+    },
+    {
+      "sec": 26,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              185.27999877929688,
+              645.300048828125,
+              457.91998291015625,
+              822.4200439453125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            185.27999877929688,
+            645.300048828125,
+            457.91998291015625,
+            822.4200439453125
+          ],
+          "score": 0.3890288472175598
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "rotation": 0,
+          "geometry": {
+            "num_matches": 32,
+            "num_inliers": 6,
+            "inlier_ratio": 0.1875,
+            "median_reprojection_error_px": 1.7582367456638963,
+            "spatial_coverage": 0.015950666202332264,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 90,
+          "geometry": {
+            "num_matches": 27,
+            "num_inliers": 5,
+            "inlier_ratio": 0.18518518518518517,
+            "median_reprojection_error_px": 0.44924203197487916,
+            "spatial_coverage": 0.038359622535955075,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 180,
+          "geometry": {
+            "num_matches": 19,
+            "num_inliers": 6,
+            "inlier_ratio": 0.3157894736842105,
+            "median_reprojection_error_px": 2.0004377253720715,
+            "spatial_coverage": 0.05822230256549548,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 270,
+          "geometry": {
+            "num_matches": 16,
+            "num_inliers": 4,
+            "inlier_ratio": 0.25,
+            "median_reprojection_error_px": 0.2015145664491444,
+            "spatial_coverage": 0.030730333329094035,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.815967792000265,
+      "seconds": 1.3841708340005425
+    },
+    {
+      "sec": 69.736,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1412.159912109375,
+              7.020000457763672,
+              1746.239990234375,
+              280.260009765625
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1412.159912109375,
+            7.020000457763672,
+            1746.239990234375,
+            280.260009765625
+          ],
+          "score": 0.5892916917800903
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "rotation": 0,
+          "geometry": {
+            "num_matches": 217,
+            "num_inliers": 56,
+            "inlier_ratio": 0.25806451612903225,
+            "median_reprojection_error_px": 1.5080011296171234,
+            "spatial_coverage": 0.10552113959058111,
+            "transform_valid": true,
+            "accepted": true,
+            "reason": "geometry_passed"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 90,
+          "geometry": {
+            "num_matches": 37,
+            "num_inliers": 6,
+            "inlier_ratio": 0.16216216216216217,
+            "median_reprojection_error_px": 0.9292047617174757,
+            "spatial_coverage": 0.09289264804036815,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 180,
+          "geometry": {
+            "num_matches": 44,
+            "num_inliers": 7,
+            "inlier_ratio": 0.1590909090909091,
+            "median_reprojection_error_px": 1.6333848008841496,
+            "spatial_coverage": 0.11898456819877447,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 270,
+          "geometry": {
+            "num_matches": 47,
+            "num_inliers": 7,
+            "inlier_ratio": 0.14893617021276595,
+            "median_reprojection_error_px": 1.9458924301018654,
+            "spatial_coverage": 0.0502835033558894,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.783356790999278,
+      "seconds": 1.4120101660000728
+    },
+    {
+      "sec": 71.071,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1350.719970703125,
+              185.22000122070312,
+              1694.39990234375,
+              439.02001953125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1350.719970703125,
+            185.22000122070312,
+            1694.39990234375,
+            439.02001953125
+          ],
+          "score": 0.49803638458251953
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "rotation": 0,
+          "geometry": {
+            "num_matches": 127,
+            "num_inliers": 29,
+            "inlier_ratio": 0.2283464566929134,
+            "median_reprojection_error_px": 1.7266644928121841,
+            "spatial_coverage": 0.07598757448695968,
+            "transform_valid": true,
+            "accepted": true,
+            "reason": "geometry_passed"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 90,
+          "geometry": {
+            "num_matches": 26,
+            "num_inliers": 4,
+            "inlier_ratio": 0.15384615384615385,
+            "median_reprojection_error_px": 1.4583526218993654,
+            "spatial_coverage": 0.01971664441540693,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 180,
+          "geometry": {
+            "num_matches": 47,
+            "num_inliers": 6,
+            "inlier_ratio": 0.1276595744680851,
+            "median_reprojection_error_px": 1.603985623459819,
+            "spatial_coverage": 0.030986317346597257,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 0,
+          "rotation": 270,
+          "geometry": {
+            "num_matches": 64,
+            "num_inliers": 9,
+            "inlier_ratio": 0.140625,
+            "median_reprojection_error_px": 2.9011041050044932,
+            "spatial_coverage": 0.17464642681003634,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.7910252909996416,
+      "seconds": 1.368920457999593
+    },
+    {
+      "sec": 16,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1402.5599365234375,
+              498.4200134277344,
+              1512.0,
+              589.1400146484375
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1402.5599365234375,
+            498.4200134277344,
+            1512.0,
+            589.1400146484375
+          ],
+          "score": 0.10622657090425491
+        }
+      ],
+      "geometry": [],
+      "proposal_seconds": 0.793026500000451,
+      "seconds": 0.8172135000004346
+    },
+    {
+      "sec": 40,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              160.3199920654297,
+              224.10000610351562,
+              373.44000244140625,
+              412.02001953125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            160.3199920654297,
+            224.10000610351562,
+            373.44000244140625,
+            412.02001953125
+          ],
+          "score": 0.17043524980545044
+        }
+      ],
+      "geometry": [],
+      "proposal_seconds": 0.7852911249992758,
+      "seconds": 0.8097242919993732
+    }
+  ]
+}

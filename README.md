@@ -237,3 +237,21 @@ python scripts/benchmark_baseline.py --video /veri/input_video.mp4 \
 ```
 
 Arayüzde cihazı ve kare sınırını açıkça seçebilirsiniz. Sonuçlarda **adayları göster** seçeneği, reddedilen Florence kutularını ve cosine skorlarını incelemeyi sağlar. JSONL kayıtları tüm temizlenmiş adayları, crop sınırlarını, ham aday sayısını, üretim token sayısını ve token sınırına ulaşılmasını saklar. Rapor; aşama maliyetleri, medyan/p95/maksimum süre, bir saniyeyi aşan kareler ve karar nedenlerini içerir.
+
+## Referans tespitini artıran deney profili
+
+[7 Kasım tespit deneyleri](docs/RECALL_2026-11-07.md): Florence aynı referans
+fotoğrafından bir kez açıklama üretip adayları buna göre arar; DINOv3, EfficientLoFTR
+ve RANSAC doğrulaması korunur. Gerektiğinde yönelim denemeleri mevcut toplam
+LoFTR çağrı bütçesi içinde yapılır. Seçili 24 probda FOUND 3→8; ek sekiz probda
+1→4 oldu. Bu sonuç genel doğruluk veya sıfır kaçırma garantisi değildir; erken
+üstten görünüşlerde geometri başarısızlığı devam eder.
+
+```bash
+uav-refmatch ui --config configs/experiments/mps-reference-grounded.yaml
+```
+
+Referans açıklaması otomatik üretilir; hedef sınıfı koda yazılmaz. Metin ve üretim
+bilgileri manifest'e kaydedilir. Eski profiller korunur. Mevcut arayüz yeniden
+başlatılmadan yeni profil yüklenmez. Etiketli videoda örneklenmemiş ara karelerin
+kutusuz olması NOT_FOUND kararı sayılmamalıdır.

@@ -11,6 +11,7 @@ from .core.errors import safe_error
 from .core.types import FrameRecord, Prediction, ReferenceEntry, VerifiedPair
 from .proposals.boxes import crop
 from .matching.retrieval import retrieve
+from .matching.orientation import rotate_crop, restore_matches
 from .decision.engine import choose
 from .memory.dynamic import DynamicReferenceMemory
 from .memory.static import StaticReferenceMemory
@@ -34,6 +35,10 @@ class Pipeline:
         self.verifier = verifier
         self.device = device
 
+    def prepare_reference(self, image: np.ndarray) -> dict:
+        prepare = getattr(self.proposals, "prepare_reference", None)
+        return prepare(image) if prepare else {}
+
     def run(
         self,
         frames: Iterable[FrameRecord],
@@ -43,6 +48,12 @@ class Pipeline:
         cancel: Callable[[], bool] = lambda: False,
         progress: Callable[[dict], None] = lambda p: None,
     ) -> str:
+        prepare_timer = perf_counter()
+        recorder.manifest["proposal_reference_context"] = self.prepare_reference(reference_image)
+        Profiler(self.device).sync()
+        recorder.manifest.setdefault(
+            "proposal_reference_prepare_ms", (perf_counter() - prepare_timer) * 1000
+        )
         anchor_timer = perf_counter()
         anchor = ReferenceEntry(
             "R0",
@@ -123,6 +134,32 @@ class Pipeline:
                                     matches, ref.crop_image.shape, crops[pair.candidate_index].shape
                                 )
                             verified.append(VerifiedPair(pair, evidence))
+                        # Original candidate pairs have priority. Retries spend the SAME
+                        # total LoFTR-call budget, not an additional per-pair budget.
+                        if not any(v.geometry.accepted for v in verified):
+                            for degrees in self.config.geometry.candidate_rotation_fallbacks:
+                                for pair in pairs:
+                                    if len(verified) >= self.config.retrieval.max_geometry_pairs:
+                                        break
+                                    ref = lookup[pair.memory_id]
+                                    original = crops[pair.candidate_index]
+                                    with profiler.measure("efficientloftr_ms"):
+                                        rotated = rotate_crop(original, degrees)
+                                        matches = restore_matches(
+                                            self.matcher.match(ref.crop_image, rotated),
+                                            original.shape,
+                                            rotated.shape,
+                                            degrees,
+                                        )
+                                    with profiler.measure("ransac_ms"):
+                                        evidence = self.verifier.verify(
+                                            matches, ref.crop_image.shape, original.shape
+                                        )
+                                    verified.append(VerifiedPair(pair, evidence, degrees))
+                                    if evidence.accepted:
+                                        break
+                                if any(v.geometry.accepted for v in verified):
+                                    break
                     with profiler.measure("decision_ms"):
                         winner = choose(
                             verified, proposals, self.config.retrieval.detect_min_cosine

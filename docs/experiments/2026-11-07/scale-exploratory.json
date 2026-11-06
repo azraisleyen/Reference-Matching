@@ -1,0 +1,578 @@
+[
+  {
+    "sec": 24,
+    "size": 0,
+    "confidence": 0,
+    "seconds": 0.21092329200018867,
+    "geometry": {
+      "num_matches": 65,
+      "num_inliers": 10,
+      "inlier_ratio": 0.15384615384615385,
+      "median_reprojection_error_px": 1.826342428947532,
+      "spatial_coverage": 0.10989813925580735,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 0,
+    "confidence": 0.2,
+    "seconds": 0.21092329200018867,
+    "geometry": {
+      "num_matches": 65,
+      "num_inliers": 10,
+      "inlier_ratio": 0.15384615384615385,
+      "median_reprojection_error_px": 1.826342428947532,
+      "spatial_coverage": 0.10989813925580735,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 0,
+    "confidence": 0.4,
+    "seconds": 0.21092329200018867,
+    "geometry": {
+      "num_matches": 12,
+      "num_inliers": 4,
+      "inlier_ratio": 0.3333333333333333,
+      "median_reprojection_error_px": 0.27356724066654914,
+      "spatial_coverage": 0.06155368594115551,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 480,
+    "confidence": 0,
+    "seconds": 0.15587529100048414,
+    "geometry": {
+      "num_matches": 154,
+      "num_inliers": 11,
+      "inlier_ratio": 0.07142857142857142,
+      "median_reprojection_error_px": 2.1978600071483596,
+      "spatial_coverage": 0.17177557989032544,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 480,
+    "confidence": 0.2,
+    "seconds": 0.15587529100048414,
+    "geometry": {
+      "num_matches": 154,
+      "num_inliers": 11,
+      "inlier_ratio": 0.07142857142857142,
+      "median_reprojection_error_px": 2.1978600071483596,
+      "spatial_coverage": 0.17177557989032544,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 480,
+    "confidence": 0.4,
+    "seconds": 0.15587529100048414,
+    "geometry": {
+      "num_matches": 44,
+      "num_inliers": 6,
+      "inlier_ratio": 0.13636363636363635,
+      "median_reprojection_error_px": 1.9185407308353364,
+      "spatial_coverage": 0.018540737017785525,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 640,
+    "confidence": 0,
+    "seconds": 0.18861191700034396,
+    "geometry": {
+      "num_matches": 201,
+      "num_inliers": 14,
+      "inlier_ratio": 0.06965174129353234,
+      "median_reprojection_error_px": 1.4178605118883811,
+      "spatial_coverage": 0.13507872424473424,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 640,
+    "confidence": 0.2,
+    "seconds": 0.18861191700034396,
+    "geometry": {
+      "num_matches": 201,
+      "num_inliers": 14,
+      "inlier_ratio": 0.06965174129353234,
+      "median_reprojection_error_px": 1.4178605118883811,
+      "spatial_coverage": 0.13507872424473424,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 24,
+    "size": 640,
+    "confidence": 0.4,
+    "seconds": 0.18861191700034396,
+    "geometry": {
+      "num_matches": 64,
+      "num_inliers": 9,
+      "inlier_ratio": 0.140625,
+      "median_reprojection_error_px": 2.506915112857315,
+      "spatial_coverage": 0.05061722998674066,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 0,
+    "confidence": 0,
+    "seconds": 0.12280045799980144,
+    "geometry": {
+      "num_matches": 64,
+      "num_inliers": 7,
+      "inlier_ratio": 0.109375,
+      "median_reprojection_error_px": 1.1780634790156919,
+      "spatial_coverage": 0.12527361471411594,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 0,
+    "confidence": 0.2,
+    "seconds": 0.12280045799980144,
+    "geometry": {
+      "num_matches": 64,
+      "num_inliers": 7,
+      "inlier_ratio": 0.109375,
+      "median_reprojection_error_px": 1.1780634790156919,
+      "spatial_coverage": 0.12527361471411594,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 0,
+    "confidence": 0.4,
+    "seconds": 0.12280045799980144,
+    "geometry": {
+      "num_matches": 18,
+      "num_inliers": 5,
+      "inlier_ratio": 0.2777777777777778,
+      "median_reprojection_error_px": 1.6511762003409087,
+      "spatial_coverage": 0.020522088552522307,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 480,
+    "confidence": 0,
+    "seconds": 0.1423911659994701,
+    "geometry": {
+      "num_matches": 126,
+      "num_inliers": 11,
+      "inlier_ratio": 0.0873015873015873,
+      "median_reprojection_error_px": 2.7569928705593365,
+      "spatial_coverage": 0.08403668015553238,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 480,
+    "confidence": 0.2,
+    "seconds": 0.1423911659994701,
+    "geometry": {
+      "num_matches": 126,
+      "num_inliers": 11,
+      "inlier_ratio": 0.0873015873015873,
+      "median_reprojection_error_px": 2.7569928705593365,
+      "spatial_coverage": 0.08403668015553238,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 480,
+    "confidence": 0.4,
+    "seconds": 0.1423911659994701,
+    "geometry": {
+      "num_matches": 33,
+      "num_inliers": 8,
+      "inlier_ratio": 0.24242424242424243,
+      "median_reprojection_error_px": 2.908814764533977,
+      "spatial_coverage": 0.02039824807472384,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 640,
+    "confidence": 0,
+    "seconds": 0.17667329200048698,
+    "geometry": {
+      "num_matches": 168,
+      "num_inliers": 10,
+      "inlier_ratio": 0.05952380952380952,
+      "median_reprojection_error_px": 1.5019738155212177,
+      "spatial_coverage": 0.08646881179775541,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 640,
+    "confidence": 0.2,
+    "seconds": 0.17667329200048698,
+    "geometry": {
+      "num_matches": 168,
+      "num_inliers": 10,
+      "inlier_ratio": 0.05952380952380952,
+      "median_reprojection_error_px": 1.5019738155212177,
+      "spatial_coverage": 0.08646881179775541,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "size": 640,
+    "confidence": 0.4,
+    "seconds": 0.17667329200048698,
+    "geometry": {
+      "num_matches": 44,
+      "num_inliers": 6,
+      "inlier_ratio": 0.13636363636363635,
+      "median_reprojection_error_px": 1.516495247751966,
+      "spatial_coverage": 0.07965828823990115,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 0,
+    "confidence": 0,
+    "seconds": 0.13628170799984218,
+    "geometry": {
+      "num_matches": 91,
+      "num_inliers": 11,
+      "inlier_ratio": 0.12087912087912088,
+      "median_reprojection_error_px": 1.920631621289235,
+      "spatial_coverage": 0.027387339591757376,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 0,
+    "confidence": 0.2,
+    "seconds": 0.13628170799984218,
+    "geometry": {
+      "num_matches": 91,
+      "num_inliers": 11,
+      "inlier_ratio": 0.12087912087912088,
+      "median_reprojection_error_px": 1.920631621289235,
+      "spatial_coverage": 0.027387339591757376,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 0,
+    "confidence": 0.4,
+    "seconds": 0.13628170799984218,
+    "geometry": {
+      "num_matches": 32,
+      "num_inliers": 6,
+      "inlier_ratio": 0.1875,
+      "median_reprojection_error_px": 1.7582367456638963,
+      "spatial_coverage": 0.015950666202332264,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 480,
+    "confidence": 0,
+    "seconds": 0.22052487500059215,
+    "geometry": {
+      "num_matches": 169,
+      "num_inliers": 13,
+      "inlier_ratio": 0.07692307692307693,
+      "median_reprojection_error_px": 1.786494597088524,
+      "spatial_coverage": 0.14624980931517853,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 480,
+    "confidence": 0.2,
+    "seconds": 0.22052487500059215,
+    "geometry": {
+      "num_matches": 169,
+      "num_inliers": 13,
+      "inlier_ratio": 0.07692307692307693,
+      "median_reprojection_error_px": 1.786494597088524,
+      "spatial_coverage": 0.14624980931517853,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 480,
+    "confidence": 0.4,
+    "seconds": 0.22052487500059215,
+    "geometry": {
+      "num_matches": 53,
+      "num_inliers": 8,
+      "inlier_ratio": 0.1509433962264151,
+      "median_reprojection_error_px": 1.5733693135741103,
+      "spatial_coverage": 0.12691473416085725,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 640,
+    "confidence": 0,
+    "seconds": 0.20171662499978993,
+    "geometry": {
+      "num_matches": 206,
+      "num_inliers": 10,
+      "inlier_ratio": 0.04854368932038835,
+      "median_reprojection_error_px": 1.9956408376381551,
+      "spatial_coverage": 0.1280273385763505,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 640,
+    "confidence": 0.2,
+    "seconds": 0.20171662499978993,
+    "geometry": {
+      "num_matches": 206,
+      "num_inliers": 10,
+      "inlier_ratio": 0.04854368932038835,
+      "median_reprojection_error_px": 1.9956408376381551,
+      "spatial_coverage": 0.1280273385763505,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "size": 640,
+    "confidence": 0.4,
+    "seconds": 0.20171662499978993,
+    "geometry": {
+      "num_matches": 58,
+      "num_inliers": 7,
+      "inlier_ratio": 0.1206896551724138,
+      "median_reprojection_error_px": 1.9174265364034926,
+      "spatial_coverage": 0.13280898847368416,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 0,
+    "confidence": 0,
+    "seconds": 0.15316270799939957,
+    "geometry": {
+      "num_matches": 296,
+      "num_inliers": 41,
+      "inlier_ratio": 0.13851351351351351,
+      "median_reprojection_error_px": 1.7764713568666555,
+      "spatial_coverage": 0.06015309187008572,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 0,
+    "confidence": 0.2,
+    "seconds": 0.15316270799939957,
+    "geometry": {
+      "num_matches": 296,
+      "num_inliers": 41,
+      "inlier_ratio": 0.13851351351351351,
+      "median_reprojection_error_px": 1.7764713568666555,
+      "spatial_coverage": 0.06015309187008572,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 0,
+    "confidence": 0.4,
+    "seconds": 0.15316270799939957,
+    "geometry": {
+      "num_matches": 127,
+      "num_inliers": 29,
+      "inlier_ratio": 0.2283464566929134,
+      "median_reprojection_error_px": 1.7266644928121841,
+      "spatial_coverage": 0.07598757448695968,
+      "transform_valid": true,
+      "accepted": true,
+      "reason": "geometry_passed"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 480,
+    "confidence": 0,
+    "seconds": 0.1733632919995216,
+    "geometry": {
+      "num_matches": 367,
+      "num_inliers": 70,
+      "inlier_ratio": 0.1907356948228883,
+      "median_reprojection_error_px": 1.4313426386699992,
+      "spatial_coverage": 0.06649559635414996,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 480,
+    "confidence": 0.2,
+    "seconds": 0.1733632919995216,
+    "geometry": {
+      "num_matches": 367,
+      "num_inliers": 70,
+      "inlier_ratio": 0.1907356948228883,
+      "median_reprojection_error_px": 1.4313426386699992,
+      "spatial_coverage": 0.06649559635414996,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 480,
+    "confidence": 0.4,
+    "seconds": 0.1733632919995216,
+    "geometry": {
+      "num_matches": 180,
+      "num_inliers": 60,
+      "inlier_ratio": 0.3333333333333333,
+      "median_reprojection_error_px": 1.3004641600084055,
+      "spatial_coverage": 0.06079483434976361,
+      "transform_valid": true,
+      "accepted": true,
+      "reason": "geometry_passed"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 640,
+    "confidence": 0,
+    "seconds": 0.23312720799913222,
+    "geometry": {
+      "num_matches": 574,
+      "num_inliers": 104,
+      "inlier_ratio": 0.18118466898954705,
+      "median_reprojection_error_px": 1.2897370781894089,
+      "spatial_coverage": 0.08255695970103383,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 640,
+    "confidence": 0.2,
+    "seconds": 0.23312720799913222,
+    "geometry": {
+      "num_matches": 574,
+      "num_inliers": 104,
+      "inlier_ratio": 0.18118466898954705,
+      "median_reprojection_error_px": 1.2897370781894089,
+      "spatial_coverage": 0.08255695970103383,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_inlier_ratio"
+    }
+  },
+  {
+    "sec": 71.071,
+    "size": 640,
+    "confidence": 0.4,
+    "seconds": 0.23312720799913222,
+    "geometry": {
+      "num_matches": 261,
+      "num_inliers": 80,
+      "inlier_ratio": 0.3065134099616858,
+      "median_reprojection_error_px": 1.0153510638878789,
+      "spatial_coverage": 0.035256871667831854,
+      "transform_valid": true,
+      "accepted": true,
+      "reason": "geometry_passed"
+    }
+  }
+]

@@ -109,6 +109,10 @@ def main():
                 tick = perf_counter()
                 pipeline, provenance = build_pipeline(config)
                 variant.update(models=provenance, load_seconds=perf_counter() - tick)
+                tick = perf_counter()
+                variant["proposal_reference_context"] = pipeline.prepare_reference(reference)
+                Profiler(pipeline.device).sync()
+                variant["proposal_reference_prepare_seconds"] = perf_counter() - tick
                 # Same operations as inference, excluded from timed repetitions.
                 warm = read_sample(args.video, args.timestamps[0])
                 tick = perf_counter()

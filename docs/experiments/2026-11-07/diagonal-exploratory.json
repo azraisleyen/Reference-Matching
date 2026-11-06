@@ -1,0 +1,377 @@
+[
+  {
+    "sec": 24,
+    "angle": 0,
+    "seconds": 0.22703720899971813,
+    "geometry": {
+      "num_matches": 12,
+      "num_inliers": 4,
+      "inlier_ratio": 0.3333333333333333,
+      "median_reprojection_error_px": 0.27356724066654914,
+      "spatial_coverage": 0.06155368594115551,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "angle": 45,
+    "seconds": 0.1555564999998751,
+    "geometry": {
+      "num_matches": 28,
+      "num_inliers": 6,
+      "inlier_ratio": 0.21428571428571427,
+      "median_reprojection_error_px": 1.6160341019595694,
+      "spatial_coverage": 0.14997313306637883,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "angle": 135,
+    "seconds": 0.15262504199927207,
+    "geometry": {
+      "num_matches": 26,
+      "num_inliers": 5,
+      "inlier_ratio": 0.19230769230769232,
+      "median_reprojection_error_px": 1.1258024674974565,
+      "spatial_coverage": 0.03872268357179094,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "angle": 225,
+    "seconds": 0.14287295800022548,
+    "geometry": {
+      "num_matches": 25,
+      "num_inliers": 5,
+      "inlier_ratio": 0.2,
+      "median_reprojection_error_px": 0.32623605076487516,
+      "spatial_coverage": 0.06239880533064006,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 24,
+    "angle": 315,
+    "seconds": 0.14675583300049766,
+    "geometry": {
+      "num_matches": 25,
+      "num_inliers": 6,
+      "inlier_ratio": 0.24,
+      "median_reprojection_error_px": 1.3013030650257975,
+      "spatial_coverage": 0.030426005318115543,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "angle": 0,
+    "seconds": 0.1282175409996853,
+    "geometry": {
+      "num_matches": 18,
+      "num_inliers": 5,
+      "inlier_ratio": 0.2777777777777778,
+      "median_reprojection_error_px": 1.6511762003409087,
+      "spatial_coverage": 0.020522088552522307,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "angle": 45,
+    "seconds": 0.1526097080004547,
+    "geometry": {
+      "num_matches": 24,
+      "num_inliers": 4,
+      "inlier_ratio": 0.16666666666666666,
+      "median_reprojection_error_px": 0.6396097511561009,
+      "spatial_coverage": 0.014888550143432242,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "angle": 135,
+    "seconds": 0.15568816700033494,
+    "geometry": {
+      "num_matches": 38,
+      "num_inliers": 7,
+      "inlier_ratio": 0.18421052631578946,
+      "median_reprojection_error_px": 2.7337752188476188,
+      "spatial_coverage": 0.04596484436491315,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 25,
+    "angle": 225,
+    "seconds": 0.1462893329999133,
+    "geometry": {
+      "num_matches": 24,
+      "num_inliers": 5,
+      "inlier_ratio": 0.20833333333333334,
+      "median_reprojection_error_px": 1.3293897823868694,
+      "spatial_coverage": 0.08980578681720922,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 25,
+    "angle": 315,
+    "seconds": 0.14580862500042713,
+    "geometry": {
+      "num_matches": 24,
+      "num_inliers": 6,
+      "inlier_ratio": 0.25,
+      "median_reprojection_error_px": 1.9599486264442745,
+      "spatial_coverage": 0.05301339036656913,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "angle": 0,
+    "seconds": 0.1395563329997458,
+    "geometry": {
+      "num_matches": 32,
+      "num_inliers": 6,
+      "inlier_ratio": 0.1875,
+      "median_reprojection_error_px": 1.7582367456638963,
+      "spatial_coverage": 0.015950666202332264,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 26,
+    "angle": 45,
+    "seconds": 0.16088679200038314,
+    "geometry": {
+      "num_matches": 42,
+      "num_inliers": 6,
+      "inlier_ratio": 0.14285714285714285,
+      "median_reprojection_error_px": 0.8941114747112076,
+      "spatial_coverage": 0.004147071419679331,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 26,
+    "angle": 135,
+    "seconds": 0.16327487499984272,
+    "geometry": {
+      "num_matches": 40,
+      "num_inliers": 7,
+      "inlier_ratio": 0.175,
+      "median_reprojection_error_px": 1.6834475799718944,
+      "spatial_coverage": 0.0555822571420966,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "angle": 225,
+    "seconds": 0.15759833399988565,
+    "geometry": {
+      "num_matches": 44,
+      "num_inliers": 7,
+      "inlier_ratio": 0.1590909090909091,
+      "median_reprojection_error_px": 1.3073325971735485,
+      "spatial_coverage": 0.15202532261601162,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 26,
+    "angle": 315,
+    "seconds": 0.15479912499995407,
+    "geometry": {
+      "num_matches": 42,
+      "num_inliers": 10,
+      "inlier_ratio": 0.23809523809523808,
+      "median_reprojection_error_px": 2.736132584924471,
+      "spatial_coverage": 0.1322023718609046,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 72.0,
+    "angle": 0,
+    "seconds": 0.1463490840005761,
+    "geometry": {
+      "num_matches": 42,
+      "num_inliers": 7,
+      "inlier_ratio": 0.16666666666666666,
+      "median_reprojection_error_px": 1.9044819102969441,
+      "spatial_coverage": 0.1467899661073229,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 72.0,
+    "angle": 45,
+    "seconds": 0.19147250000060012,
+    "geometry": {
+      "num_matches": 46,
+      "num_inliers": 5,
+      "inlier_ratio": 0.10869565217391304,
+      "median_reprojection_error_px": 0.7606762490645836,
+      "spatial_coverage": 0.07631722524842703,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 72.0,
+    "angle": 135,
+    "seconds": 0.1885630000006131,
+    "geometry": {
+      "num_matches": 27,
+      "num_inliers": 4,
+      "inlier_ratio": 0.14814814814814814,
+      "median_reprojection_error_px": 1.2401410263399002,
+      "spatial_coverage": 0.03881486494540003,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 72.0,
+    "angle": 225,
+    "seconds": 0.18076079200000095,
+    "geometry": {
+      "num_matches": 59,
+      "num_inliers": 7,
+      "inlier_ratio": 0.11864406779661017,
+      "median_reprojection_error_px": 1.496547085831614,
+      "spatial_coverage": 0.07032266742659729,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 72.0,
+    "angle": 315,
+    "seconds": 0.17971550000038405,
+    "geometry": {
+      "num_matches": 86,
+      "num_inliers": 26,
+      "inlier_ratio": 0.3023255813953488,
+      "median_reprojection_error_px": 1.8387366229128763,
+      "spatial_coverage": 0.04825972246848135,
+      "transform_valid": true,
+      "accepted": true,
+      "reason": "geometry_passed"
+    }
+  },
+  {
+    "sec": 73.0,
+    "angle": 0,
+    "seconds": 0.14451774999997724,
+    "geometry": {
+      "num_matches": 37,
+      "num_inliers": 6,
+      "inlier_ratio": 0.16216216216216217,
+      "median_reprojection_error_px": 2.3806231543174037,
+      "spatial_coverage": 0.11475306110756528,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 73.0,
+    "angle": 45,
+    "seconds": 0.19893000000047323,
+    "geometry": {
+      "num_matches": 58,
+      "num_inliers": 6,
+      "inlier_ratio": 0.10344827586206896,
+      "median_reprojection_error_px": 1.8902528313613653,
+      "spatial_coverage": 0.02057059321623569,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 73.0,
+    "angle": 135,
+    "seconds": 0.19213091699930374,
+    "geometry": {
+      "num_matches": 31,
+      "num_inliers": 7,
+      "inlier_ratio": 0.22580645161290322,
+      "median_reprojection_error_px": 1.7012683093673737,
+      "spatial_coverage": 0.028452512583214636,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "insufficient_inliers"
+    }
+  },
+  {
+    "sec": 73.0,
+    "angle": 225,
+    "seconds": 0.18066887500026496,
+    "geometry": {
+      "num_matches": 57,
+      "num_inliers": 6,
+      "inlier_ratio": 0.10526315789473684,
+      "median_reprojection_error_px": 1.5138916099471484,
+      "spatial_coverage": 0.04953133974474421,
+      "transform_valid": false,
+      "accepted": false,
+      "reason": "invalid_scale_or_transform"
+    }
+  },
+  {
+    "sec": 73.0,
+    "angle": 315,
+    "seconds": 0.1832773329997508,
+    "geometry": {
+      "num_matches": 77,
+      "num_inliers": 21,
+      "inlier_ratio": 0.2727272727272727,
+      "median_reprojection_error_px": 1.3328496510616157,
+      "spatial_coverage": 0.008942261205081637,
+      "transform_valid": true,
+      "accepted": false,
+      "reason": "low_spatial_coverage"
+    }
+  }
+]

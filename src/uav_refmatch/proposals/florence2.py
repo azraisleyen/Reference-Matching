@@ -1,3 +1,4 @@
+import hashlib
 import torch
 import numpy as np
 from ..config import Models, Proposals
@@ -7,6 +8,7 @@ from transformers import AutoModelForCausalLM, AutoProcessor
 from .boxes import clean_proposals
 from ..core.runtime import resolve_revision
 from .cache_compat import enable_legacy_cache
+from .reference_prompt import subject_phrase
 
 
 class Florence2Proposals:
@@ -38,11 +40,50 @@ class Florence2Proposals:
         if model_config.florence_use_cache:
             enable_legacy_cache(self.model)
         self.last_diagnostics = {}
+        self.reference_context = {}
+
+    def prepare_reference(self, image: np.ndarray) -> dict:
+        if self.config.task != "reference_grounding":
+            return {}
+        digest = hashlib.sha256(str(image.shape).encode() + image.tobytes()).hexdigest()
+        if self.reference_context.get("reference_pixels_sha256") != digest:
+            parsed, diagnostics = self._generate(image, "<CAPTION>")
+            caption = parsed["<CAPTION>"]
+            self.reference_context = dict(
+                reference_pixels_sha256=digest,
+                caption=caption,
+                caption_generation=diagnostics,
+                grounding_text=subject_phrase(caption),
+                prompt_policy="caption_subject_v1",
+            )
+        return dict(self.reference_context)
 
     def propose(self, image: np.ndarray) -> list[Proposal]:
         self.last_diagnostics = {}
+        task = self.config.task
+        text_input = ""
+        if task == "reference_grounding":
+            if not self.reference_context:
+                raise RuntimeError("Prepare the reference before grounded proposal generation")
+            task = "<CAPTION_TO_PHRASE_GROUNDING>"
+            text_input = self.reference_context["grounding_text"]
+        parsed, diagnostics = self._generate(image, task, text_input)
+        boxes = parsed.get(task, {}).get("bboxes", [])
+        proposals = clean_proposals(
+            boxes, image.shape[1], image.shape[0], self.config, self.model_config.florence_id
+        )
+        self.last_diagnostics = dict(
+            **diagnostics,
+            raw_boxes=boxes,
+            raw_labels=parsed.get(task, {}).get("labels", []),
+            raw_count=len(boxes),
+            kept_count=len(proposals),
+        )
+        return proposals
+
+    def _generate(self, image: np.ndarray, task: str, text_input: str = ""):
         inputs = self.processor(
-            text="<REGION_PROPOSAL>",
+            text=task + text_input,
             images=Image.fromarray(image),
             return_tensors="pt",
         )
@@ -64,18 +105,13 @@ class Florence2Proposals:
             )
         text = self.processor.batch_decode(ids, skip_special_tokens=False)[0]
         parsed = self.processor.post_process_generation(
-            text, task="<REGION_PROPOSAL>", image_size=(image.shape[1], image.shape[0])
-        )
-        boxes = parsed.get("<REGION_PROPOSAL>", {}).get("bboxes", [])
-        proposals = clean_proposals(
-            boxes, image.shape[1], image.shape[0], self.config, self.model_config.florence_id
+            text, task=task, image_size=(image.shape[1], image.shape[0])
         )
         eos = self.model.language_model.generation_config.eos_token_id
         eos_ids = eos if isinstance(eos, list) else [eos]
-        self.last_diagnostics = dict(
-            raw_boxes=boxes,
-            raw_count=len(boxes),
-            kept_count=len(proposals),
+        diagnostics = dict(
+            task=task,
+            text_input=text_input,
             generated_tokens=int(ids.shape[-1]) - 1,
             reached_eos=int(ids[0, -1]) in eos_ids,
             hit_token_limit=int(ids.shape[-1]) - 1 >= self.model_config.max_new_tokens,
@@ -83,4 +119,4 @@ class Florence2Proposals:
             use_cache=self.model_config.florence_use_cache,
             input_size=list(inputs["pixel_values"].shape[-2:]),
         )
-        return proposals
+        return parsed, diagnostics

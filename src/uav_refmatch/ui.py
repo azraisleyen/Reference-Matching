@@ -186,6 +186,11 @@ def build_app(output_root="runs", config=None):
             gr.Button("Kareyi incele").click(
                 review, [choice, index, source, show_proposals], [preview, details]
             )
+            gr.Markdown(
+                "Sonuç videosunda kutular yalnız işlenmiş karelerde çizilir. "
+                "Örneğin 30 FPS kaynak ve 7,5 FPS analizde ara karelerin kutusuz olması "
+                "NOT_FOUND kararı değildir. Karşılaştırma için işlenmiş kare kayıtlarını kullanın."
+            )
             output = gr.File(label="Üretilen sonuç videosu")
             gr.Button("Video Oluştur").click(render, [choice, source], output)
             summary = gr.JSON(value=initial_summary, label="Deney özeti")

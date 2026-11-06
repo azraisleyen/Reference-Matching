@@ -137,3 +137,43 @@ def test_cancel(tmp_path, texture):
     )
     recorder.finish("cancelled")
     assert (recorder.path / "predictions.jsonl").read_text() == ""
+
+
+@pytest.mark.parametrize(
+    "budget,accept_after,expected_calls", [(1, 2, 1), (3, 2, 2), (3, 99, 3), (3, 1, 1)]
+)
+def test_rotation_retries_share_total_matching_budget(
+    tmp_path, texture, budget, accept_after, expected_calls
+):
+    from uav_refmatch.config import Geometry, Retrieval
+    from uav_refmatch.core.types import GeometryEvidence
+
+    class Verifier:
+        calls = 0
+
+        def verify(self, matches, reference_shape, candidate_shape):
+            self.calls += 1
+            assert candidate_shape == texture.shape  # geometry uses original crop pixels
+            return GeometryEvidence(accepted=self.calls >= accept_after, reason="test")
+
+    config = Config(
+        mode="static",
+        warmup=False,
+        retrieval=Retrieval(max_geometry_pairs=budget),
+        geometry=Geometry(candidate_rotation_fallbacks=(-45, 45)),
+    )
+    matcher = Matcher()
+    pipeline = Pipeline(config, Proposals(), Encoder(), matcher, Verifier())
+    recorder = Recorder(tmp_path, config)
+    pipeline.run([FrameRecord(0, 0, 0, 64, 64, texture)], texture, "target", recorder)
+    recorder.finish("completed")
+    row = json.loads((recorder.path / "predictions.jsonl").read_text())
+    assert matcher.calls == expected_calls
+    assert len(row["verified_pairs"]) == expected_calls
+    if accept_after <= expected_calls:
+        assert row["status"] == "FOUND"
+        assert row["bbox_xyxy"] == [0, 0, 64, 64]
+    else:
+        assert row["status"] == "NOT_FOUND"
+    if expected_calls > 1:
+        assert row["verified_pairs"][1]["candidate_rotation_degrees"] == -45

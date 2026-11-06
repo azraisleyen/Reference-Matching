@@ -1,0 +1,41 @@
+[
+  {
+    "task": "<REGION_PROPOSAL>",
+    "rotation_fallbacks": [],
+    "probes": 24,
+    "found": 3,
+    "mean_ms": 1059.3966597083788,
+    "max_ms": 1452.894125000057,
+    "mean_candidates": 4.5
+  },
+  {
+    "task": "<OD>",
+    "rotation_fallbacks": [],
+    "probes": 24,
+    "found": 6,
+    "mean_ms": 968.9645730832505,
+    "max_ms": 1681.8509590002577,
+    "mean_candidates": 2.9166666666666665
+  },
+  {
+    "task": "reference_grounding",
+    "rotation_fallbacks": [],
+    "probes": 24,
+    "found": 7,
+    "mean_ms": 916.6278523750103,
+    "max_ms": 1017.9570420004893,
+    "mean_candidates": 1
+  },
+  {
+    "task": "reference_grounding",
+    "rotation_fallbacks": [
+      -45,
+      45
+    ],
+    "probes": 24,
+    "found": 8,
+    "mean_ms": 1025.8367204167296,
+    "max_ms": 1514.4388329999856,
+    "mean_candidates": 1
+  }
+]

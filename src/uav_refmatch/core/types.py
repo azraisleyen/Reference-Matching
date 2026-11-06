@@ -53,6 +53,7 @@ class Pair:
 class VerifiedPair:
     pair: Pair
     geometry: GeometryEvidence
+    candidate_rotation_degrees: int = 0
 
 
 @dataclass

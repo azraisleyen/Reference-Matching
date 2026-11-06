@@ -151,6 +151,13 @@ def run_experiment(
                 progress(dict(device=pipeline.device))
                 with Image.open(reference) as image:
                     reference_image = np.array(image.convert("RGB"))
+                timer = perf_counter()
+                prepare = getattr(pipeline, "prepare_reference", None)
+                recorder.manifest["proposal_reference_context"] = (
+                    prepare(reference_image) if prepare else {}
+                )
+                Profiler(pipeline.device).sync()
+                recorder.manifest["proposal_reference_prepare_ms"] = (perf_counter() - timer) * 1000
                 recorder.manifest["warmup_ms"] = 0.0
                 if config.warmup and not cancel():
                     progress(dict(phase="warmup"))

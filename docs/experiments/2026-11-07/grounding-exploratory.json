@@ -1,0 +1,692 @@
+{
+  "caption": "A large yellow tractor sitting on top of a lush green field.",
+  "models": {
+    "florence_id": "microsoft/Florence-2-large-ft",
+    "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+    "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+    "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+    "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+    "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+    "device": "mps",
+    "precision": "fp32",
+    "florence_precision": "fp16"
+  },
+  "rows": [
+    {
+      "sec": 16,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1222.0799560546875,
+              403.3800048828125,
+              1379.52001953125,
+              591.300048828125
+            ],
+            [
+              0.9599999785423279,
+              0.5400000214576721,
+              1917.1199951171875,
+              1078.3800048828125
+            ],
+            [
+              0.9599999785423279,
+              0.5400000214576721,
+              1807.679931640625,
+              1078.3800048828125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1222.0799560546875,
+            403.3800048828125,
+            1379.52001953125,
+            591.300048828125
+          ],
+          "score": 0.1445445865392685
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            0.5400000214576721,
+            1917.1199951171875,
+            1078.3800048828125
+          ],
+          "score": 0.15690097212791443
+        }
+      ],
+      "geometry": [],
+      "proposal_seconds": 1.13978329100064,
+      "seconds": 1.207621458000176
+    },
+    {
+      "sec": 24,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              196.8000030517578,
+              159.3000030517578,
+              469.44000244140625,
+              315.9000244140625
+            ],
+            [
+              0.9599999785423279,
+              0.5400000214576721,
+              903.3599853515625,
+              1078.3800048828125
+            ],
+            [
+              0.9599999785423279,
+              0.5400000214576721,
+              738.239990234375,
+              807.300048828125
+            ],
+            [
+              0.9599999785423279,
+              345.0600280761719,
+              440.6399841308594,
+              806.2200317382812
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field",
+            "a lush green field",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            196.8000030517578,
+            159.3000030517578,
+            469.44000244140625,
+            315.9000244140625
+          ],
+          "score": 0.42868131399154663
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            0.5400000214576721,
+            903.3599853515625,
+            1078.3800048828125
+          ],
+          "score": 0.3917115330696106
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            0.5400000214576721,
+            738.239990234375,
+            807.300048828125
+          ],
+          "score": 0.4291478395462036
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            345.0600280761719,
+            440.6399841308594,
+            806.2200317382812
+          ],
+          "score": 0.2362276315689087
+        }
+      ],
+      "geometry": [
+        {
+          "index": 2,
+          "geometry": {
+            "num_matches": 15,
+            "num_inliers": 4,
+            "inlier_ratio": 0.26666666666666666,
+            "median_reprojection_error_px": 1.6361670390464267,
+            "spatial_coverage": 0.03474536878754774,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 17,
+            "num_inliers": 5,
+            "inlier_ratio": 0.29411764705882354,
+            "median_reprojection_error_px": 1.3515580351901135,
+            "spatial_coverage": 0.03567756019948678,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 1,
+          "geometry": {
+            "num_matches": 29,
+            "num_inliers": 4,
+            "inlier_ratio": 0.13793103448275862,
+            "median_reprojection_error_px": 0.4295747881971935,
+            "spatial_coverage": 0.05935929791479284,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        }
+      ],
+      "proposal_seconds": 0.9789700000001176,
+      "seconds": 2.269008708000001
+    },
+    {
+      "sec": 25,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              168.0,
+              413.1000061035156,
+              446.3999938964844,
+              576.1799926757812
+            ],
+            [
+              0.9599999785423279,
+              115.02000427246094,
+              970.5599975585938,
+              1078.3800048828125
+            ],
+            [
+              0.9599999785423279,
+              116.10000610351562,
+              761.2799682617188,
+              1078.3800048828125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            168.0,
+            413.1000061035156,
+            446.3999938964844,
+            576.1799926757812
+          ],
+          "score": 0.41123825311660767
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            115.02000427246094,
+            970.5599975585938,
+            1078.3800048828125
+          ],
+          "score": 0.3015614151954651
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            116.10000610351562,
+            761.2799682617188,
+            1078.3800048828125
+          ],
+          "score": 0.40551114082336426
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 15,
+            "num_inliers": 4,
+            "inlier_ratio": 0.26666666666666666,
+            "median_reprojection_error_px": 1.2976257822880863,
+            "spatial_coverage": 0.06512169729783027,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 2,
+          "geometry": {
+            "num_matches": 36,
+            "num_inliers": 4,
+            "inlier_ratio": 0.1111111111111111,
+            "median_reprojection_error_px": 0.06933328921500566,
+            "spatial_coverage": 0.025810133813465443,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        },
+        {
+          "index": 1,
+          "geometry": {
+            "num_matches": 35,
+            "num_inliers": 5,
+            "inlier_ratio": 0.14285714285714285,
+            "median_reprojection_error_px": 0.8290595889733428,
+            "spatial_coverage": 0.027671512164717114,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.9388297080004122,
+      "seconds": 1.7127262909998535
+    },
+    {
+      "sec": 26,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              185.27999877929688,
+              645.300048828125,
+              463.67999267578125,
+              828.9000244140625
+            ],
+            [
+              0.9599999785423279,
+              336.4200134277344,
+              767.0399780273438,
+              1078.3800048828125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            185.27999877929688,
+            645.300048828125,
+            463.67999267578125,
+            828.9000244140625
+          ],
+          "score": 0.404850035905838
+        },
+        {
+          "bbox": [
+            0.9599999785423279,
+            336.4200134277344,
+            767.0399780273438,
+            1078.3800048828125
+          ],
+          "score": 0.34898295998573303
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 29,
+            "num_inliers": 6,
+            "inlier_ratio": 0.20689655172413793,
+            "median_reprojection_error_px": 1.615996840024243,
+            "spatial_coverage": 0.03414910214138018,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        },
+        {
+          "index": 1,
+          "geometry": {
+            "num_matches": 56,
+            "num_inliers": 5,
+            "inlier_ratio": 0.08928571428571429,
+            "median_reprojection_error_px": 1.8313655176134778,
+            "spatial_coverage": 0.03296414727261332,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.9428883330001554,
+      "seconds": 1.3674920410003324
+    },
+    {
+      "sec": 69.069,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1444.7999267578125,
+              0.5400000214576721,
+              1776.9599609375,
+              198.1800079345703
+            ],
+            [
+              463.67999267578125,
+              393.6600036621094,
+              1917.1199951171875,
+              1078.3800048828125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1444.7999267578125,
+            0.5400000214576721,
+            1776.9599609375,
+            198.1800079345703
+          ],
+          "score": 0.5153512954711914
+        },
+        {
+          "bbox": [
+            463.67999267578125,
+            393.6600036621094,
+            1917.1199951171875,
+            1078.3800048828125
+          ],
+          "score": 0.18111161887645721
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 158,
+            "num_inliers": 61,
+            "inlier_ratio": 0.3860759493670886,
+            "median_reprojection_error_px": 2.5232277305143844,
+            "spatial_coverage": 0.2264683237647991,
+            "transform_valid": true,
+            "accepted": true,
+            "reason": "geometry_passed"
+          }
+        }
+      ],
+      "proposal_seconds": 0.8985524589998022,
+      "seconds": 1.1003908339998816
+    },
+    {
+      "sec": 69.736,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1410.239990234375,
+              8.100000381469727,
+              1750.0799560546875,
+              286.7400207519531
+            ],
+            [
+              987.8399658203125,
+              4.860000133514404,
+              1917.1199951171875,
+              823.5000610351562
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1410.239990234375,
+            8.100000381469727,
+            1750.0799560546875,
+            286.7400207519531
+          ],
+          "score": 0.5513859987258911
+        },
+        {
+          "bbox": [
+            987.8399658203125,
+            4.860000133514404,
+            1917.1199951171875,
+            823.5000610351562
+          ],
+          "score": 0.2859613597393036
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 191,
+            "num_inliers": 46,
+            "inlier_ratio": 0.24083769633507854,
+            "median_reprojection_error_px": 2.4747370566864904,
+            "spatial_coverage": 0.07319216927550012,
+            "transform_valid": true,
+            "accepted": true,
+            "reason": "geometry_passed"
+          }
+        }
+      ],
+      "proposal_seconds": 0.8888856670000678,
+      "seconds": 1.0926722499998505
+    },
+    {
+      "sec": 70.2702,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1383.3599853515625,
+              79.3800048828125,
+              1727.0399169921875,
+              355.8600158691406
+            ],
+            [
+              962.8800048828125,
+              0.5400000214576721,
+              1917.1199951171875,
+              880.7400512695312
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1383.3599853515625,
+            79.3800048828125,
+            1727.0399169921875,
+            355.8600158691406
+          ],
+          "score": 0.6074312925338745
+        },
+        {
+          "bbox": [
+            962.8800048828125,
+            0.5400000214576721,
+            1917.1199951171875,
+            880.7400512695312
+          ],
+          "score": 0.36966824531555176
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 163,
+            "num_inliers": 43,
+            "inlier_ratio": 0.26380368098159507,
+            "median_reprojection_error_px": 1.728154152200161,
+            "spatial_coverage": 0.05924646735813096,
+            "transform_valid": true,
+            "accepted": true,
+            "reason": "geometry_passed"
+          }
+        },
+        {
+          "index": 1,
+          "geometry": {
+            "num_matches": 69,
+            "num_inliers": 6,
+            "inlier_ratio": 0.08695652173913043,
+            "median_reprojection_error_px": 1.7958075200628885,
+            "spatial_coverage": 0.022966660006353938,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "insufficient_inliers"
+          }
+        }
+      ],
+      "proposal_seconds": 0.9103417080004874,
+      "seconds": 1.3576913329998206
+    },
+    {
+      "sec": 71.071,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              1350.719970703125,
+              186.3000030517578,
+              1700.159912109375,
+              445.5000305175781
+            ],
+            [
+              939.8399658203125,
+              0.5400000214576721,
+              1917.1199951171875,
+              899.1000366210938
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            1350.719970703125,
+            186.3000030517578,
+            1700.159912109375,
+            445.5000305175781
+          ],
+          "score": 0.5116747617721558
+        },
+        {
+          "bbox": [
+            939.8399658203125,
+            0.5400000214576721,
+            1917.1199951171875,
+            899.1000366210938
+          ],
+          "score": 0.31195318698883057
+        }
+      ],
+      "geometry": [
+        {
+          "index": 0,
+          "geometry": {
+            "num_matches": 130,
+            "num_inliers": 32,
+            "inlier_ratio": 0.24615384615384617,
+            "median_reprojection_error_px": 1.6400804974788963,
+            "spatial_coverage": 0.021011788464170508,
+            "transform_valid": true,
+            "accepted": false,
+            "reason": "low_spatial_coverage"
+          }
+        },
+        {
+          "index": 1,
+          "geometry": {
+            "num_matches": 46,
+            "num_inliers": 5,
+            "inlier_ratio": 0.10869565217391304,
+            "median_reprojection_error_px": 2.2915885050575207,
+            "spatial_coverage": 0.03882290164199604,
+            "transform_valid": false,
+            "accepted": false,
+            "reason": "invalid_scale_or_transform"
+          }
+        }
+      ],
+      "proposal_seconds": 0.8791387499995835,
+      "seconds": 1.3345890829996279
+    },
+    {
+      "sec": 40,
+      "parsed": {
+        "<CAPTION_TO_PHRASE_GROUNDING>": {
+          "bboxes": [
+            [
+              158.39999389648438,
+              224.10000610351562,
+              379.1999816894531,
+              418.5000305175781
+            ],
+            [
+              1389.1199951171875,
+              730.6200561523438,
+              1849.919921875,
+              1078.3800048828125
+            ]
+          ],
+          "labels": [
+            "A large yellow tractor",
+            "a lush green field"
+          ]
+        }
+      },
+      "boxes": [
+        {
+          "bbox": [
+            158.39999389648438,
+            224.10000610351562,
+            379.1999816894531,
+            418.5000305175781
+          ],
+          "score": 0.15545451641082764
+        },
+        {
+          "bbox": [
+            1389.1199951171875,
+            730.6200561523438,
+            1849.919921875,
+            1078.3800048828125
+          ],
+          "score": 0.11859681457281113
+        }
+      ],
+      "geometry": [],
+      "proposal_seconds": 0.9232467080000788,
+      "seconds": 0.9712484159999804
+    }
+  ]
+}
