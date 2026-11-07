@@ -31,6 +31,7 @@ class Models(StrictModel):
     florence_use_cache: bool = True
     florence_precision: Literal["fp32", "fp16"] | None = None
     loftr_max_side: int = Field(640, ge=32)
+    loftr_resize_to_max: bool = False
 
     @model_validator(mode="after")
     def pin_default_revisions(self):
@@ -52,11 +53,15 @@ class Proposals(StrictModel):
     nms_iou: float = Field(0.85, gt=0, le=1)
     crop_padding: float = Field(0.10, ge=0, le=1)
     min_box_side: int = Field(12, ge=1)
+    reference_prompt_policy: Literal["caption_subject_v1", "caption_subject_v2"] = (
+        "caption_subject_v1"
+    )
     tiling: Literal[False] = False
     task: Literal["<REGION_PROPOSAL>", "<OD>", "reference_grounding"] = "<REGION_PROPOSAL>"
 
 
 class Retrieval(StrictModel):
+    reserve_anchor_pair: bool = False
     top_k_candidates: int = Field(5, ge=1)
     max_geometry_pairs: int = Field(3, ge=1)
     detect_min_cosine: float = Field(0.70, ge=-1, le=1)
@@ -64,6 +69,7 @@ class Retrieval(StrictModel):
 
 
 class Geometry(StrictModel):
+    rotation_retry_anchor_first: bool = False
     candidate_rotation_fallbacks: tuple[Literal[-45, 45], ...] = Field((), max_length=2)
     model: Literal["partial_affine", "affine"] = "partial_affine"
     min_match_confidence: float = Field(0.0, ge=0, le=1)
@@ -79,6 +85,8 @@ class Geometry(StrictModel):
 
 
 class Memory(StrictModel):
+    anchor_only_admission: bool = False
+    reject_border_boxes: bool = False
     capacity: int = Field(8, ge=1)
     memory_min_cosine: float = Field(0.80, ge=-1, le=1)
     memory_min_inliers: int = Field(12, ge=3)

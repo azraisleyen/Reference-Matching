@@ -11,7 +11,7 @@ from .core.errors import safe_error
 from .core.types import FrameRecord, Prediction, ReferenceEntry, VerifiedPair
 from .proposals.boxes import crop
 from .matching.retrieval import retrieve
-from .matching.orientation import rotate_crop, restore_matches
+from .matching.orientation import rotate_crop, restore_matches, rotation_attempts
 from .decision.engine import choose
 from .memory.dynamic import DynamicReferenceMemory
 from .memory.static import StaticReferenceMemory
@@ -137,28 +137,30 @@ class Pipeline:
                         # Original candidate pairs have priority. Retries spend the SAME
                         # total LoFTR-call budget, not an additional per-pair budget.
                         if not any(v.geometry.accepted for v in verified):
-                            for degrees in self.config.geometry.candidate_rotation_fallbacks:
-                                for pair in pairs:
-                                    if len(verified) >= self.config.retrieval.max_geometry_pairs:
-                                        break
-                                    ref = lookup[pair.memory_id]
-                                    original = crops[pair.candidate_index]
-                                    with profiler.measure("efficientloftr_ms"):
-                                        rotated = rotate_crop(original, degrees)
-                                        matches = restore_matches(
-                                            self.matcher.match(ref.crop_image, rotated),
-                                            original.shape,
-                                            rotated.shape,
-                                            degrees,
-                                        )
-                                    with profiler.measure("ransac_ms"):
-                                        evidence = self.verifier.verify(
-                                            matches, ref.crop_image.shape, original.shape
-                                        )
-                                    verified.append(VerifiedPair(pair, evidence, degrees))
-                                    if evidence.accepted:
-                                        break
-                                if any(v.geometry.accepted for v in verified):
+                            attempts = rotation_attempts(
+                                pairs,
+                                self.config.geometry.candidate_rotation_fallbacks,
+                                self.config.geometry.rotation_retry_anchor_first,
+                            )
+                            for pair, degrees in attempts:
+                                if len(verified) >= self.config.retrieval.max_geometry_pairs:
+                                    break
+                                ref = lookup[pair.memory_id]
+                                original = crops[pair.candidate_index]
+                                with profiler.measure("efficientloftr_ms"):
+                                    rotated = rotate_crop(original, degrees)
+                                    matches = restore_matches(
+                                        self.matcher.match(ref.crop_image, rotated),
+                                        original.shape,
+                                        rotated.shape,
+                                        degrees,
+                                    )
+                                with profiler.measure("ransac_ms"):
+                                    evidence = self.verifier.verify(
+                                        matches, ref.crop_image.shape, original.shape
+                                    )
+                                verified.append(VerifiedPair(pair, evidence, degrees))
+                                if evidence.accepted:
                                     break
                     with profiler.measure("decision_ms"):
                         winner = choose(

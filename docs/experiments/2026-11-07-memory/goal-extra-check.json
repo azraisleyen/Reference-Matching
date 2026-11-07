@@ -1,0 +1,808 @@
+{
+  "kind": "independent_static_probes",
+  "source_index_policy": "unknown=-1",
+  "source_sha256": "bc5a607ca5f54043b1cc8ebce7e5daee078dbb4fa97980eb109dde3cefcbe25a",
+  "reference_sha256": "59fb3b3a19385aa9139ec520fbe5c18232187d66cedda9387cc2f03c388e49a0",
+  "requested_timestamps": [
+    23.89,
+    25.025,
+    84.418,
+    84.685
+  ],
+  "repeats": 1,
+  "max_seconds": 70.0,
+  "accuracy_metrics": null,
+  "variants": [
+    {
+      "config": {
+        "mode": "static",
+        "target_fps": 7.5,
+        "max_frames": null,
+        "seed": 42,
+        "models": {
+          "florence_id": "microsoft/Florence-2-large-ft",
+          "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+          "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+          "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+          "eloftr_repo": null,
+          "eloftr_checkpoint": null,
+          "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+          "device": "mps",
+          "precision": "fp32",
+          "batch_size": 16,
+          "max_new_tokens": 256,
+          "florence_num_beams": 1,
+          "florence_use_cache": true,
+          "florence_precision": "fp16",
+          "loftr_max_side": 640,
+          "loftr_resize_to_max": true
+        },
+        "proposals": {
+          "max_proposals": 30,
+          "nms_iou": 0.85,
+          "crop_padding": 0.1,
+          "min_box_side": 12,
+          "reference_prompt_policy": "caption_subject_v2",
+          "tiling": false,
+          "task": "reference_grounding"
+        },
+        "retrieval": {
+          "reserve_anchor_pair": false,
+          "top_k_candidates": 5,
+          "max_geometry_pairs": 3,
+          "detect_min_cosine": 0.3,
+          "geometry_min_cosine": 0.3
+        },
+        "geometry": {
+          "rotation_retry_anchor_first": false,
+          "candidate_rotation_fallbacks": [
+            -45,
+            45
+          ],
+          "model": "affine",
+          "min_match_confidence": 0.4,
+          "max_anisotropy": 4.0,
+          "min_matches": 12,
+          "min_inliers": 12,
+          "min_inlier_ratio": 0.2,
+          "ransac_reprojection_threshold_px": 5.0,
+          "min_spatial_coverage": 0.03,
+          "min_scale": 0.05,
+          "max_scale": 20.0,
+          "max_median_reprojection_error_px": 3.0
+        },
+        "memory": {
+          "anchor_only_admission": false,
+          "reject_border_boxes": false,
+          "capacity": 8,
+          "memory_min_cosine": 0.8,
+          "memory_min_inliers": 12,
+          "memory_min_inlier_ratio": 0.4,
+          "duplicate_cosine": 0.96,
+          "cooldown_frames": 8,
+          "confirmation_frames": 2,
+          "anchor_min_cosine": 0.75,
+          "confirmation_cosine": 0.85,
+          "min_crop_side": 24,
+          "min_laplacian_variance": 10.0,
+          "max_pending": 1
+        },
+        "verified_cfr_fps": null,
+        "warmup": false
+      },
+      "cases": [
+        {
+          "requested_timestamp": 23.89,
+          "repeat": 0,
+          "seek_decode_ms": 296.8899169973156,
+          "probe_wall_seconds": 1.8128738749983313,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 23.890533333333334,
+            "width": 1920,
+            "height": 1080,
+            "status": "NOT_FOUND",
+            "target_reference_id": "ref_03",
+            "bbox_xyxy": null,
+            "matched_memory_id": null,
+            "dino_cosine": 0.4709468483924866,
+            "geometry": {
+              "num_matches": 15,
+              "num_inliers": 5,
+              "inlier_ratio": 0.3333333333333333,
+              "median_reprojection_error_px": 1.285653860925405,
+              "spatial_coverage": 0.027438532889105496,
+              "transform_valid": false,
+              "accepted": false,
+              "reason": "invalid_scale_or_transform"
+            },
+            "candidate_count": 1,
+            "active_reference_count": 1,
+            "decision_reason": "geometry_rejected",
+            "processing_ms": 1763.4498340012215,
+            "verified_pairs": [
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4709468483924866
+                },
+                "geometry": {
+                  "num_matches": 15,
+                  "num_inliers": 5,
+                  "inlier_ratio": 0.3333333333333333,
+                  "median_reprojection_error_px": 1.285653860925405,
+                  "spatial_coverage": 0.027438532889105496,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": 0
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4709468483924866
+                },
+                "geometry": {
+                  "num_matches": 6,
+                  "num_inliers": 0,
+                  "inlier_ratio": 0.0,
+                  "median_reprojection_error_px": null,
+                  "spatial_coverage": 0.0,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "insufficient_matches"
+                },
+                "candidate_rotation_degrees": -45
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4709468483924866
+                },
+                "geometry": {
+                  "num_matches": 12,
+                  "num_inliers": 6,
+                  "inlier_ratio": 0.5,
+                  "median_reprojection_error_px": 1.4832834048085055,
+                  "spatial_coverage": 0.003971451252614069,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": 45
+              }
+            ],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.4709468483924866
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  329.2799987792969,
+                  467.1000061035156,
+                  404.1600036621094,
+                  559.9800415039062
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  321,
+                  457,
+                  412,
+                  570
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "task": "<CAPTION_TO_PHRASE_GROUNDING>",
+              "text_input": "A soccer goal post",
+              "generated_tokens": 10,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ],
+              "raw_boxes": [
+                [
+                  329.2799987792969,
+                  467.1000061035156,
+                  404.1600036621094,
+                  559.9800415039062
+                ]
+              ],
+              "raw_labels": [
+                "A soccer goal post"
+              ],
+              "raw_count": 1,
+              "kept_count": 1
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 771.8020420034009,
+            "dinov3_ms": 23.174417001428083,
+            "retrieval_ms": 0.10045900125987828,
+            "efficientloftr_ms": 963.5926240007393,
+            "ransac_ms": 4.6351249984581955,
+            "decision_ms": 0.04879100015386939,
+            "memory_ms": 0.0011660013115033507,
+            "total_frame_ms": 1763.9827919992968
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "556580864",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "6535217152",
+            "system_available_ram_bytes": "1790787584",
+            "system_swap_used_bytes": "2871853056",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "7804368",
+            "embedding_bytes": "3072"
+          }
+        },
+        {
+          "requested_timestamp": 25.025,
+          "repeat": 0,
+          "seek_decode_ms": 347.8375419981603,
+          "probe_wall_seconds": 1.62260100000276,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 25.025,
+            "width": 1920,
+            "height": 1080,
+            "status": "NOT_FOUND",
+            "target_reference_id": "ref_03",
+            "bbox_xyxy": null,
+            "matched_memory_id": null,
+            "dino_cosine": 0.4241753816604614,
+            "geometry": {
+              "num_matches": 18,
+              "num_inliers": 6,
+              "inlier_ratio": 0.3333333333333333,
+              "median_reprojection_error_px": 1.378431218526331,
+              "spatial_coverage": 0.06111718695390737,
+              "transform_valid": false,
+              "accepted": false,
+              "reason": "invalid_scale_or_transform"
+            },
+            "candidate_count": 1,
+            "active_reference_count": 1,
+            "decision_reason": "geometry_rejected",
+            "processing_ms": 1582.2353750008915,
+            "verified_pairs": [
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4241753816604614
+                },
+                "geometry": {
+                  "num_matches": 18,
+                  "num_inliers": 6,
+                  "inlier_ratio": 0.3333333333333333,
+                  "median_reprojection_error_px": 1.378431218526331,
+                  "spatial_coverage": 0.06111718695390737,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": 0
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4241753816604614
+                },
+                "geometry": {
+                  "num_matches": 15,
+                  "num_inliers": 5,
+                  "inlier_ratio": 0.3333333333333333,
+                  "median_reprojection_error_px": 0.2426311721483357,
+                  "spatial_coverage": 0.06767840280180154,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": -45
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.4241753816604614
+                },
+                "geometry": {
+                  "num_matches": 13,
+                  "num_inliers": 6,
+                  "inlier_ratio": 0.46153846153846156,
+                  "median_reprojection_error_px": 2.0489980709291546,
+                  "spatial_coverage": 0.009632857751240953,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": 45
+              }
+            ],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.4241753816604614
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  348.47998046875,
+                  752.2200317382812,
+                  434.8800048828125,
+                  854.8200073242188
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  339,
+                  741,
+                  444,
+                  866
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "task": "<CAPTION_TO_PHRASE_GROUNDING>",
+              "text_input": "A soccer goal post",
+              "generated_tokens": 10,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ],
+              "raw_boxes": [
+                [
+                  348.47998046875,
+                  752.2200317382812,
+                  434.8800048828125,
+                  854.8200073242188
+                ]
+              ],
+              "raw_labels": [
+                "A soccer goal post"
+              ],
+              "raw_count": 1,
+              "kept_count": 1
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 790.3487500007031,
+            "dinov3_ms": 23.326541999267647,
+            "retrieval_ms": 0.0670830013405066,
+            "efficientloftr_ms": 767.6637920012581,
+            "ransac_ms": 0.733124998077983,
+            "decision_ms": 0.03462500171735883,
+            "memory_ms": 0.0005829970177728683,
+            "total_frame_ms": 1582.5066670004162
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "580435968",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "6420021248",
+            "system_available_ram_bytes": "1785233408",
+            "system_swap_used_bytes": "2871853056",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "7804368",
+            "embedding_bytes": "3072"
+          }
+        },
+        {
+          "requested_timestamp": 84.418,
+          "repeat": 0,
+          "seek_decode_ms": 182.9787499991653,
+          "probe_wall_seconds": 1.3748817080013396,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 84.45103333333333,
+            "width": 1920,
+            "height": 1080,
+            "status": "FOUND",
+            "target_reference_id": "ref_03",
+            "bbox_xyxy": [
+              1103.0399169921875,
+              650.7000122070312,
+              1237.43994140625,
+              772.7400512695312
+            ],
+            "matched_memory_id": "R0",
+            "dino_cosine": 0.6704477667808533,
+            "geometry": {
+              "num_matches": 52,
+              "num_inliers": 19,
+              "inlier_ratio": 0.36538461538461536,
+              "median_reprojection_error_px": 1.9368980729298375,
+              "spatial_coverage": 0.1330899716966894,
+              "transform_valid": true,
+              "accepted": true,
+              "reason": "geometry_passed"
+            },
+            "candidate_count": 1,
+            "active_reference_count": 1,
+            "decision_reason": "visual_and_geometry_passed",
+            "processing_ms": 1321.6298750012356,
+            "verified_pairs": [
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.6704477667808533
+                },
+                "geometry": {
+                  "num_matches": 33,
+                  "num_inliers": 8,
+                  "inlier_ratio": 0.24242424242424243,
+                  "median_reprojection_error_px": 1.4869833429099573,
+                  "spatial_coverage": 0.2669841188193592,
+                  "transform_valid": true,
+                  "accepted": false,
+                  "reason": "insufficient_inliers"
+                },
+                "candidate_rotation_degrees": 0
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.6704477667808533
+                },
+                "geometry": {
+                  "num_matches": 52,
+                  "num_inliers": 19,
+                  "inlier_ratio": 0.36538461538461536,
+                  "median_reprojection_error_px": 1.9368980729298375,
+                  "spatial_coverage": 0.1330899716966894,
+                  "transform_valid": true,
+                  "accepted": true,
+                  "reason": "geometry_passed"
+                },
+                "candidate_rotation_degrees": -45
+              }
+            ],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.6704477667808533
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  1103.0399169921875,
+                  650.7000122070312,
+                  1237.43994140625,
+                  772.7400512695312
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1089,
+                  638,
+                  1251,
+                  785
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "task": "<CAPTION_TO_PHRASE_GROUNDING>",
+              "text_input": "A soccer goal post",
+              "generated_tokens": 10,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ],
+              "raw_boxes": [
+                [
+                  1103.0399169921875,
+                  650.7000122070312,
+                  1237.43994140625,
+                  772.7400512695312
+                ]
+              ],
+              "raw_labels": [
+                "A soccer goal post"
+              ],
+              "raw_count": 1,
+              "kept_count": 1
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 769.815457999357,
+            "dinov3_ms": 23.48408300167648,
+            "retrieval_ms": 0.060999998822808266,
+            "efficientloftr_ms": 527.2706670002663,
+            "ransac_ms": 0.9208750016114209,
+            "decision_ms": 0.031874998967396095,
+            "memory_ms": 0.0005830006557516754,
+            "total_frame_ms": 1321.9180410014815
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "651837440",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "6319587328",
+            "system_available_ram_bytes": "1806123008",
+            "system_swap_used_bytes": "2871853056",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "7804368",
+            "embedding_bytes": "3072"
+          }
+        },
+        {
+          "requested_timestamp": 84.685,
+          "repeat": 0,
+          "seek_decode_ms": 254.93049999931827,
+          "probe_wall_seconds": 1.3636323330028972,
+          "prediction": {
+            "frame_index": 0,
+            "source_frame_index": -1,
+            "timestamp_sec": 84.71796666666667,
+            "width": 1920,
+            "height": 1080,
+            "status": "FOUND",
+            "target_reference_id": "ref_03",
+            "bbox_xyxy": [
+              1103.0399169921875,
+              703.6200561523438,
+              1237.43994140625,
+              826.7400512695312
+            ],
+            "matched_memory_id": "R0",
+            "dino_cosine": 0.6678680777549744,
+            "geometry": {
+              "num_matches": 86,
+              "num_inliers": 50,
+              "inlier_ratio": 0.5813953488372093,
+              "median_reprojection_error_px": 1.3669140385012524,
+              "spatial_coverage": 0.10019818860714834,
+              "transform_valid": true,
+              "accepted": true,
+              "reason": "geometry_passed"
+            },
+            "candidate_count": 1,
+            "active_reference_count": 1,
+            "decision_reason": "visual_and_geometry_passed",
+            "processing_ms": 1319.0143749998242,
+            "verified_pairs": [
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.6678680777549744
+                },
+                "geometry": {
+                  "num_matches": 43,
+                  "num_inliers": 10,
+                  "inlier_ratio": 0.23255813953488372,
+                  "median_reprojection_error_px": 1.4077903195880723,
+                  "spatial_coverage": 0.028704585650599898,
+                  "transform_valid": false,
+                  "accepted": false,
+                  "reason": "invalid_scale_or_transform"
+                },
+                "candidate_rotation_degrees": 0
+              },
+              {
+                "pair": {
+                  "candidate_index": 0,
+                  "memory_id": "R0",
+                  "cosine": 0.6678680777549744
+                },
+                "geometry": {
+                  "num_matches": 86,
+                  "num_inliers": 50,
+                  "inlier_ratio": 0.5813953488372093,
+                  "median_reprojection_error_px": 1.3669140385012524,
+                  "spatial_coverage": 0.10019818860714834,
+                  "transform_valid": true,
+                  "accepted": true,
+                  "reason": "geometry_passed"
+                },
+                "candidate_rotation_degrees": -45
+              }
+            ],
+            "retrieval_candidates": [
+              {
+                "candidate_index": 0,
+                "memory_id": "R0",
+                "cosine": 0.6678680777549744
+              }
+            ],
+            "proposals": [
+              {
+                "candidate_index": 0,
+                "proposal_id": 0,
+                "bbox_xyxy": [
+                  1103.0399169921875,
+                  703.6200561523438,
+                  1237.43994140625,
+                  826.7400512695312
+                ],
+                "source_model": "microsoft/Florence-2-large-ft",
+                "crop_bounds": [
+                  1089,
+                  691,
+                  1251,
+                  840
+                ]
+              }
+            ],
+            "proposal_diagnostics": {
+              "task": "<CAPTION_TO_PHRASE_GROUNDING>",
+              "text_input": "A soccer goal post",
+              "generated_tokens": 10,
+              "reached_eos": true,
+              "hit_token_limit": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "input_size": [
+                768,
+                768
+              ],
+              "raw_boxes": [
+                [
+                  1103.0399169921875,
+                  703.6200561523438,
+                  1237.43994140625,
+                  826.7400512695312
+                ]
+              ],
+              "raw_labels": [
+                "A soccer goal post"
+              ],
+              "raw_count": 1,
+              "kept_count": 1
+            }
+          },
+          "stage_timings_ms": {
+            "decode_ms": 0,
+            "proposal_ms": 778.3254999994824,
+            "dinov3_ms": 23.183082998002646,
+            "retrieval_ms": 0.06791600026190281,
+            "efficientloftr_ms": 516.8544170010136,
+            "ransac_ms": 0.5170409967831802,
+            "decision_ms": 0.0262079993262887,
+            "memory_ms": 0.0005410001904238015,
+            "total_frame_ms": 1319.272999997338
+          },
+          "resources": {
+            "frame_index": "0",
+            "cpu_ram_bytes": "595804160",
+            "cuda_allocated_bytes": "",
+            "cuda_reserved_bytes": "",
+            "peak_gpu_bytes": "",
+            "mps_allocated_bytes": "2725700608",
+            "mps_driver_bytes": "6445531136",
+            "system_available_ram_bytes": "1720795136",
+            "system_swap_used_bytes": "2871853056",
+            "active_reference_count": "1",
+            "pending_count": "0",
+            "image_bytes": "7804368",
+            "embedding_bytes": "3072"
+          }
+        }
+      ],
+      "status": "completed",
+      "models": {
+        "florence_id": "microsoft/Florence-2-large-ft",
+        "florence_revision": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+        "encoder_id": "facebook/dinov3-vitb16-pretrain-lvd1689m",
+        "encoder_revision": "5931719e67bbdb9737e363e781fb0c67687896bc",
+        "eloftr_commit": "07e9c1401e71e9c556b1fda9d86d060af36ba176",
+        "eloftr_checkpoint_sha256": "0af6291141c736e75e94b7f8aae4399b77c7731b3f08758212b2cfe370188878",
+        "device": "mps",
+        "precision": "fp32",
+        "florence_precision": "fp16"
+      },
+      "load_seconds": 4.434366125002271,
+      "proposal_reference_context": {
+        "reference_pixels_sha256": "e5a96e261382888db5391800af66772b27f44aa0436c44571a42ac33c72f1515",
+        "caption": "A soccer goal post on a grassy field.",
+        "caption_generation": {
+          "task": "<CAPTION>",
+          "text_input": "",
+          "generated_tokens": 14,
+          "reached_eos": true,
+          "hit_token_limit": false,
+          "num_beams": 1,
+          "use_cache": true,
+          "input_size": [
+            768,
+            768
+          ]
+        },
+        "grounding_text": "A soccer goal post",
+        "prompt_policy": "caption_subject_v2"
+      },
+      "proposal_reference_prepare_seconds": 0.9603604589974566,
+      "warmup_seconds": 1.3697786670018104
+    }
+  ],
+  "source_hashes": {
+    "src/uav_refmatch/__init__.py": "0f3be64acea451a9cf927bbc6c3ec7d606c243250dcddd738380a8e80295384b",
+    "src/uav_refmatch/cli.py": "1c05019cb0773afa7a5a36db655e1289a1e3208800579135fdca60e247e58346",
+    "src/uav_refmatch/config.py": "f9356554118e28f2b53d54e8d53c5f087fb22bdbfe700818fc31d19deb43d16b",
+    "src/uav_refmatch/core/errors.py": "d1fe14b5570f96fe2bb5bdfd324b006d528ade65cd5cc64b4e6f14805278a8df",
+    "src/uav_refmatch/core/interfaces.py": "53424903b61e0d5a3219d6fc64c43fd225248726b678e00d4d449d3cdf23e6e5",
+    "src/uav_refmatch/core/runtime.py": "a6d91dc473c6592743fa2c354a5653eae275781d83c7896f53cf1da04259afa7",
+    "src/uav_refmatch/core/types.py": "93f0435fd724f18fa0753e63e82a75fa563189e161ad5ab2fe05245aab458ed2",
+    "src/uav_refmatch/data/frame_sampler.py": "c5dcd70b19d17b05312f2888c9496e206c9aebf8ab3c291b8aa075843850ec1f",
+    "src/uav_refmatch/data/video_reader.py": "9d5163cc498cbab86bc046cb5588fbd30c6b748273a1c81f6f94d956a75412e3",
+    "src/uav_refmatch/decision/engine.py": "972e2657f8c3925dbf703eb7cf2a21cec7888eb8dc92658f90a9def4d4df0e95",
+    "src/uav_refmatch/doctor.py": "0b22a6bb724700e06a963de6c46d06bb54231742966a6ae5f8ec8723979c127c",
+    "src/uav_refmatch/evaluation/profiler.py": "0922611329a996893e7410b5369161abad6e691f168ffbfeef29ba13bef98b44",
+    "src/uav_refmatch/features/dinov3.py": "76fe557d8d8465608fd6c7724b2c91f50ccd209d59a338ee0eb0e353b6d37854",
+    "src/uav_refmatch/features/normalization.py": "8c4709543f52008dc7a2031c81b43c5188a7d7ba29e7fd398c34d7e554222c0a",
+    "src/uav_refmatch/geometry/verifier.py": "6b184d15c1bc3f7f17fffbc3b7dd4c74a251ac7a2ba07585efe84dc347ee0caa",
+    "src/uav_refmatch/matching/efficientloftr.py": "c1a2e864f9e0c080ebaf4d7f76da67c75985c59b1307ee2945bf8c6a6657d0ad",
+    "src/uav_refmatch/matching/orientation.py": "f3e6226f49cd380fd1df47e72ba39ef24be11740181abf462e58d44514d0660b",
+    "src/uav_refmatch/matching/retrieval.py": "9973bb55190d5fa8aaa30b587ad81d915d5392147953d784d6669a3db1443ab2",
+    "src/uav_refmatch/memory/base.py": "5af418afe9f1836e127f8cbb53b58f4993da8b0612d076f0d32670339b5f63cf",
+    "src/uav_refmatch/memory/dynamic.py": "909d03e0b670a1df9c20082ab200d0227d0ee41eba4c7b7a7334590e45b52bc7",
+    "src/uav_refmatch/memory/policies.py": "50d6cb73707a73befc5238f53e267f61c41131225093af2d5af82c79cd6bd415",
+    "src/uav_refmatch/memory/static.py": "997182a85961d0896cad12c94f74f23ee5d6f5a226e403b0c3603e18d4910707",
+    "src/uav_refmatch/outputs/recorder.py": "6e9090862c1d85a48b61898d0e6d8f647a830a68bd7c27f3e665d5f17eec782c",
+    "src/uav_refmatch/outputs/reporting.py": "4b8e559ce10ba53f63fb087256833389cf2b157f0f9b6ac8ee8bfdd59b8031eb",
+    "src/uav_refmatch/outputs/video_renderer.py": "f1aeceda76465aa5fc97687f5a89c2bf25117b4e69ab4c5c0c7dfe2f37131a3b",
+    "src/uav_refmatch/pipeline.py": "7838741a2499a5bd8754650b3ec9aaa8b15e62561ff12495a39dc2754b613ad2",
+    "src/uav_refmatch/proposals/boxes.py": "f322aebaf141a9031dea2ba35302278093577f5f20cee3235b6e5ff09de81e36",
+    "src/uav_refmatch/proposals/cache_compat.py": "762e5a1dd0a25cd0683eded5eda8b6688cebcd4076f3faeaec1913baf977aa8f",
+    "src/uav_refmatch/proposals/florence2.py": "aa48c7a09f2719020e64496e3345cde1ea79e4fbed7bac7ca16ca960101e43d3",
+    "src/uav_refmatch/proposals/reference_prompt.py": "db0a484947a1e7a0727309df3d67c9e5b018768b40ff0ebc50f9898c635221c7",
+    "src/uav_refmatch/service.py": "c9d5dbcad5190f2bda25db15454505881413515d69b0cec1df0aa0ecf2489939",
+    "src/uav_refmatch/ui.py": "6cb0b5061ede7725870a499418e8eac0e2cdeb4a8c34a74bd97304393bb897c0",
+    "src/uav_refmatch/worker.py": "149c26557c53391ece3e0db0d039ca89fd3a675500bd9bf6251d09f4f0cf410e"
+  },
+  "git_commit": "d1fdc1904264fcb3731465cef4665c2e8b21b099",
+  "git_dirty": true,
+  "timing_scope": "stage_timings_ms exclude model load, R0 encoding, random seek, resource sampling and manifest IO; probe_wall_seconds includes R0 encoding/recording, seek_decode_ms is reported separately",
+  "wall_seconds": 14.524965749998955
+}

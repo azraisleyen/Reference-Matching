@@ -82,3 +82,14 @@ def test_vfr_render_preserves_actual_presentation_times(tmp_path, monkeypatch, f
             return [float(f.pts * f.time_base) for f in container.decode(video=0)]
 
     assert pts(source) == pts(output)
+
+
+def test_report_explains_unused_dynamic_memory(tmp_path, found):
+    recorder = Recorder(tmp_path, Config(mode="dynamic"))
+    recorder.prediction(found)
+    recorder.finish("completed")
+    summary = json.loads((recorder.path / "summary.json").read_text())
+    assert summary["mode"] == "dynamic"
+    assert summary["memory_diagnostics"]["accepted"] == 0
+    assert summary["memory_diagnostics"]["warning"]
+    assert summary["memory_diagnostics"]["max_found_cosine"] == found.dino_cosine

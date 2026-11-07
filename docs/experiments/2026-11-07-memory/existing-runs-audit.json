@@ -1,0 +1,129 @@
+[
+  {
+    "run": "20261107_071705_static_dinov3-vitb16-pretrain-lvd1689m_24017d80_Deneme2--Tespit-etme-oran--optimize-edil",
+    "status": "completed",
+    "mode": "static",
+    "reference": {
+      "name": "ref_01.jpg",
+      "sha256": "f522271e56d961b477eb45f60c61a97001c26887ad1e79837f6809aa90d75cec"
+    },
+    "processed": 2258,
+    "end_timestamp": 300.93396666666666,
+    "decisions": {
+      "no_visual_match": 1893,
+      "no_candidates": 2,
+      "geometry_rejected": 302,
+      "visual_and_geometry_passed": 61
+    },
+    "geometry_attempts": {
+      "insufficient_matches": 143,
+      "insufficient_inliers": 456,
+      "invalid_scale_or_transform": 300,
+      "geometry_passed": 61,
+      "low_spatial_coverage": 29,
+      "low_inlier_ratio": 13
+    },
+    "reference_context": {
+      "reference_pixels_sha256": "9b4a0716c315031e6779fb51f3a6b4fe5162e7badbc307d52e98e5016152321e",
+      "caption": "A large yellow tractor sitting on top of a lush green field.",
+      "caption_generation": {
+        "task": "<CAPTION>",
+        "text_input": "",
+        "generated_tokens": 17,
+        "reached_eos": true,
+        "hit_token_limit": false,
+        "num_beams": 1,
+        "use_cache": true,
+        "input_size": [
+          768,
+          768
+        ]
+      },
+      "grounding_text": "A large yellow tractor",
+      "prompt_policy": "caption_subject_v1"
+    }
+  },
+  {
+    "run": "20261107_084957_dynamic_dinov3-vitb16-pretrain-lvd1689m_9eb984cb_Deneme3_Dynamic--Tespit-etme-oran--optim",
+    "status": "completed",
+    "mode": "dynamic",
+    "reference": {
+      "name": "ref_01.jpg",
+      "sha256": "f522271e56d961b477eb45f60c61a97001c26887ad1e79837f6809aa90d75cec"
+    },
+    "processed": 2258,
+    "end_timestamp": 300.93396666666666,
+    "decisions": {
+      "no_visual_match": 1893,
+      "no_candidates": 2,
+      "geometry_rejected": 302,
+      "visual_and_geometry_passed": 61
+    },
+    "geometry_attempts": {
+      "insufficient_matches": 143,
+      "insufficient_inliers": 456,
+      "invalid_scale_or_transform": 300,
+      "geometry_passed": 61,
+      "low_spatial_coverage": 29,
+      "low_inlier_ratio": 13
+    },
+    "reference_context": {
+      "reference_pixels_sha256": "9b4a0716c315031e6779fb51f3a6b4fe5162e7badbc307d52e98e5016152321e",
+      "caption": "A large yellow tractor sitting on top of a lush green field.",
+      "caption_generation": {
+        "task": "<CAPTION>",
+        "text_input": "",
+        "generated_tokens": 17,
+        "reached_eos": true,
+        "hit_token_limit": false,
+        "num_beams": 1,
+        "use_cache": true,
+        "input_size": [
+          768,
+          768
+        ]
+      },
+      "grounding_text": "A large yellow tractor",
+      "prompt_policy": "caption_subject_v1"
+    }
+  },
+  {
+    "run": "20261107_095511_static_dinov3-vitb16-pretrain-lvd1689m_45488ab7_Deneme3_Dynamic--Tespit-etme-oran--optim",
+    "status": "cancelled",
+    "mode": "static",
+    "reference": {
+      "name": "ref_03.jpg",
+      "sha256": "59fb3b3a19385aa9139ec520fbe5c18232187d66cedda9387cc2f03c388e49a0"
+    },
+    "processed": 707,
+    "end_timestamp": 94.16073333333334,
+    "decisions": {
+      "no_visual_match": 557,
+      "geometry_rejected": 150
+    },
+    "geometry_attempts": {
+      "insufficient_matches": 277,
+      "invalid_scale_or_transform": 102,
+      "insufficient_inliers": 71
+    },
+    "reference_context": {
+      "reference_pixels_sha256": "e5a96e261382888db5391800af66772b27f44aa0436c44571a42ac33c72f1515",
+      "caption": "A soccer goal post on a grassy field.",
+      "caption_generation": {
+        "task": "<CAPTION>",
+        "text_input": "",
+        "generated_tokens": 14,
+        "reached_eos": true,
+        "hit_token_limit": false,
+        "num_beams": 1,
+        "use_cache": true,
+        "input_size": [
+          768,
+          768
+        ]
+      },
+      "grounding_text": "A soccer goal post on a grassy field",
+      "prompt_policy": "caption_subject_v1"
+    }
+  }
+]

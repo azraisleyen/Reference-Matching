@@ -24,3 +24,11 @@ def restore_matches(matches: LocalMatches, original_shape, rotated_shape, degree
     return LocalMatches(
         matches.reference_points[inside], points[inside], matches.confidence[inside]
     )
+
+
+def rotation_attempts(pairs, degrees, anchor_first=False):
+    if anchor_first:
+        # Preserve the anchor's orientation rescue before spending retries on memory.
+        ranked = sorted(pairs, key=lambda p: p.memory_id != "R0")
+        return [(pair, angle) for pair in ranked for angle in degrees]
+    return [(pair, angle) for angle in degrees for pair in pairs]

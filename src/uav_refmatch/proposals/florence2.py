@@ -53,8 +53,8 @@ class Florence2Proposals:
                 reference_pixels_sha256=digest,
                 caption=caption,
                 caption_generation=diagnostics,
-                grounding_text=subject_phrase(caption),
-                prompt_policy="caption_subject_v1",
+                grounding_text=subject_phrase(caption, self.config.reference_prompt_policy),
+                prompt_policy=self.config.reference_prompt_policy,
             )
         return dict(self.reference_context)
 

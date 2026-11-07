@@ -44,4 +44,9 @@ def retrieve(
         )
     ]
     pairs.sort(key=lambda pair: (-pair.cosine, pair.candidate_index, pair.memory_id))
-    return RetrievalResult(pairs[: config.max_geometry_pairs], best)
+    selected = pairs[: config.max_geometry_pairs]
+    if config.reserve_anchor_pair and not any(p.memory_id == "R0" for p in selected):
+        anchor = next((p for p in pairs if p.memory_id == "R0"), None)
+        if anchor is not None:
+            selected = selected[: max(0, config.max_geometry_pairs - 1)] + [anchor]
+    return RetrievalResult(selected, best)

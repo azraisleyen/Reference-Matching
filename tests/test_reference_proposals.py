@@ -89,3 +89,26 @@ def test_rotation_matches_return_to_original_coordinates_and_discard_padding():
     np.testing.assert_allclose(restored.candidate_points, original, atol=1e-10)
     np.testing.assert_allclose(restored.confidence, [0.8, 0.9])
     assert len(restored.reference_points) == 2
+
+
+def test_subject_v2_removes_scene_locative_without_object_dictionary():
+    assert (
+        subject_phrase("A soccer goal post on a grassy field.", "caption_subject_v2")
+        == "A soccer goal post"
+    )
+    assert subject_phrase("A red car near the building.", "caption_subject_v2") == "A red car"
+    assert (
+        subject_phrase("A person riding a bicycle.", "caption_subject_v2")
+        == "A person riding a bicycle"
+    )
+    assert subject_phrase("A goal on a field.") == "A goal on a field"
+
+
+def test_anchor_retry_schedule_preserves_both_anchor_orientations():
+    from uav_refmatch.core.types import Pair
+    from uav_refmatch.matching.orientation import rotation_attempts
+
+    pairs = [Pair(0, "mem_1", 0.9), Pair(0, "R0", 0.6)]
+    attempts = rotation_attempts(pairs, [-45, 45], True)
+    assert [(p.memory_id, a) for p, a in attempts[:2]] == [("R0", -45), ("R0", 45)]
+    assert rotation_attempts(pairs, [-45, 45], False)[0][0].memory_id == "mem_1"

@@ -1,0 +1,39 @@
+# Comparison-only admission ablation: three anchor-rotation regressions observed.
+# Prefer mps-dynamic-adaptive.yaml for the corrected budget schedule.
+# Experimental memory admission; requires independent drift evaluation.
+mode: dynamic
+models:
+  device: mps
+  precision: fp32
+  florence_precision: fp16
+  florence_num_beams: 1
+  florence_use_cache: true
+  max_new_tokens: 256
+retrieval:
+  top_k_candidates: 5
+  max_geometry_pairs: 3
+  geometry_min_cosine: 0.3
+  detect_min_cosine: 0.3
+geometry:
+  candidate_rotation_fallbacks:
+  - -45
+  - 45
+  model: affine
+  min_match_confidence: 0.4
+  min_matches: 12
+  min_inliers: 12
+  min_inlier_ratio: 0.2
+  ransac_reprojection_threshold_px: 5.0
+  min_spatial_coverage: 0.03
+  max_median_reprojection_error_px: 3.0
+  max_anisotropy: 4.0
+proposals:
+  task: reference_grounding
+memory:
+  capacity: 4
+  memory_min_cosine: 0.5
+  anchor_min_cosine: 0.5
+  memory_min_inliers: 20
+  memory_min_inlier_ratio: 0.25
+  anchor_only_admission: true
+  reject_border_boxes: true

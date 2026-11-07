@@ -1,0 +1,20 @@
+[
+  {
+    "mode": "static",
+    "frames": 141,
+    "found": 60,
+    "downstream_mean_ms": 317.6901637660013,
+    "geometry_calls": 264,
+    "bank_image_peak_bytes": 19427265,
+    "accepted": 0
+  },
+  {
+    "mode": "dynamic",
+    "frames": 141,
+    "found": 88,
+    "downstream_mean_ms": 259.1332475460781,
+    "geometry_calls": 293,
+    "bank_image_peak_bytes": 19774065,
+    "accepted": 1
+  }
+]

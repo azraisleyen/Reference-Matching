@@ -13,6 +13,9 @@ def report(run):
     reasons = Counter()
     candidate_counts = []
     geometry_pairs = 0
+    geometry_reasons = Counter()
+    max_references = 0
+    max_found_cosine = None
     truncated_proposals = 0
     score_sum = score_count = 0
     for line in (run / "predictions.jsonl").open():
@@ -21,13 +24,25 @@ def report(run):
         reasons[p["decision_reason"]] += 1
         candidate_counts.append(p["candidate_count"])
         geometry_pairs += len(p.get("verified_pairs", []))
+        geometry_reasons.update(v["geometry"]["reason"] for v in p.get("verified_pairs", []))
+        max_references = max(max_references, p.get("active_reference_count", 0))
+        if p["status"] == "FOUND" and p["dino_cosine"] is not None:
+            max_found_cosine = max(
+                p["dino_cosine"], max_found_cosine if max_found_cosine is not None else -1
+            )
         truncated_proposals += bool(p.get("proposal_diagnostics", {}).get("hit_token_limit"))
         if p["dino_cosine"] is not None:
             score_sum += p["dino_cosine"]
             score_count += 1
-    events = Counter(
-        json.loads(line)["event_type"] for line in (run / "memory_events.jsonl").open()
+    event_rows = [json.loads(line) for line in (run / "memory_events.jsonl").open()]
+    events = Counter(e["event_type"] for e in event_rows)
+    gates = Counter(
+        e.get("evidence", {}).get("failed_gate")
+        for e in event_rows
+        if e.get("evidence", {}).get("failed_gate")
     )
+    manifest_path = run / "run_manifest.json"
+    manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     totals, n = Counter(), 0
     durations = []
     timings = run / "frame_timings.csv"
@@ -40,7 +55,19 @@ def report(run):
                 if key.endswith("_ms"):
                     totals[key] += float(value)
     result = dict(
+        mode=manifest.get("mode"),
         processed_frames=sum(counts.values()),
+        geometry_attempt_reasons=dict(geometry_reasons),
+        memory_diagnostics=dict(
+            accepted=events["ACCEPTED"],
+            max_active_references=max_references,
+            max_found_cosine=max_found_cosine,
+            failed_gates=dict(gates),
+            admission_thresholds=manifest.get("configuration", {}).get("memory", {}),
+            warning="Dynamic mode admitted no new reference; it did not exercise an expanded bank."
+            if manifest.get("mode") == "dynamic" and not events["ACCEPTED"]
+            else None,
+        ),
         counts=dict(counts),
         memory_events=dict(events),
         mean_cosine=score_sum / score_count if score_count else None,

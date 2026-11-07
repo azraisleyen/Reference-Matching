@@ -255,3 +255,24 @@ Referans açıklaması otomatik üretilir; hedef sınıfı koda yazılmaz. Metin
 bilgileri manifest'e kaydedilir. Eski profiller korunur. Mevcut arayüz yeniden
 başlatılmadan yeni profil yüklenmez. Etiketli videoda örneklenmemiş ara karelerin
 kutusuz olması NOT_FOUND kararı sayılmamalıdır.
+
+## Dinamik bellek ve farklı nesne denetimi
+
+[7 Kasım bellek/referans raporu](docs/MEMORY_AND_REFERENCE_AUDIT_2026-11-07.md),
+static/dynamic deneylerde belleğin neden hiç büyümediğini ve farklı futbol kalesi
+referansındaki aday/geometri sorunlarını açıklar. Yeni özet, bellek kabul sayısını,
+kabul eşiğini, ret nedenlerini ve kullanılmayan dynamic modu görünür kılar.
+
+```bash
+# Ref_01 üzerinde sınanmış deneysel bellek profili; toplam LoFTR çağrı sınırı 4.
+uav-refmatch ui --config configs/experiments/mps-dynamic-adaptive.yaml
+# Küçük/düşük dokulu nesneler için ayrı deneysel ölçek/odaklama profili.
+uav-refmatch ui --config configs/experiments/mps-small-object-probe.yaml
+```
+
+Dynamic profilde yeni referans yalnız R0 geometrisiyle doğrulanır; sınırda kesilen
+tespitler belleğe alınmaz. Eski profiller ve varsayılan eşikler korunmuştur.
+Küçük nesne profili bütün referanslar için önerilen varsayılan değildir; ek maliyet
+ve yanlış eşleşme olasılığı ayrı veride ölçülmelidir. `scripts/benchmark_memory_replay.py`
+kayıtlı Florence kutularıyla gerçek downstream modeli ve nedensel belleği karşılaştırır;
+çıktı süreleri Florence dahil uçtan uca süre olarak yorumlanmamalıdır.

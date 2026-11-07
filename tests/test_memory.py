@@ -101,3 +101,29 @@ def test_pending_nonconsecutive_restarts(anchor, found, entry):
     advance(memory, found, entry, 0)
     advance(memory, found, entry, 3)
     assert len(memory.entries) == 1 and memory.pending[1] == 1
+
+
+def test_anchor_only_admission_does_not_change_detection(anchor, found, entry):
+    memory = DynamicReferenceMemory(anchor, Memory(anchor_only_admission=True))
+    prediction = replace(found, matched_memory_id="mem_0001")
+    memory.update(prediction, entry, 0.85)
+    assert prediction.status == "FOUND"
+    assert len(memory.entries) == 1
+    assert memory.events[-1].evidence["failed_gate"] == "anchor_geometry_required"
+
+
+def test_border_detection_is_not_admitted_when_enabled(anchor, found, entry):
+    memory = DynamicReferenceMemory(anchor, Memory(reject_border_boxes=True))
+    memory.update(found, entry, 0.85)
+    assert found.status == "FOUND"
+    assert memory.events[-1].evidence["failed_gate"] == "border_truncated_candidate"
+    assert memory.pending is None
+
+
+def test_memory_rejection_reports_actual_similarity_gate(anchor, found, entry):
+    memory = DynamicReferenceMemory(anchor, Memory())
+    memory.update(replace(found, dino_cosine=0.6), entry, 0.6)
+    evidence = memory.events[-1].evidence
+    assert evidence["failed_gate"] == "similarity"
+    assert evidence["required_cosine"] == 0.8
+    assert evidence["required_anchor_cosine"] == 0.75

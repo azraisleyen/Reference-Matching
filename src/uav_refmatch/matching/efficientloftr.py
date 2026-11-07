@@ -76,10 +76,13 @@ class EfficientLoFTRMatcher:
         self.model.to(dtype=self.dtype)
         self.device = device
         self.max_side = config.loftr_max_side
+        self.resize_to_max = config.loftr_resize_to_max
 
     def prepare(self, rgb):
         h, w = rgb.shape[:2]
-        factor = min(1.0, self.max_side / max(h, w))
+        factor = self.max_side / max(h, w)
+        if not self.resize_to_max:
+            factor = min(1.0, factor)
         new_w, new_h = max(32, int(w * factor) // 32 * 32), max(32, int(h * factor) // 32 * 32)
         gray = cv2.resize(cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY), (new_w, new_h))
         tensor = torch.from_numpy(gray.copy())[None, None].to(self.device, dtype=self.dtype) / 255.0
