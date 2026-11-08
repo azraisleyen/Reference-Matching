@@ -93,3 +93,70 @@ def test_report_explains_unused_dynamic_memory(tmp_path, found):
     assert summary["memory_diagnostics"]["accepted"] == 0
     assert summary["memory_diagnostics"]["warning"]
     assert summary["memory_diagnostics"]["max_found_cosine"] == found.dino_cosine
+
+
+def test_candidate_colors_scores_and_detection_precedence(monkeypatch):
+    from uav_refmatch.outputs.video_renderer import draw_annotations
+    import cv2
+
+    image = np.zeros((160, 320, 3), dtype=np.uint8)
+    prediction = dict(
+        status="NOT_FOUND",
+        bbox_xyxy=None,
+        proposals=[dict(candidate_index=0, bbox_xyxy=[20, 30, 100, 80])],
+        retrieval_candidates=[dict(candidate_index=0, cosine=0.7234)],
+    )
+    labels = []
+    original = cv2.putText
+
+    def capture(image, text, *args, **kwargs):
+        labels.append(text)
+        return original(image, text, *args, **kwargs)
+
+    monkeypatch.setattr(cv2, "putText", capture)
+    result = draw_annotations(image, prediction)
+    assert tuple(result[30, 20]) == (255, 165, 0)
+    assert "candidate 0 cos=0.723" in labels
+    assert not np.any(np.all(result == (0, 255, 0), axis=2))
+    prediction.update(
+        status="FOUND", bbox_xyxy=[20, 30, 100, 80], matched_memory_id="R0", timestamp_sec=0.0
+    )
+    result = draw_annotations(image, prediction)
+    assert tuple(result[30, 20]) == (0, 255, 0)
+    assert np.any(np.all(result[81:] == (255, 165, 0), axis=2))
+    np.testing.assert_array_equal(draw_annotations(image, None), image)
+    np.testing.assert_array_equal(draw_annotations(image, {"status": "NOT_FOUND"}), image)
+
+
+def test_export_includes_orange_candidates_only_on_sampled_frames(tmp_path, monkeypatch, found):
+    monkeypatch.setenv("XDG_CACHE_HOME", str(tmp_path / "cache"))
+    source = tmp_path / "source.mp4"
+    make_video(source, count=3)
+    recorder = Recorder(tmp_path / "runs", Config())
+    recorder.manifest["source_video"] = {"name": source.name, "sha256": file_hash(source)}
+    recorder.prediction(
+        replace(
+            found,
+            status="NOT_FOUND",
+            bbox_xyxy=None,
+            proposals=[dict(candidate_index=0, bbox_xyxy=[10, 20, 40, 40])],
+            retrieval_candidates=[dict(candidate_index=0, cosine=0.7)],
+        )
+    )
+    recorder.finish("completed")
+    output = render_video(recorder.path, source)
+    with av.open(str(output)) as container:
+        images = [frame.to_ndarray(format="rgb24") for frame in container.decode(video=0)]
+
+    def orange(image):
+        return (
+            (image[:, :, 0] > 180)
+            & (image[:, :, 1] > 80)
+            & (image[:, :, 1] < 220)
+            & (image[:, :, 2] < 60)
+        )
+
+    assert orange(images[0]).sum() > 20
+    assert not orange(images[1]).any()
+    manifest = json.loads((recorder.path / "render_manifest.json").read_text())
+    assert manifest["annotation_policy"] == "accepted_green_candidates_orange"

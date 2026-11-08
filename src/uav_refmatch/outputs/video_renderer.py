@@ -25,9 +25,11 @@ def draw_prediction(image, prediction, overlay=True):
     return output
 
 
-def draw_proposals(image, prediction):
+def draw_proposals(image, prediction, overlay=True):
     """Diagnostic orange proposals; never presented as accepted green detections."""
     output = image.copy()
+    if prediction is None:
+        return output
     scores = {p["candidate_index"]: p["cosine"] for p in prediction.get("retrieval_candidates", [])}
     for p in prediction.get("proposals", []):
         x1, y1, x2, y2 = map(round, p["bbox_xyxy"])
@@ -35,10 +37,20 @@ def draw_proposals(image, prediction):
         score = scores.get(index)
         label = f"candidate {index}" + (f" cos={score:.3f}" if score is not None else "")
         cv2.rectangle(output, (x1, y1), (x2, y2), (255, 165, 0), 2)
-        cv2.putText(
-            output, label, (x1, max(16, y1 - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 165, 0), 1
-        )
+        if overlay:
+            # Keep candidate scores separate from the accepted detection label above the box.
+            h, w = output.shape[:2]
+            label_width = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0][0]
+            origin = (max(0, min(x1, w - label_width - 1)), max(16, min(h - 5, y2 + 16)))
+            cv2.putText(output, label, origin, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 165, 0), 1)
     return output
+
+
+def draw_annotations(image, prediction, overlay=True, show_proposals=True):
+    """Shared RGB drawing policy for frame inspection and exported video."""
+    if show_proposals:
+        image = draw_proposals(image, prediction, overlay)
+    return draw_prediction(image, prediction, overlay)
 
 
 def inspect_frame(run, frame_index, video=None, show_proposals=False):
@@ -73,9 +85,7 @@ def inspect_frame(run, frame_index, video=None, show_proposals=False):
                             None,
                         )
                 image = frame.to_ndarray(format="rgb24")
-                if show_proposals:
-                    image = draw_proposals(image, prediction)
-                return draw_prediction(image, prediction), details
+                return draw_annotations(image, prediction, show_proposals=show_proposals), details
     raise ValueError("Kaynak kare bulunamadı")
 
 
@@ -122,7 +132,7 @@ def render_video(run, video=None, overlay=True):
                     current = next(rows, None)
                 prediction = current if current and current["source_frame_index"] == index else None
                 # No interpolation/held boxes on unsampled frames: their target location is unknown.
-                image = draw_prediction(frame.to_ndarray(format="rgb24"), prediction, overlay)
+                image = draw_annotations(frame.to_ndarray(format="rgb24"), prediction, overlay)
                 annotated = av.VideoFrame.from_ndarray(image, format="rgb24")
                 annotated.pts, annotated.time_base = frame.pts, frame.time_base
                 annotated.duration = frame.duration
@@ -140,6 +150,8 @@ def render_video(run, video=None, overlay=True):
             source_sha256=manifest["source_video"]["sha256"],
             timing="source_pts",
             boxes="sampled_frames_only",
+            annotation_policy="accepted_green_candidates_orange",
+            candidate_scores="recorded_cosine_when_available",
             audio="omitted",
             orientation="coded_unrotated",
             overlay=overlay,
