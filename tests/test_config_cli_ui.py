@@ -4,12 +4,14 @@ from uav_refmatch.config import Config, load_config
 from uav_refmatch.cli import main
 
 
-def test_config_unknown_and_thresholds():
+def test_config_unknown_and_thresholds(tmp_path):
     with pytest.raises(ValidationError):
         Config(unknown=True)
     with pytest.raises(ValidationError):
         Config(memory={"memory_min_cosine": 0.2})
-    assert load_config("configs/experiments/static.yaml").mode == "static"
+    config_path = tmp_path / "static.yaml"
+    config_path.write_text("mode: static\n")
+    assert load_config(config_path).mode == "static"
 
 
 def test_cli_doctor(capsys):

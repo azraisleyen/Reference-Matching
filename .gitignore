@@ -8,6 +8,7 @@ build/
 dist/
 .env
 runs/
+runs_old/
 *.log
 *.mp4
 *.avi
@@ -22,3 +23,6 @@ runs/
 *.safetensors
 .cache/
 .DS_Store
+
+# Local experiments, measurements and research notes
+/experiments/

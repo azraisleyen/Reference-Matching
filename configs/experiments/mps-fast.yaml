@@ -1,9 +1,0 @@
-# Validated compute changes only; original decision and memory thresholds retained.
-mode: static
-models:
-  device: mps
-  precision: fp32
-  florence_precision: fp16
-  florence_num_beams: 1
-  florence_use_cache: true
-  max_new_tokens: 256

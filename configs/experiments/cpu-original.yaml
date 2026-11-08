@@ -1,8 +1,0 @@
-# Reproduce pre-optimization computation for paired benchmarks.
-mode: static
-models:
-  device: cpu
-  precision: fp32
-  florence_use_cache: false
-  florence_num_beams: 3
-  max_new_tokens: 1024
