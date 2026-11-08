@@ -7,14 +7,14 @@ from pathlib import Path
 import shutil
 import tempfile
 import gradio as gr
-from .config import Config, LVD, SAT
+from .config import Config, LVD, SAT, load_config
 from .data.video_reader import probe_video
 from .outputs.video_renderer import inspect_frame, render_video
 from .worker import ExperimentWorker
 
 
 def build_app(output_root="runs", config=None):
-    base_config = config or Config()
+    base_config = config if config is not None else load_config()
     worker = ExperimentWorker(output_root)
     root = Path(output_root).resolve()
 
@@ -142,9 +142,7 @@ def build_app(output_root="runs", config=None):
                     )
                     info = gr.JSON(label="Video metadata")
             with gr.Accordion("Çalıştırma parametreleri", open=False):
-                params = gr.JSON(
-                    value=base_config.model_dump(), label="Kalibre edilmemiş başlangıç eşikleri"
-                )
+                params = gr.JSON(value=base_config.model_dump(), label="Başlangıç yapılandırması")
             with gr.Row():
                 start_button = gr.Button("Start Experiment", variant="primary")
                 cancel_button = gr.Button("Cancel Experiment")

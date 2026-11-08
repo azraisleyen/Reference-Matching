@@ -35,3 +35,14 @@ def test_ui_callback_json_transport(tmp_path):
     index = next(i for i, fn in app.fns.items() if fn.fn and fn.fn.__name__ == "poll_status")
     result = asyncio.run(app.process_api(index, [], state=None))
     assert jsonable_encoder(result["data"]) == [{"phase": "idle"}, 0]
+
+
+def test_default_config_is_loaded_and_missing_file_is_explicit(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(FileNotFoundError, match="--config"):
+        load_config()
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs/default.yaml").write_text("mode: static\ntarget_fps: 2\n")
+    assert load_config().mode == "static"
+    assert load_config().target_fps == 2
+    assert load_config(mode="dynamic").mode == "dynamic"

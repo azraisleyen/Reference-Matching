@@ -11,9 +11,11 @@ from .core.errors import safe_error
 from .core.types import FrameRecord, Prediction, ReferenceEntry, VerifiedPair
 from .proposals.boxes import crop
 from .matching.retrieval import retrieve
-from .matching.orientation import rotate_crop, restore_matches, rotation_attempts
+from .matching.orientation import rotate_crop, restore_matches
+from .matching.scheduler import initial_pairs, retry_attempts
 from .decision.engine import choose
 from .memory.dynamic import DynamicReferenceMemory
+from .memory.policies import select_anchor_geometry
 from .memory.static import StaticReferenceMemory
 from .evaluation.profiler import Profiler
 
@@ -123,7 +125,9 @@ class Pipeline:
                         prediction.decision_reason = (
                             "no_visual_match" if not pairs else "geometry_rejected"
                         )
-                        for pair in pairs:
+                        for pair in initial_pairs(
+                            pairs, self.config.retrieval, self.config.geometry
+                        ):
                             ref = lookup[pair.memory_id]
                             with profiler.measure("efficientloftr_ms"):
                                 matches = self.matcher.match(
@@ -137,11 +141,7 @@ class Pipeline:
                         # Original candidate pairs have priority. Retries spend the SAME
                         # total LoFTR-call budget, not an additional per-pair budget.
                         if not any(v.geometry.accepted for v in verified):
-                            attempts = rotation_attempts(
-                                pairs,
-                                self.config.geometry.candidate_rotation_fallbacks,
-                                self.config.geometry.rotation_retry_anchor_first,
-                            )
+                            attempts = retry_attempts(verified, self.config.geometry)
                             for pair, degrees in attempts:
                                 if len(verified) >= self.config.retrieval.max_geometry_pairs:
                                     break
@@ -181,6 +181,9 @@ class Pipeline:
                             prediction.matched_memory_id = pair.memory_id
                             prediction.dino_cosine = pair.cosine
                             prediction.geometry = winner.geometry
+                            prediction.anchor_geometry = select_anchor_geometry(
+                                verified, index, self.config.memory
+                            )
                             prediction.decision_reason = "visual_and_geometry_passed"
                             if self.config.mode == "dynamic":
                                 anchor_cosine = float(

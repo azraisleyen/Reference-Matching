@@ -40,6 +40,7 @@ class GeometryEvidence:
     transform_valid: bool = False
     accepted: bool = False
     reason: str = "insufficient_matches"
+    diagnostics: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -77,6 +78,7 @@ class Prediction:
     retrieval_candidates: list[dict] = field(default_factory=list)
     proposals: list[dict] = field(default_factory=list)
     proposal_diagnostics: dict = field(default_factory=dict)
+    anchor_geometry: GeometryEvidence | None = None
 
 
 @dataclass(frozen=True)

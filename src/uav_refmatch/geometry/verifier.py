@@ -34,11 +34,14 @@ class AffineRansacVerifier:
                 or np.any(points[:, 1] >= shape[0])
             ):
                 return GeometryEvidence(num_matches=n, reason="out_of_bounds_matches")
+        raw_count = n
         selected_confidence = np.asarray(matches.confidence) >= c.min_match_confidence
         src, dst = src[selected_confidence], dst[selected_confidence]
         n = len(src)
         if n < c.min_matches:
-            return GeometryEvidence(num_matches=n)
+            return GeometryEvidence(
+                num_matches=n, diagnostics={"raw_matches": raw_count, "filtered_matches": n}
+            )
         if (
             np.linalg.matrix_rank(src - src.mean(axis=0)) < 2
             or np.linalg.matrix_rank(dst - dst.mean(axis=0)) < 2
@@ -88,11 +91,10 @@ class AffineRansacVerifier:
                 return 0.0
             return float(cv2.contourArea(cv2.convexHull(points))) / (shape[0] * shape[1])
 
-        coverage_value = min(
-            coverage(src[selected], reference_shape), coverage(dst[selected], candidate_shape)
-        )
-        reason = "geometry_passed"
-        for condition, failure in [
+        reference_coverage = coverage(src[selected], reference_shape)
+        candidate_coverage = coverage(dst[selected], candidate_shape)
+        coverage_value = min(reference_coverage, candidate_coverage)
+        checks = [
             (valid, "invalid_scale_or_transform"),
             (count >= c.min_inliers, "insufficient_inliers"),
             (count / n >= c.min_inlier_ratio, "low_inlier_ratio"),
@@ -101,10 +103,26 @@ class AffineRansacVerifier:
                 "high_reprojection_error",
             ),
             (coverage_value >= c.min_spatial_coverage, "low_spatial_coverage"),
-        ]:
-            if not condition:
-                reason = failure
-                break
+        ]
+        failures = [failure for condition, failure in checks if not condition]
+        reason = failures[0] if failures else "geometry_passed"
         return GeometryEvidence(
-            n, count, count / n, error, coverage_value, valid, reason == "geometry_passed", reason
+            n,
+            count,
+            count / n,
+            error,
+            coverage_value,
+            valid,
+            not failures,
+            reason,
+            dict(
+                raw_matches=raw_count,
+                filtered_matches=n,
+                transform=transform.tolist(),
+                singular_values=scales.tolist(),
+                determinant=float(np.linalg.det(transform[:, :2])),
+                reference_coverage=reference_coverage,
+                candidate_coverage=candidate_coverage,
+                failed_checks=failures,
+            ),
         )

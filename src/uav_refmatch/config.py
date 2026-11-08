@@ -32,9 +32,12 @@ class Models(StrictModel):
     florence_precision: Literal["fp32", "fp16"] | None = None
     loftr_max_side: int = Field(640, ge=32)
     loftr_resize_to_max: bool = False
+    loftr_min_long_side: int = Field(0, ge=0)
 
     @model_validator(mode="after")
     def pin_default_revisions(self):
+        if self.loftr_min_long_side > self.loftr_max_side:
+            raise ValueError("LoFTR minimum side must not exceed maximum side")
         pins = {
             "microsoft/Florence-2-large-ft": "4a12a2b54b7016a48a22037fbd62da90cd566f2a",
             "microsoft/Florence-2-base-ft": "f6c1a25888ffc1d945ee8a1a77ac833c7303d46e",
@@ -69,6 +72,9 @@ class Retrieval(StrictModel):
 
 
 class Geometry(StrictModel):
+    rotation_retry_policy: Literal["legacy", "cosine", "evidence"] = "legacy"
+    reserved_rotation_calls: int = Field(0, ge=0)
+
     rotation_retry_anchor_first: bool = False
     candidate_rotation_fallbacks: tuple[Literal[-45, 45], ...] = Field((), max_length=2)
     model: Literal["partial_affine", "affine"] = "partial_affine"
@@ -85,6 +91,8 @@ class Geometry(StrictModel):
 
 
 class Memory(StrictModel):
+    use_verified_anchor: bool = True
+
     anchor_only_admission: bool = False
     reject_border_boxes: bool = False
     capacity: int = Field(8, ge=1)
@@ -116,6 +124,8 @@ class Config(StrictModel):
 
     @model_validator(mode="after")
     def thresholds(self):
+        if self.geometry.reserved_rotation_calls >= self.retrieval.max_geometry_pairs:
+            raise ValueError("Reserved rotations must leave at least one normal geometry call")
         if (
             self.retrieval.geometry_min_cosine is not None
             and self.retrieval.geometry_min_cosine > self.retrieval.detect_min_cosine
@@ -133,7 +143,12 @@ class Config(StrictModel):
 
 
 def load_config(path: str | Path | None = None, **overrides) -> Config:
-    data = yaml.safe_load(Path(path).read_text()) if path else {}
+    selected = Path(path) if path is not None else Path("configs/default.yaml")
+    if not selected.is_file():
+        raise FileNotFoundError(
+            f"Configuration not found: {selected}. Run from the repository root or use --config."
+        )
+    data = yaml.safe_load(selected.read_text())
     data = data or {}
     for key, value in overrides.items():
         if value is not None:

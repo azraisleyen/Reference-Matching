@@ -41,3 +41,23 @@ def test_low_coverage():
         LocalMatches(points, points, np.ones(20)), (100, 100), (100, 100)
     )
     assert not result.accepted and result.reason == "low_spatial_coverage"
+
+
+def test_geometry_records_all_failed_checks_without_relaxing_acceptance():
+    import numpy as np
+    from uav_refmatch.config import Geometry
+    from uav_refmatch.core.types import LocalMatches
+    from uav_refmatch.geometry.verifier import AffineRansacVerifier
+
+    points = np.random.default_rng(9).uniform(10, 20, (20, 2)).astype(np.float32)
+    result = AffineRansacVerifier(Geometry(min_inliers=25, min_spatial_coverage=0.1)).verify(
+        LocalMatches(points, points, np.ones(20)), (100, 100, 3), (100, 100, 3)
+    )
+    assert not result.accepted
+    assert result.reason == "insufficient_inliers"
+    assert set(result.diagnostics["failed_checks"]) == {
+        "insufficient_inliers",
+        "low_spatial_coverage",
+    }
+    assert len(result.diagnostics["transform"]) == 2
+    assert result.diagnostics["raw_matches"] == 20

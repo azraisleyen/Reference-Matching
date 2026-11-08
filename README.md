@@ -22,7 +22,7 @@ Video / PTS → kare örnekleme → Florence-2 aday kutuları
 - DINOv3 için Hugging Face hesabı ve kullanılacak modelin erişim onayı.
 - CPU, NVIDIA CUDA veya açıkça seçilen Apple Silicon MPS cihazı.
 
-`configs/default.yaml` cihaz olarak `mps` seçer. Apple Silicon dışındaki sistemlerde `models.device` değerini `cpu` veya `cuda` yapın. `auto`, CUDA varsa CUDA'yı; yoksa CPU'yu seçer. CUDA kurulumunda [PyTorch kurulum seçicisini](https://pytorch.org/get-started/locally/) kullanın.
+`configs/default.yaml` cihaz olarak `mps` seçer. Apple Silicon dışındaki sistemlerde `models.device` değerini `cpu` veya `cuda` yapın. `auto`, CUDA varsa CUDA'yı; yoksa CPU'yu seçer. CPU kullanırken `models.florence_precision: fp32` seçin. CUDA kurulumunda [PyTorch kurulum seçicisini](https://pytorch.org/get-started/locally/) kullanın.
 
 `target_fps` giriş örnekleme sıklığıdır; uygulamanın saniyede aynı sayıda kare işleyeceği anlamına gelmez. Bellek ihtiyacı model, görüntü boyutu ve eşleştirme bütçesine bağlıdır.
 
@@ -134,11 +134,22 @@ uav-refmatch render --run "runs/CALISMA_KLASORU"
 uav-refmatch render --run "runs/CALISMA_KLASORU" --video "/yeni/yol/video.mp4"
 ```
 
-**Yapılandırmayı açıkça `--config configs/default.yaml` ile seçin.** `--config` verilmezse YAML değil, Python varsayılanları kullanılır. YAML dosyaları birbirinden miras almaz; eksik alanlar şema varsayılanlarından tamamlanır. Arayüzde değiştirilen mod/cihaz gibi seçimler çalıştırmanın `resolved_config.yaml` dosyasında kaydedilir. YAML değişiklikleri için arayüzü yeniden başlatın.
+**Tek kullanım yapılandırması `configs/default.yaml` dosyasıdır.** CLI ve arayüz `--config` verilmediğinde çalışma dizinindeki bu dosyayı okur. Başka bir dizinden çalıştırırken `--config` ile tam yolu belirtin. Dosya bulunamazsa sessizce başka ayarlara geçilmez. YAML dosyaları birbirinden miras almaz; eksik alanlar şema varsayılanlarından tamamlanır. Arayüzde değiştirilen mod/cihaz gibi seçimler çalıştırmanın `resolved_config.yaml` dosyasında kaydedilir. YAML değişiklikleri için arayüzü yeniden başlatın.
 
 ### VS Code
 
 Proje klasörünü açın, Python yorumlayıcısı olarak `.venv` ortamını seçin ve bütünleşik terminalde yukarıdaki komutları çalıştırın. Terminalin çalışma dizini repo kökü olmalıdır.
+
+## Doğrulama ve bellek ayarları
+
+- `retrieval.max_geometry_pairs`: normal eşleştirme ve döndürmelerin paylaştığı toplam LoFTR çağrı sınırı.
+- `geometry.reserved_rotation_calls`: normal çiftlerin bütün bütçeyi tüketmesini önleyen döndürme payı. Yeni bir ek bütçe değildir.
+- `geometry.rotation_retry_policy`: `cosine` en benzer doğrulanmamış çifte, `evidence` geometrik desteğe öncelik verir; `legacy` eski sıralamayı korur.
+- `models.loftr_min_long_side`: yalnız küçük crop'ların uzun kenarı için alt çözünürlük sınırı; `0` büyütmeyi kapatır. Üst sınır `loftr_max_side` ile korunur.
+- `memory.capacity`: R0 dışındaki ek kayıt kapasitesi; LoFTR çağrı sayısını artırmaz.
+- `memory.use_verified_anchor`: kazanan adayın zaten hesaplanmış R0 geometrisini bellek kabulünde kullanır. Başka adayın kanıtı kullanılmaz; ek model çağrısı yapılmaz.
+
+Geometrik kabul eşikleri ve belleğin benzerlik, kalite, tekrar ve ardışık onay kontrolleri korunur. Kayıtlardaki `anchor_geometry` bellek kararının R0 desteğini, `geometry.diagnostics` ise dönüşüm, ölçek, eşleşme sayıları ve başarısız koşulları açıklar. Ayarlar tüm nesnelerde aynı doğruluğu garanti etmez.
 
 ## Çıktılar ve video gösterimi
 

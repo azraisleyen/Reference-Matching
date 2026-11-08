@@ -1,3 +1,4 @@
+# Ortak çalışma ayarları; model hattı ve toplam çağrı sınırı korunur.
 mode: dynamic
 target_fps: 7.5
 max_frames: null
@@ -13,36 +14,57 @@ models:
   device: mps
   precision: fp32
   batch_size: 16
-  max_new_tokens: 1024
+  max_new_tokens: 256
+  florence_num_beams: 1
+  florence_use_cache: true
+  florence_precision: fp16
   loftr_max_side: 640
+  loftr_resize_to_max: false
+  loftr_min_long_side: 320
 proposals:
   max_proposals: 30
   nms_iou: 0.85
   crop_padding: 0.1
   min_box_side: 12
+  reference_prompt_policy: caption_subject_v2
   tiling: false
+  task: reference_grounding
 retrieval:
+  reserve_anchor_pair: true
   top_k_candidates: 5
-  max_geometry_pairs: 3
-  detect_min_cosine: 0.7
+  max_geometry_pairs: 4
+  detect_min_cosine: 0.3
+  geometry_min_cosine: 0.3
 geometry:
+  rotation_retry_policy: cosine
+  reserved_rotation_calls: 2
+  rotation_retry_anchor_first: false
+  candidate_rotation_fallbacks:
+  - -45
+  - 45
+  model: affine
+  min_match_confidence: 0.4
+  max_anisotropy: 4.0
   min_matches: 12
-  min_inliers: 8
-  min_inlier_ratio: 0.25
-  ransac_reprojection_threshold_px: 3.0
-  min_spatial_coverage: 0.08
+  min_inliers: 12
+  min_inlier_ratio: 0.2
+  ransac_reprojection_threshold_px: 5.0
+  min_spatial_coverage: 0.03
   min_scale: 0.05
   max_scale: 20.0
   max_median_reprojection_error_px: 3.0
 memory:
-  capacity: 8
-  memory_min_cosine: 0.8
-  memory_min_inliers: 12
-  memory_min_inlier_ratio: 0.4
+  use_verified_anchor: true
+  anchor_only_admission: true
+  reject_border_boxes: true
+  capacity: 4
+  memory_min_cosine: 0.5
+  memory_min_inliers: 20
+  memory_min_inlier_ratio: 0.25
   duplicate_cosine: 0.96
   cooldown_frames: 8
   confirmation_frames: 2
-  anchor_min_cosine: 0.75
+  anchor_min_cosine: 0.5
   confirmation_cosine: 0.85
   min_crop_side: 24
   min_laplacian_variance: 10.0

@@ -8,6 +8,7 @@ import torch
 def test_loftr_resize_preserves_crop_coordinate_scale():
     adapter = object.__new__(EfficientLoFTRMatcher)
     adapter.max_side = 640
+    adapter.min_long_side = 0
     adapter.resize_to_max = False
     adapter.device = "cpu"
     adapter.dtype = torch.float32
@@ -21,6 +22,7 @@ def test_loftr_resize_preserves_crop_coordinate_scale():
 def test_tiny_crop_resizes_to_supported_shape():
     adapter = object.__new__(EfficientLoFTRMatcher)
     adapter.max_side = 640
+    adapter.min_long_side = 0
     adapter.resize_to_max = False
     adapter.device = "cpu"
     adapter.dtype = torch.float32
@@ -33,9 +35,25 @@ def test_tiny_crop_resizes_to_supported_shape():
 def test_optional_loftr_upscale_retains_original_pixel_coordinates():
     adapter = object.__new__(EfficientLoFTRMatcher)
     adapter.max_side = 640
+    adapter.min_long_side = 0
     adapter.resize_to_max = True
     adapter.device = "cpu"
     adapter.dtype = torch.float32
     tensor, scale = adapter.prepare(np.zeros((80, 100, 3), np.uint8))
     assert tensor.shape == (1, 1, 512, 640)
     np.testing.assert_allclose(scale, [100 / 640, 80 / 512])
+
+
+def test_minimum_resolution_only_upscales_small_crops():
+    adapter = object.__new__(EfficientLoFTRMatcher)
+    adapter.max_side = 640
+    adapter.min_long_side = 320
+    adapter.resize_to_max = False
+    adapter.device = "cpu"
+    adapter.dtype = torch.float32
+    small, scale = adapter.prepare(np.zeros((80, 100, 3), np.uint8))
+    assert small.shape == (1, 1, 256, 320)
+    np.testing.assert_allclose(scale, [100 / 320, 80 / 256])
+    large, scale = adapter.prepare(np.zeros((384, 512, 3), np.uint8))
+    assert large.shape == (1, 1, 384, 512)
+    np.testing.assert_allclose(scale, [1, 1])
