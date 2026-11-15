@@ -89,9 +89,9 @@ def build_app(output_root="runs", config=None):
         except Exception as exc:
             raise gr.Error(str(exc)) from exc
 
-    def render(name, source):
+    def render(name, source, sampled_only):
         try:
-            return str(render_video(run_path(name), source or None))
+            return str(render_video(run_path(name), source or None, sampled_only=sampled_only))
         except Exception as exc:
             raise gr.Error(str(exc)) from exc
 
@@ -190,7 +190,10 @@ def build_app(output_root="runs", config=None):
                 "NOT_FOUND kararı değildir. Karşılaştırma için işlenmiş kare kayıtlarını kullanın."
             )
             output = gr.File(label="Üretilen sonuç videosu")
-            gr.Button("Video Oluştur").click(render, [choice, source], output)
+            sampled_only = gr.Checkbox(
+                label="Yalnız işlenen karelerle inceleme videosu", value=False
+            )
+            gr.Button("Video Oluştur").click(render, [choice, source, sampled_only], output)
             summary = gr.JSON(value=initial_summary, label="Deney özeti")
             choice.change(
                 lambda n: json.loads((run_path(n) / "summary.json").read_text())

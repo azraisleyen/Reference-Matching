@@ -26,6 +26,11 @@ def main(argv=None):
         cmd.add_argument("--run", required=True, type=Path)
         if name == "render":
             cmd.add_argument("--video", help="Reselect a moved source (hash checked)")
+            cmd.add_argument(
+                "--sampled-only",
+                action="store_true",
+                help="Export processed frames only, keeping their original timestamps",
+            )
     ui = commands.add_parser("ui")
     ui.add_argument("--output-root", default="runs")
     ui.add_argument("--config")
@@ -55,7 +60,7 @@ def main(argv=None):
         elif args.command == "render":
             from .outputs.video_renderer import render_video
 
-            print(render_video(args.run, args.video))
+            print(render_video(args.run, args.video, sampled_only=args.sampled_only))
         elif args.command == "report":
             from .outputs.reporting import report
 

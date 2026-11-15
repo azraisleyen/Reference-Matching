@@ -109,6 +109,56 @@ class Memory(StrictModel):
     max_pending: Literal[1] = 1
 
 
+class PatchVerification(StrictModel):
+    enabled: bool = False
+    image_size: int = Field(448, ge=224, le=896, multiple_of=16)
+    min_cosine: float = Field(0.8, ge=0, le=1)
+    reprojection_fraction: float = Field(0.03, gt=0, le=0.1)
+    cache_entries: int = Field(16, ge=2, le=64)
+
+
+class Tracking(StrictModel):
+    mode: Literal["propagate", "verify"] = "propagate"
+    identity_policy: Literal["anchor", "verified_bank"] = "anchor"
+    verified_bank_min_cosine: float = Field(0.7, ge=-1, le=1)
+    max_unverified_sec: float = Field(0.0, ge=0)
+    proposal_duplicate_iou: float = Field(0.85, gt=0, le=1)
+    backend: Literal["flow", "mil"] = "flow"
+    enabled: bool = False
+    max_side: int = Field(960, ge=64)
+    max_points: int = Field(100, ge=8)
+    min_points: int = Field(8, ge=3)
+    max_fb_error_fraction: float = Field(0.02, gt=0, le=1)
+    min_support_ratio: float = Field(0.5, gt=0, le=1)
+    max_scale_change: float = Field(1.5, gt=1)
+    max_gap_sec: float = Field(0.5, gt=0)
+    reverify_interval_sec: float = Field(1.0, gt=0)
+    appearance_min_cosine: float = Field(0.7, ge=-1, le=1)
+    association_min_iou: float = Field(0.1, ge=0, le=1)
+    acquisition_anchor_min_cosine: float = Field(0.5, ge=-1, le=1)
+
+    @model_validator(mode="after")
+    def point_limits(self):
+        if 0 < self.max_unverified_sec < self.reverify_interval_sec:
+            raise ValueError("Unverified horizon must cover the verification interval (or be zero)")
+        if self.min_points > self.max_points:
+            raise ValueError("min_points must not exceed max_points")
+        return self
+
+
+class Reference(StrictModel):
+    # Optional pixel box in the supplied reference image, before any resizing.
+    bbox_xyxy: tuple[int, int, int, int] | None = None
+
+    @model_validator(mode="after")
+    def valid_box(self):
+        if self.bbox_xyxy is not None:
+            a, b, c, d = self.bbox_xyxy
+            if min(a, b) < 0 or c <= a or d <= b:
+                raise ValueError("Invalid reference box")
+        return self
+
+
 class Config(StrictModel):
     mode: Literal["static", "dynamic"] = "dynamic"
     target_fps: float = Field(7.5, gt=0)
@@ -119,6 +169,9 @@ class Config(StrictModel):
     retrieval: Retrieval = Retrieval()
     geometry: Geometry = Geometry()
     memory: Memory = Memory()
+    tracking: Tracking = Tracking()
+    patch_verification: PatchVerification = PatchVerification()
+    reference: Reference = Reference()
     verified_cfr_fps: float | None = Field(None, gt=0)
     warmup: bool = True
 

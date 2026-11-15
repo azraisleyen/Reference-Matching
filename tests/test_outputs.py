@@ -159,4 +159,27 @@ def test_export_includes_orange_candidates_only_on_sampled_frames(tmp_path, monk
     assert orange(images[0]).sum() > 20
     assert not orange(images[1]).any()
     manifest = json.loads((recorder.path / "render_manifest.json").read_text())
-    assert manifest["annotation_policy"] == "accepted_green_candidates_orange"
+    assert manifest["annotation_policy"] == "accepted_green_tracked_blue_candidates_orange"
+
+
+def test_sampled_export_keeps_real_timestamps_and_does_not_invent_frames(tmp_path, found):
+    source = tmp_path / "source.mp4"
+    make_video(source, count=6)
+    recorder = Recorder(tmp_path / "runs", Config())
+    recorder.manifest["source_video"] = {"name": source.name, "sha256": file_hash(source)}
+    for i in [0, 2, 4]:
+        recorder.prediction(replace(found, frame_index=i // 2, source_frame_index=i))
+    recorder.finish("completed")
+    output = render_video(recorder.path, source, sampled_only=True)
+    with av.open(str(source)) as c:
+        expected = [
+            float(f.pts * f.time_base) for i, f in enumerate(c.decode(video=0)) if i in [0, 2, 4]
+        ]
+    with av.open(str(output)) as c:
+        actual = [float(f.pts * f.time_base) for f in c.decode(video=0)]
+    assert actual == pytest.approx(expected)
+    assert output.name == "annotated_sampled.mp4"
+    assert (
+        json.loads((recorder.path / "render_sampled_manifest.json").read_text())["video_frames"]
+        == "processed_only"
+    )

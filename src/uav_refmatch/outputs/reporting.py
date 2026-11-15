@@ -10,10 +10,13 @@ from .recorder import write_json
 def report(run):
     run = Path(run)
     counts = Counter()
+    tracking_states = Counter()
+    verification_triggers = Counter()
     reasons = Counter()
     candidate_counts = []
     geometry_pairs = 0
     geometry_reasons = Counter()
+    verification_methods = Counter()
     max_references = 0
     max_found_cosine = None
     truncated_proposals = 0
@@ -21,9 +24,16 @@ def report(run):
     for line in (run / "predictions.jsonl").open():
         p = json.loads(line)
         counts[p["status"]] += 1
+        tracking_states.update([p.get("tracking", {}).get("state", "disabled")])
+        trigger = p.get("tracking", {}).get("verification_trigger")
+        if trigger:
+            verification_triggers.update([trigger])
         reasons[p["decision_reason"]] += 1
         candidate_counts.append(p["candidate_count"])
         geometry_pairs += len(p.get("verified_pairs", []))
+        verification_methods.update(
+            v.get("method", "efficientloftr") for v in p.get("verified_pairs", [])
+        )
         geometry_reasons.update(v["geometry"]["reason"] for v in p.get("verified_pairs", []))
         max_references = max(max_references, p.get("active_reference_count", 0))
         if p["status"] == "FOUND" and p["dino_cosine"] is not None:
@@ -52,12 +62,13 @@ def report(run):
             if row.get("total_frame_ms"):
                 durations.append(float(row["total_frame_ms"]))
             for key, value in row.items():
-                if key.endswith("_ms"):
+                if key.endswith("_ms") and value not in (None, ""):
                     totals[key] += float(value)
     result = dict(
         mode=manifest.get("mode"),
         processed_frames=sum(counts.values()),
         geometry_attempt_reasons=dict(geometry_reasons),
+        verification_methods=dict(verification_methods),
         memory_diagnostics=dict(
             accepted=events["ACCEPTED"],
             max_active_references=max_references,
@@ -69,6 +80,8 @@ def report(run):
             else None,
         ),
         counts=dict(counts),
+        tracking_states=dict(tracking_states),
+        verification_triggers=dict(verification_triggers),
         memory_events=dict(events),
         mean_cosine=score_sum / score_count if score_count else None,
         mean_timings_ms={k: v / n for k, v in totals.items()} if n else {},

@@ -5,10 +5,12 @@ import torch
 
 STAGES = (
     "decode_ms",
+    "tracking_ms",
     "proposal_ms",
     "dinov3_ms",
     "retrieval_ms",
     "efficientloftr_ms",
+    "dense_matching_ms",
     "ransac_ms",
     "decision_ms",
     "memory_ms",

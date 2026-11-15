@@ -55,6 +55,7 @@ class VerifiedPair:
     pair: Pair
     geometry: GeometryEvidence
     candidate_rotation_degrees: int = 0
+    method: str = "efficientloftr"
 
 
 @dataclass
@@ -64,7 +65,7 @@ class Prediction:
     timestamp_sec: float
     width: int
     height: int
-    status: Literal["FOUND", "NOT_FOUND", "ERROR"]
+    status: Literal["FOUND", "TRACKED", "NOT_FOUND", "ERROR"]
     target_reference_id: str
     bbox_xyxy: BBox | None = None
     matched_memory_id: str | None = None
@@ -79,6 +80,7 @@ class Prediction:
     proposals: list[dict] = field(default_factory=list)
     proposal_diagnostics: dict = field(default_factory=dict)
     anchor_geometry: GeometryEvidence | None = None
+    tracking: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

@@ -12,6 +12,7 @@ def select_anchor_geometry(verified, candidate_index, config):
         if v.pair.candidate_index == candidate_index
         and v.pair.memory_id == "R0"
         and v.geometry.accepted
+        and v.method == "efficientloftr"
     ]
     return max(
         evidence,
@@ -32,6 +33,9 @@ class MemoryAdmissionPolicy:
     def evaluate(self, prediction, entry, anchor_cosine):
         c = self.config
         evidence = {"anchor_cosine": anchor_cosine, "dino_cosine": prediction.dino_cosine}
+        if prediction.status == "TRACKED":
+            evidence["failed_gate"] = "tracking_is_not_identity_evidence"
+            return "REJECTED_LOW_CONFIDENCE", evidence
         if prediction.status != "FOUND" or entry is None:
             evidence["failed_gate"] = "not_found_or_missing_entry"
             return "REJECTED_LOW_CONFIDENCE", evidence
@@ -64,6 +68,9 @@ class MemoryAdmissionPolicy:
         # The pipeline supplies R0 evidence for the winning candidate only.
         # Do not borrow geometry from a different box or make an extra matcher call.
         g = anchor_geometry if c.anchor_only_admission and anchor_geometry else prediction.geometry
+        if g and g.diagnostics.get("backend") == "dino_patch":
+            evidence["failed_gate"] = "dense_evidence_requires_fine_confirmation"
+            return "REJECTED_GEOMETRY", evidence
         evidence["geometry_reference"] = (
             "R0" if anchor_geometry and c.anchor_only_admission else prediction.matched_memory_id
         )

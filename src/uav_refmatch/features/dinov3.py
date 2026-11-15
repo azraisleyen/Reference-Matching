@@ -43,3 +43,24 @@ class DinoV3Encoder:
                     raise ValueError("Unexpected DINOv3 embedding dimension")
                 batches.append(normalize(cls))
         return np.concatenate(batches)
+
+    def encode_spatial(self, image: np.ndarray, size: int):
+        """Normalized patch descriptors and their grid; CLS/register tokens excluded."""
+        from .spatial import SpatialFeatures
+
+        if size % self.model.config.patch_size:
+            raise ValueError("Spatial input must be divisible by the model patch size")
+        with torch.inference_mode():
+            inputs = self.processor(
+                images=Image.fromarray(image),
+                return_tensors="pt",
+                size={"height": size, "width": size},
+            )
+            inputs = {k: v.to(self.device, dtype=self.dtype) for k, v in inputs.items()}
+            hidden = self.model(**inputs).last_hidden_state[0]
+            offset = 1 + self.model.config.num_register_tokens
+            patches = normalize(hidden[offset:].float().cpu().numpy())
+            grid = tuple(
+                int(n // self.model.config.patch_size) for n in inputs["pixel_values"].shape[-2:]
+            )
+        return SpatialFeatures(patches, grid, image.shape[:2])

@@ -71,3 +71,34 @@ memory:
   max_pending: 1
 verified_cfr_fps: null
 warmup: true
+
+# Takip ve güvenilir bellekle yeniden edinim; yeni veride ayrıca doğrulanmalıdır.
+tracking:
+  mode: verify
+  identity_policy: verified_bank
+  verified_bank_min_cosine: 0.7
+  max_unverified_sec: 0.0
+  proposal_duplicate_iou: 0.85
+  backend: mil
+  enabled: true
+  max_side: 960
+  max_points: 100
+  min_points: 8
+  max_fb_error_fraction: 0.02
+  min_support_ratio: 0.5
+  max_scale_change: 1.5
+  max_gap_sec: 0.5
+  reverify_interval_sec: 1.0
+  appearance_min_cosine: 0.7
+  association_min_iou: 0.1
+  acquisition_anchor_min_cosine: 0.5
+reference:
+  bbox_xyxy: null
+
+# Yerel uzamsal doğrulama; aynı toplam geometri bütçesi kullanılır.
+patch_verification:
+  enabled: true
+  image_size: 448
+  min_cosine: 0.75
+  reprojection_fraction: 0.03
+  cache_entries: 16

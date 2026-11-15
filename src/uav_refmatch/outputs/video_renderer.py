@@ -11,17 +11,20 @@ from .recorder import write_json
 
 def draw_prediction(image, prediction, overlay=True):
     output = image.copy()
-    if prediction and prediction["status"] == "FOUND" and prediction["bbox_xyxy"] is not None:
+    if (
+        prediction
+        and prediction["status"] in ("FOUND", "TRACKED")
+        and prediction["bbox_xyxy"] is not None
+    ):
         x1, y1, x2, y2 = prediction["bbox_xyxy"]
         h, w = output.shape[:2]
         a, b = max(0, min(w - 1, round(x1))), max(0, min(h - 1, round(y1)))
         c, d = max(0, min(w - 1, round(x2))), max(0, min(h - 1, round(y2)))
-        cv2.rectangle(output, (a, b), (c, d), (0, 255, 0), 2)
+        color = (0, 255, 0) if prediction["status"] == "FOUND" else (0, 180, 255)
+        cv2.rectangle(output, (a, b), (c, d), color, 2)
         if overlay:
-            text = f"{prediction['matched_memory_id']} t={prediction['timestamp_sec']:.3f}"
-            cv2.putText(
-                output, text, (a, max(15, b - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1
-            )
+            text = f"{prediction['status']} {prediction.get('matched_memory_id') or 'flow'} t={prediction['timestamp_sec']:.3f}"
+            cv2.putText(output, text, (a, max(15, b - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
     return output
 
 
@@ -89,7 +92,7 @@ def inspect_frame(run, frame_index, video=None, show_proposals=False):
     raise ValueError("Kaynak kare bulunamadı")
 
 
-def render_video(run, video=None, overlay=True):
+def render_video(run, video=None, overlay=True, sampled_only=False):
     from ..service import resolve_source
 
     run = Path(run)
@@ -106,14 +109,20 @@ def render_video(run, video=None, overlay=True):
     )
     if last_processed < 0:
         raise ValueError("Render edilecek tahmin kaydı yok")
-    output = run / "annotated_video.mp4"
-    partial = run / "annotated_video.partial.mp4"
+    stem = "annotated_sampled" if sampled_only else "annotated_video"
+    output = run / f"{stem}.mp4"
+    partial = run / f"{stem}.partial.mp4"
     rows = (json.loads(line) for line in (run / "predictions.jsonl").open())
     current = next(rows, None)
     try:
         with av.open(str(source)) as reader, av.open(str(partial), "w") as writer:
             source_stream = reader.streams.video[0]
-            stream = writer.add_stream("libx264", rate=source_stream.average_rate or Fraction(30))
+            rate = (
+                Fraction(str(manifest["configuration"]["target_fps"]))
+                if sampled_only
+                else source_stream.average_rate or Fraction(30)
+            )
+            stream = writer.add_stream("libx264", rate=rate)
             stream.width, stream.height = source_stream.width, source_stream.height
             stream.pix_fmt = (
                 "yuv420p" if stream.width % 2 == 0 and stream.height % 2 == 0 else "yuv444p"
@@ -131,6 +140,8 @@ def render_video(run, video=None, overlay=True):
                 while current and current["source_frame_index"] < index:
                     current = next(rows, None)
                 prediction = current if current and current["source_frame_index"] == index else None
+                if sampled_only and prediction is None:
+                    continue
                 # No interpolation/held boxes on unsampled frames: their target location is unknown.
                 image = draw_annotations(frame.to_ndarray(format="rgb24"), prediction, overlay)
                 annotated = av.VideoFrame.from_ndarray(image, format="rgb24")
@@ -145,12 +156,13 @@ def render_video(run, video=None, overlay=True):
         partial.unlink(missing_ok=True)
         raise
     write_json(
-        run / "render_manifest.json",
+        run / ("render_sampled_manifest.json" if sampled_only else "render_manifest.json"),
         dict(
             source_sha256=manifest["source_video"]["sha256"],
             timing="source_pts",
             boxes="sampled_frames_only",
-            annotation_policy="accepted_green_candidates_orange",
+            video_frames="processed_only" if sampled_only else "all_source_frames",
+            annotation_policy="accepted_green_tracked_blue_candidates_orange",
             candidate_scores="recorded_cosine_when_available",
             audio="omitted",
             orientation="coded_unrotated",

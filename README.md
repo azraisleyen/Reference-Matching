@@ -130,6 +130,9 @@ uav-refmatch run --video "/veri/input_video.mp4" --reference "/veri/ref.jpg" \
 uav-refmatch report --run "runs/CALISMA_KLASORU"
 uav-refmatch render --run "runs/CALISMA_KLASORU"
 
+# Yalnız gerçekten işlenen kareleri, özgün zamanlarıyla gösteren inceleme videosu
+uav-refmatch render --run "runs/CALISMA_KLASORU" --sampled-only
+
 # Kaynak video taşındıysa aynı dosyanın yeni yolunu belirtin:
 uav-refmatch render --run "runs/CALISMA_KLASORU" --video "/yeni/yol/video.mp4"
 ```
@@ -151,6 +154,85 @@ Proje klasörünü açın, Python yorumlayıcısı olarak `.venv` ortamını se�
 
 Geometrik kabul eşikleri ve belleğin benzerlik, kalite, tekrar ve ardışık onay kontrolleri korunur. Kayıtlardaki `anchor_geometry` bellek kararının R0 desteğini, `geometry.diagnostics` ise dönüşüm, ölçek, eşleşme sayıları ve başarısız koşulları açıklar. Ayarlar tüm nesnelerde aynı doğruluğu garanti etmez.
 
+Normal video tüm kaynak karelerini korur; kutu çizilmeyen ara kareler işlenmemiştir.
+`--sampled-only` seçeneği ara kareleri videodan çıkarır; tahmin uydurmaz veya kutu
+enterpolasyonu yapmaz. Çıktısı `annotated_sampled.mp4` ve ayrı render manifestidir.
+Arayüzde aynı seçenek “Yalnız işlenen karelerle inceleme videosu” kutusundadır.
+
+## Yerel patch doğrulaması
+
+DINOv3 CLS temsili tüm video karesinden değil, her aday crop'undan çıkarılır.
+`patch_verification.enabled` açıldığında, mevcut DINOv3 ağırlıkları yerel patch
+özellikleri için de kullanılır. CLS sıralaması korunur; patch ortalamasıyla değiştirilmez.
+
+- Önce EfficientLoFTR ve affine RANSAC çalışır. Kabul edilen eşleşme yoksa kalan
+  bütçede karşılıklı en yakın patch eşleşmeleri ve ölçeğe göre normalize edilmiş
+  geometrik kontrol denenir. Kalan bütçe varsa döndürme denemeleri sürer.
+- `retrieval.max_geometry_pairs` tüm yöntemlerin **ortak** deneme sınırıdır.
+  `geometry.reserved_rotation_calls` yeniden denemelere alan ayırır; patch kontrolü
+  açıldığında bu alan patch ve döndürme denemeleri arasında paylaşılır.
+- `image_size` uzamsal çözünürlüğü; `min_cosine` yerel patch filtresini;
+  `reprojection_fraction` aday crop köşegenine göre geometrik toleransı belirler.
+  Bunlar CLS veya LoFTR güven olasılığıyla aynı ölçek değildir.
+- `cache_entries` içerik anahtarlı CPU özellik önbelleğini sınırlar. Yeni model
+  ağırlığı indirilmez. Her koşu kendi önbelleğiyle başlar.
+- Patch doğrulaması ayrı bir kabul yoludur; CLS'nin R0 kapısına takılan bir görünüşü
+  uzamsal kanıtla kabul edebilir. Semantik benzerlik aynı fiziksel nesne garantisi değildir.
+- Bellek görünüşüyle patch eşleşmesi, `verified_bank_min_cosine` kimlik kapısını yine
+  geçmelidir. Yalnız zamansal benzerlik bu kapıyı açmaz.
+- Yalnız patch kanıtı uzun süreli belleğe alınmaz; ince yerel eşleşme kanıtı ve
+  mevcut kalite/ardışıklık kontrolleri gerekir.
+- `verified_pairs[].method`, `geometry.diagnostics.backend` ve `dense_matching_ms`
+  hangi yöntemin ne kadar maliyetle kullanıldığını kaydeder. `dense_matching_ms`
+  patch özellik çıkarımı, eşleştirme ve patch geometrisinin toplamını içerir.
+
+## İsteğe bağlı takip ve kimlik kontrolü
+
+`tracking.enabled: true` ile seçilen kısa süreli takipçi açılır. Takip ilk güvenilir
+tespitten sonra başlar; ilk tespiti veya nesne kimliğini tek başına çözmez.
+Depodaki `configs/default.yaml` MIL + `verify` modunu ve patch doğrulamasını açar.
+Programatik `Config()` varsayılanında takip ve patch doğrulaması kapalıdır.
+Yeni veri üzerinde değerlendirmeden genel doğruluk artışı varsayılmamalıdır.
+
+- `tracking.mode`: `verify` her işlenen kareyi bağımsız doğrular; takip yalnız konum/adayı
+  ve zamansal kanıtı destekler. `propagate` aradaki karelerde ayrı `TRACKED` çıktısı üretir,
+  daha az doğrulama yapar; kutu kayması ve kimlik kontrol aralığı ayrıca değerlendirilmelidir.
+- `tracking.backend`: `flow` hafif optik akıştır; `mil` MIL kutusunu ek optik akış tutarlılığıyla denetler. Her ikisinde DINOv3 görünüş kontrolü uygulanır.
+- Takipçi başarı bayrağı kimlik güveni değildir; iki seçenek de bağımsız kimlik doğrulamasıyla birlikte kullanılmalıdır.
+- `tracking.reverify_interval_sec` kimlik kontrolü denemeleri arasındaki süre sınırıdır.
+  Akış veya görünüş bozulursa bu süre beklenmeden arama/doğrulama yapılır.
+- `tracking.max_unverified_sec`: başarısız bir geometrik kontrolden sonra güvenilir hareket ve
+  donmuş görünüş şablonu destekliyorsa konumu koruyabilecek toplam doğrulanmamış süre.
+  Günlük ayarlarda `0` ile kapalıdır. Deneysel pozitif değer kontrol aralığından kısa olamaz; her başarısız
+  deneme bu süreyi yeniden başlatmaz. Kimlik çelişkisi veya hareket kaybında beklenmez.
+- `tracking.identity_policy`: `anchor` R0/temporal kapısını, `verified_bank` ayrıca
+  önceden kabul edilmiş gerçek bellek kaydının geometrik ve görsel kanıtını kullanır.
+  `verified_bank_min_cosine` bu ek yolun benzerlik eşiğidir; tek başına tespit sağlamaz.
+- `tracking.proposal_duplicate_iou`: hareket kutusunun mevcut adayla tekrar sayılma eşiği.
+- `tracking.max_gap_sec` aşılırsa eski konum taşınmaz. Örnekleme aralığıyla uyumlu olmalıdır.
+- Yeniden doğrulamada Florence adaylarına güvenilir hareket kutusu eklenebilir;
+  toplam doğrulama denemesi bütçesi değişmez.
+- `tracking.acquisition_anchor_min_cosine` ilk/yeniden edinimde R0 benzerlik kapısıdır.
+  Daha yüksek değer yanlış kabulü azaltabilir, farklı görünüşleri de reddedebilir;
+  kalibre edilmiş olasılık değildir.
+- `FOUND` bağımsız görsel/geometrik kontrolden geçer. `TRACKED` yalnız zamansal
+  konum aktarımıdır ve uzun süreli belleğe kabul edilmez. Belleğin ardışık
+  doğrulaması bekliyorsa takip yerine bağımsız kontrol sürdürülür.
+- `prediction.tracking.identity_checks` aday bazında R0, görünüş ve konum kanıtlarını;
+  `state` alanı `SEARCHING`, `TRACKING`, `UNCERTAIN` veya `LOST` durumunu kaydeder.
+  `last_verified_sec`, `last_verification_attempt_sec`, `unverified_age_sec` ve
+  `verification_failure` alanları kontrol denemesini son başarılı doğrulamadan ayırır.
+- İsteğe bağlı `reference.bbox_xyxy: [x1, y1, x2, y2]`, referans fotoğrafındaki
+  hedefi piksel koordinatlarıyla sınırlar. `null` görüntünün tamamını kullanır.
+  Bu ayar video koordinatlarını değiştirmez. Maske desteği henüz yoktur.
+
+`tracking_ms`, hareket kestirimiyle birlikte takip kutusunun DINOv3 görünüş kontrolünü de içerir.
+`tracking_array_bytes` yalnız bilinen NumPy durumunu ölçer; MIL iç tahsislerini kapsamaz.
+
+Takip yapılandırması `static`/`dynamic` referans belleğinden bağımsızdır.
+Kısa süreli görünüş şablonu yalnız yeni doğrulanmış tespitte yenilenir.
+Takip/kimlik eşikleri veri üzerinde ölçülmelidir; tüm nesnelerde başarı garantisi yoktur.
+
 ## Çıktılar ve video gösterimi
 
 Her çalışma benzersiz bir `runs/` alt klasörüne yazılır. Çıktı kökü `--output-root` ile değiştirilebilir.
@@ -168,6 +250,7 @@ Her çalışma benzersiz bir `runs/` alt klasörüne yazılır. Çıktı kökü 
 | `annotated_video.mp4`, `render_manifest.json` | İsteğe bağlı video ve çizim/zamanlama bilgileri |
 
 - **Yeşil:** yalnız `FOUND` olarak kabul edilen nesne kutusu.
+- **Mavi:** `TRACKED`; bağımsız kimlik doğrulaması yapılmadan takip edilen konum.
 - **Turuncu:** aday kutuları ve kayıtlı cosine değerleri; kabul edilmiş tespit anlamına gelmez.
 - Aynı kutuda yeşil tespit çizgisi turuncu aday çizgisinin üzerine çizilir.
 - Yalnız işlenmiş kaynak karelere çizim yapılır. Ara karelere kutu taşınmaz; bu yüzden kutular kesikli görünebilir.
@@ -190,6 +273,7 @@ src/uav_refmatch/
   geometry/                RANSAC doğrulama
   decision/                Tespit kararı
   memory/                  Statik/dinamik referans belleği
+  tracking/                Hareket takibi ve takip yaşam döngüsü
   evaluation/              Süre ve kaynak ölçümü
   outputs/                 Kayıt, rapor ve video çizimi
   pipeline.py              Ortak işlem hattı

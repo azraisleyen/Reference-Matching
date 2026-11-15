@@ -90,6 +90,7 @@ class Recorder:
                 "retrieval_candidates",
                 "proposals",
                 "proposal_diagnostics",
+                "tracking",
             )
         }
         row.update(
